@@ -278,7 +278,7 @@ class Currency
 
     #V‹K‰Á“üÒ‚Ìpersons‚Ö‚Ì‘}“ü
     @persons.add(index, person)
-    if syncType == ALL_SYNC
+    if sync_type == ALL_SYNC
       update_contribution
     end
 
