@@ -1,2 +1,13 @@
 <h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+  <% if user_signed_in? %>
+    ようこそ <%= current_user.name %> さん
+  <% end %>
+
+<ul class="nav">
+  <% if user_signed_in? %>
+    <li><%= link_to 'ログアウト', sign_out_path %></li>
+  <% else %>
+    <li><%= link_to "twitterでログイン", user_omniauth_authorize_path(:twitter)  %></li>
+  <% end %>
+</ul>
+
