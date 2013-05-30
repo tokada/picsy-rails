@@ -12,5 +12,6 @@ class Trade < ActiveRecord::Base
   # 取引は一つの商品からなる
   belongs_to :item
 
-  # 取引は一つの評価をもつ
+  # 取引は一つの評価値をもつ
+  # attr_accessor :amount
 end

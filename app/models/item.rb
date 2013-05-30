@@ -14,6 +14,8 @@ class Item < ActiveRecord::Base
   # 商品は量の属性をもつ
 
   # 商品は定価をもつ
+  # attr_accessor :fixed_price
 
   # 商品は名前をもつ
+  # attr_accessor :name
 end

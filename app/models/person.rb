@@ -19,6 +19,8 @@ class Person < ActiveRecord::Base
   has_many :items              , :as => :ownable
 
   # 個人は名前をもつ
+  # attr_accessor :name
 
   # 個人は貢献度の値をもつ
+  # attr_accessor :contribution
 end

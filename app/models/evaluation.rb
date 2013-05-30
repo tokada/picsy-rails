@@ -13,4 +13,5 @@ class Evaluation < ActiveRecord::Base
   belongs_to :sellable, :polymorphic => true
 
   # 評価は値をもつ
+  # attr_accessor :amount
 end
