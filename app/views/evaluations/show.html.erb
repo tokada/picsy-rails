@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Buyable:</strong>
+  <%= @evaluation.buyable %>
+</p>
+
+<p>
+  <strong>Sellable:</strong>
+  <%= @evaluation.sellable %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @evaluation.amount %>
+</p>
+
+<%= link_to 'Edit', edit_evaluation_path(@evaluation) %> |
+<%= link_to 'Back', evaluations_path %>
