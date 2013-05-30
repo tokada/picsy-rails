@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Buyable:</strong>
+  <%= @trade.buyable %>
+</p>
+
+<p>
+  <strong>Sellable:</strong>
+  <%= @trade.sellable %>
+</p>
+
+<p>
+  <strong>Item:</strong>
+  <%= @trade.item %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @trade.amount %>
+</p>
+
+<%= link_to 'Edit', edit_trade_path(@trade) %> |
+<%= link_to 'Back', trades_path %>
