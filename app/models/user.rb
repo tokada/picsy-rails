@@ -1,3 +1,4 @@
+# model used for user authentication
 class User < ActiveRecord::Base
   devise :rememberable, :trackable, :omniauthable
   attr_accessible :name, :provider, :uid, :password
