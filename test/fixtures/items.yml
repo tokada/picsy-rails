@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  sellable_id: 
+  name: MyString
+  fixed_price: 1.5
+
+two:
+  sellable_id: 
+  name: MyString
+  fixed_price: 1.5

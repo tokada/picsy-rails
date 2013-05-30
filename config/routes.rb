@@ -1,4 +1,6 @@
 PicsyRails::Application.routes.draw do
+  resources :items
+
   resources :people
 
   root :to => 'home#index'
