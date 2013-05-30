@@ -7,10 +7,10 @@
 #
 class Evaluation < ActiveRecord::Base
   # ある評価は買った人からの評価となる
-  # an actor (person/company) as a buyer evaluates seller actors
   belongs_to :buyable, :polymorphic => true
 
   # ある評価は売った人への評価となる
-  # an actor (person/company) as a seller is evaluated by buyer actors
   belongs_to :sellable, :polymorphic => true
+
+  # 評価は値をもつ
 end

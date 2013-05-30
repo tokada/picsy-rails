@@ -1,8 +1,9 @@
-# model used for user authentication
+# 認証用のモデル
 class User < ActiveRecord::Base
   devise :rememberable, :trackable, :omniauthable
   attr_accessible :name, :provider, :uid, :password
 
+  # TwitterのOAuth認証の実装。一度認証するとテーブルにTwitter IDを保存する。
   def self.find_for_twitter_oauth(auth, signed_in_resource=nil)
     user = User.where(:provider => auth.provider, :uid => auth.uid).first
 
