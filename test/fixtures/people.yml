@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  state: MyString
+  contribution: 1.5
+  purchase_power: 1.5
+
+two:
+  name: MyString
+  state: MyString
+  contribution: 1.5
+  purchase_power: 1.5
