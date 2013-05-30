@@ -27,4 +27,12 @@ PicsyRails::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+ 
+  omniauth_config = YAML.load_file('./config/omniauth.yml')
+  Devise.setup do |config|
+    config.omniauth :twitter,
+                    omniauth_config["twitter"]["consumer_key"],
+                    omniauth_config["twitter"]["consumer_secret"],
+                    :display => 'popup'
+  end
 end
