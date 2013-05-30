@@ -11,7 +11,55 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130530125923) do
+ActiveRecord::Schema.define(version: 20130530141812) do
+
+  create_table "evaluations", force: true do |t|
+    t.integer  "buyable_id"
+    t.string   "buyable_type"
+    t.integer  "sellable_id"
+    t.string   "sellable_type"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "evaluations", ["buyable_id", "buyable_type"], name: "index_evaluations_on_buyable_id_and_buyable_type"
+  add_index "evaluations", ["sellable_id", "sellable_type"], name: "index_evaluations_on_sellable_id_and_sellable_type"
+
+  create_table "items", force: true do |t|
+    t.integer  "sellable_id"
+    t.string   "sellable_type"
+    t.string   "name"
+    t.float    "fixed_price"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "items", ["sellable_id", "sellable_type"], name: "index_items_on_sellable_id_and_sellable_type"
+
+  create_table "people", force: true do |t|
+    t.string   "name"
+    t.string   "state"
+    t.float    "contribution"
+    t.float    "purchase_power"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "trades", force: true do |t|
+    t.integer  "buyable_id"
+    t.string   "buyable_type"
+    t.integer  "sellable_id"
+    t.string   "sellable_type"
+    t.integer  "item_id"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "trades", ["buyable_id", "buyable_type"], name: "index_trades_on_buyable_id_and_buyable_type"
+  add_index "trades", ["item_id"], name: "index_trades_on_item_id"
+  add_index "trades", ["sellable_id", "sellable_type"], name: "index_trades_on_sellable_id_and_sellable_type"
 
   create_table "users", force: true do |t|
     t.datetime "remember_created_at"
