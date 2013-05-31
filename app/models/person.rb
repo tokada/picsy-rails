@@ -1,3 +1,5 @@
+require 'matrix'
+
 # 個人／Person
 #
 # 伝播投資貨幣を使用している個人。
@@ -23,4 +25,20 @@ class Person < ActiveRecord::Base
 
   # 個人は貢献度の値をもつ
   # attr_accessor :contribution
+
+  # 初期評価行列を生成する
+  def self.initialize_matrix
+    size = count
+    v = (1.0 / (size - 1))
+    # 対角要素は0.0、非対角要素は1.0を評価対象数で配分したものとする
+    Matrix.build(size, size) {|r, c| r == c ? 0.0 : v }
+  end
+
+  # マルコフ過程を用い貢献度を評価行列から計算し、各々のPersonにContributionを格納する
+  def self.calculate_contributions
+    # 評価行列を生成
+    m = initialize_matrix
+    
+  end
+
 end

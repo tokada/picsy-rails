@@ -47,3 +47,10 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'devise', :github => 'plataformatec/devise', :branch => 'rails4'
 gem 'protected_attributes'
 gem 'omniauth-twitter'
+
+group :test do
+  gem 'rspec-rails'
+  gem 'spork-rails', git: 'git://github.com/koriroys/spork-rails.git'
+  gem 'factory_girl_rails'
+end
+
