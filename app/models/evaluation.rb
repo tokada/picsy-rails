@@ -16,6 +16,8 @@ class Evaluation < ActiveRecord::Base
 
   attr_accessible :buyable, :sellable, :amount
 
+  scope :for_person, where(:buyable_type => 'Person', :sellable_type => 'Person')
+
   # 評価は値をもつ
   # attr_accessor :amount
 
@@ -24,7 +26,7 @@ class Evaluation < ActiveRecord::Base
     # TODO: 更新ロックをかける
     a = []
     seq = Person.id_seq # { id1 => 0, id2 => 1, ... }
-    person_to_person_evaluations.find_each do |ev|
+    for_person.find_each do |ev|
       next if seq[ev.buyable_id].nil? or seq[ev.sellable_id].nil? # TODO: warn
       i = seq[ev.buyable_id]
       j = seq[ev.sellable_id]
@@ -32,11 +34,6 @@ class Evaluation < ActiveRecord::Base
       a[i][j] = ev.amount
     end
     Matrix[*a]
-  end
-
-  def self.person_to_person_evaluations
-    # TODO: scopeにする
-    where(:buyable_type => 'Person', :sellable_type => 'Person')
   end
 
 end

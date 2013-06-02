@@ -94,8 +94,8 @@ class Person < ActiveRecord::Base
 
   # マルコフ過程を用い貢献度を評価行列から計算し、各々のPersonにContributionを格納する
   def self.calculate_contributions
-    # 評価行列を生成
-    m = initialize_matrix
+    # 評価行列を取得
+    m = Evaluation.person_matrix
     
   end
 

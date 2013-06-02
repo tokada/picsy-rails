@@ -70,8 +70,14 @@ describe Person do
   end
   
   describe ".calculate_contributions" do
-    it "マルコフ過程を用い貢献度を評価行列から計算し、各々のPersonにcontributionを格納すること" do
-      #p Person.calculate_contributions
+    context "初期評価行列に対して、人1が人2に0.1の評価を与えた場合" do
+      before do
+        Person.initialize_matrix!
+      end
+
+      it "マルコフ過程によって評価行列の値が変わること" do
+        contributions = Person.calculate_contributions
+      end
     end
   end
 end
