@@ -50,7 +50,8 @@ gem 'omniauth-twitter'
 
 group :test do
   gem 'rspec-rails'
-  gem 'spork-rails', git: 'git://github.com/koriroys/spork-rails.git'
+  # gem 'spork-rails', git: 'git://github.com/koriroys/spork-rails.git'
+  gem 'spork-rails', github: 'railstutorial/spork-rails'
   gem 'factory_girl_rails'
 end
 
