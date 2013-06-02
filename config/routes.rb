@@ -1,4 +1,6 @@
 PicsyRails::Application.routes.draw do
+  resources :propagations
+
   resources :trades
 
   resources :evaluations

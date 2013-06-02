@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Trade:</strong>
+  <%= @propagation.trade %>
+</p>
+
+<p>
+  <strong>Actor from:</strong>
+  <%= @propagation.actor_from %>
+</p>
+
+<p>
+  <strong>Actor to:</strong>
+  <%= @propagation.actor_to %>
+</p>
+
+<p>
+  <strong>Amount:</strong>
+  <%= @propagation.amount %>
+</p>
+
+<%= link_to 'Edit', edit_propagation_path(@propagation) %> |
+<%= link_to 'Back', propagations_path %>

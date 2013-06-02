@@ -1,0 +1,33 @@
+<h1>Listing propagations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Trade</th>
+      <th>Actor from</th>
+      <th>Actor to</th>
+      <th>Amount</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @propagations.each do |propagation| %>
+      <tr>
+        <td><%= propagation.trade %></td>
+        <td><%= propagation.actor_from %></td>
+        <td><%= propagation.actor_to %></td>
+        <td><%= propagation.amount %></td>
+        <td><%= link_to 'Show', propagation %></td>
+        <td><%= link_to 'Edit', edit_propagation_path(propagation) %></td>
+        <td><%= link_to 'Destroy', propagation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Propagation', new_propagation_path %>

@@ -1,0 +1,33 @@
+<%= form_for(@propagation) do |f| %>
+  <% if @propagation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@propagation.errors.count, "error") %> prohibited this propagation from being saved:</h2>
+
+      <ul>
+      <% @propagation.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :trade %><br>
+    <%= f.text_field :trade %>
+  </div>
+  <div class="field">
+    <%= f.label :actor_from %><br>
+    <%= f.text_field :actor_from %>
+  </div>
+  <div class="field">
+    <%= f.label :actor_to %><br>
+    <%= f.text_field :actor_to %>
+  </div>
+  <div class="field">
+    <%= f.label :amount %><br>
+    <%= f.text_field :amount %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
