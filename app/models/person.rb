@@ -33,7 +33,9 @@ class Person < ActiveRecord::Base
 
   # 他の経済主体に評価を与える
   def evaluate!(seller, amount)
-    given_evaluations.create(:sellable => seller, :amount => amount)
+    ev = given_evaluations.first_or_initialize(:sellable => seller)
+    ev.amount = amount
+    ev.save
   end
 
   # 他の経済主体への評価値を取得する

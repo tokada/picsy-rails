@@ -14,4 +14,7 @@ class Trade < ActiveRecord::Base
 
   # 取引は一つの評価値をもつ
   # attr_accessor :amount
+
+  # 取引は評価の伝播を記録する
+
 end
