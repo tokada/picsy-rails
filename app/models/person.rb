@@ -6,20 +6,10 @@ require 'matrix'
 #
 class Person < ActiveRecord::Base
   # 個人は他の経済主体に評価を与える
-  has_many :given_evaluations, :as => :buyable, :class_name => 'Evaluation' do
-    # sellerへの評価を取得する
-    def to(seller)
-      proxy_association.reload.target.find(:sellable => seller).first
-    end
-  end
+  has_many :given_evaluations, :as => :buyable, :class_name => 'Evaluation'
 
   # 個人は他の経済主体から評価を与えられる
-  has_many :earned_evaluations, :as => :sellable, :class_name => 'Evaluation' do
-    # buyerからの評価を取得する
-    def from(buyer)
-      proxy_association.reload.target.find(:buyable => buyer).first
-    end
-  end
+  has_many :earned_evaluations, :as => :sellable, :class_name => 'Evaluation'
 
   # 個人は取引時に他の経済主体から商品を買い、その売主に評価を与える
   has_many :given_trades, :as => :buyable, :class_name => 'Trade'
@@ -48,13 +38,12 @@ class Person < ActiveRecord::Base
 
   # 他の経済主体への評価値を取得する
   def evaluation_to(seller)
-    # p [self.id, seller.id, given_evaluations.to(seller)]
-    given_evaluations.to(seller).amount # rescue nil
+    Evaluation.where(:buyable => self, :sellable => seller).first.amount
   end
 
   # 他の経済主体からの評価値を取得する
   def evaluation_from(buyer)
-    earned_evaluations.from(buyer).amount # rescue nil
+    Evaluation.where(:buyable => buyer, :sellable => self).first.amount
   end
 
   # 自己評価値を取得する
@@ -62,10 +51,12 @@ class Person < ActiveRecord::Base
     evaluation_to(self)
   end
 
+  # PersonのID一覧
   def self.ids
     pluck(:id).sort
   end
   
+  # PersonのID一覧と順番のハッシュ
   def self.id_seq
     ids.each.with_index.inject({}) do |h, (person_id, i)|
       h[person_id] = i
