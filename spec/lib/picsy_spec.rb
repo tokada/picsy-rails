@@ -2,8 +2,23 @@ require 'spec_helper'
 require 'picsy'
 
 describe Picsy do
+  describe ".calculate_contribution_by_analysis" do
+    context "5人の初期評価行列の場合" do
+      before do
+        5.times { FactoryGirl.create(:person) }
+        @matrix = Person.initialize_matrix
+        @vector = Picsy.contributions(@matrix)
+      end
+
+      it "解析解を求める方法で、貢献度を評価行列から計算し、貢献度ベクトルを返すこと" do
+        contributions = Picsy.calculate_contribution_by_analysis(@matrix)
+        expect(contributions).to eq(Vector[1.0, 1.0, 1.0, 1.0, 1.0])
+      end
+    end
+  end
+
   describe ".calculate_contribution_by_markov" do
-    context "初期評価行列の場合" do
+    context "5人の初期評価行列の場合" do
       before do
         5.times { FactoryGirl.create(:person) }
         @matrix = Person.initialize_matrix
