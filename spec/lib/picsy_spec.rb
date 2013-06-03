@@ -9,6 +9,7 @@ describe Picsy do
     5.times { FactoryGirl.create(:person) }
     # 初期評価行列
     @initial_matrix = Person.initialize_matrix
+    @initial_expected = Vector[1.0, 1.0, 1.0, 1.0, 1.0]
 
     # 「なめ敵」図4.4の評価行列
     @n44matrix = Matrix[
@@ -29,7 +30,7 @@ describe Picsy do
       end
 
       it "解析解を求める方法で、貢献度を評価行列から計算し、貢献度ベクトルを返すこと" do
-        expect(@contributions).to eq(Vector[1.0, 1.0, 1.0, 1.0, 1.0])
+        expect(@contributions).to eq(@initial_expected)
       end
     end
 
