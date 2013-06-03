@@ -28,6 +28,7 @@ describe Person do
       it "貢献度を計算すること" do
         # TODO: 正しいか不明
         expect(@person1.calculate_contribution).to eq(-0.25)
+        expect(@person2.calculate_contribution).to eq(-0.25)
       end
     end
   end
@@ -54,7 +55,7 @@ describe Person do
       Person.initialize_matrix!
     end
 
-    it "初期評価行列をメンバ数の2乗のデータとして保存すること" do
+    it "初期評価行列をメンバ数の2乗のレコード数のデータとして保存すること" do
       expect(Evaluation.count).to eq(5*5)
     end
 

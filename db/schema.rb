@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130530141812) do
+ActiveRecord::Schema.define(version: 20130602184210) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "buyable_id"
@@ -45,6 +45,19 @@ ActiveRecord::Schema.define(version: 20130530141812) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "propagations", force: true do |t|
+    t.integer  "trade_id"
+    t.integer  "actor_from_id"
+    t.integer  "actor_to_id"
+    t.float    "amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "propagations", ["actor_from_id"], name: "index_propagations_on_actor_from_id"
+  add_index "propagations", ["actor_to_id"], name: "index_propagations_on_actor_to_id"
+  add_index "propagations", ["trade_id"], name: "index_propagations_on_trade_id"
 
   create_table "trades", force: true do |t|
     t.integer  "buyable_id"

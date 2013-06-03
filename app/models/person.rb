@@ -33,7 +33,7 @@ class Person < ActiveRecord::Base
 
   # 他の経済主体に評価を与える
   def evaluate!(seller, amount)
-    ev = given_evaluations.first_or_initialize(:sellable => seller)
+    ev = given_evaluations.where(:buyable => self, :sellable => seller).first_or_initialize
     ev.amount = amount
     ev.save
   end
