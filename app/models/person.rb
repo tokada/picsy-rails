@@ -22,15 +22,10 @@ class Person < ActiveRecord::Base
   has_many :items, :as => :ownable
 
   # 個人は名前をもつ
-  # attr_accessor :name
+  attr_accessible :name
 
   # 個人は貢献度の値をもつ
-  # attr_accessor :contribution
-
-  # 貢献度を計算する
-  def calculate_contribution
-    self.class.contributions_hash[self.id]
-  end
+  attr_accessible :contribution
 
   # 他の経済主体に評価を与える
   def evaluate!(seller, amount)
@@ -56,7 +51,7 @@ class Person < ActiveRecord::Base
 
   # PersonのID一覧
   def self.ids
-    pluck(:id).sort
+    pluck(:id)
   end
   
   # PersonのID一覧と順番のハッシュ
@@ -76,20 +71,19 @@ class Person < ActiveRecord::Base
   end
 
   # 初期評価行列を生成し、永続化する
-  def self.initialize_matrix!
-    m = initialize_matrix
+  def self.initialize_matrix!(matrix = nil)
+    matrix ||= initialize_matrix
     Evaluation.delete_all
     all.each.with_index do |buyer, i|
       all.each.with_index do |seller, j|
-        buyer.evaluate!(seller, m[i, j])
+        buyer.evaluate!(seller, matrix[i, j])
       end
     end
   end
 
   # 貢献度の配列
-  # Evaluation.person_matrixの固有値ベクトルを配列で返す
   def self.contributions
-    Evaluation.person_matrix.eigensystem.eigenvalues
+    pluck(:contribution)
   end
 
   # 貢献度のハッシュ
@@ -102,11 +96,15 @@ class Person < ActiveRecord::Base
     end
   end
 
-  # マルコフ過程を用い貢献度を評価行列から計算し、各々のPersonにContributionを格納する
+  # 貢献度をマルコフ過程によって更新する
   def self.update_contributions!
-    # 評価行列を取得
-    m = Evaluation.person_matrix
-    
+    matrix = Evaluation.person_matrix
+    contributions = Picsy.calculate_contribution_by_markov(matrix)
+    all.each.with_index do |person, i|
+      person.contribution = contributions[i]
+      person.save
+    end
+    contributions
   end
 
 end
