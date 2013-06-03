@@ -7,7 +7,7 @@ describe Person do
     @person2 = Person.first(2).last
   end
 
-  describe "give_evaluation_to(seller, amount)" do
+  describe "\#evaluate!(seller, amount)" do
     before do
       Evaluation.delete_all
     end
@@ -19,7 +19,7 @@ describe Person do
     end
   end
 
-  describe "calculate_evaluations" do
+  describe "\#calculate_evaluations" do
     context "初期評価行列の場合" do
       before do
         Person.initialize_matrix!
@@ -70,14 +70,34 @@ describe Person do
     end
   end
   
-  describe ".calculate_contributions" do
+  describe ".contributions" do
+    before do
+      Person.initialize_matrix!
+    end
+
+    it "貢献度の配列を取得すること" do
+      expect(Person.contributions).to eq([-0.25, -0.25, -0.25, -0.25, 1.0])
+    end
+  end
+
+  describe ".contributions_hash" do
+    before do
+      Person.initialize_matrix!
+    end
+
+    it "貢献度のハッシュを取得すること" do
+      expect(Person.contributions_hash).to eq({1=>-0.25, 2=>-0.25, 3=>-0.25, 4=>-0.25, 5=>1.0})
+    end
+  end
+
+  describe ".update_contributions!" do
     context "初期評価行列に対して、人1が人2に0.1の評価を与えた場合" do
       before do
         Person.initialize_matrix!
+        Person.update_contributions!
       end
 
       it "マルコフ過程によって評価行列の値が変わること" do
-        contributions = Person.calculate_contributions
       end
     end
   end

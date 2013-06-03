@@ -14,12 +14,13 @@ class Evaluation < ActiveRecord::Base
   # ある評価は売った人への評価となる
   belongs_to :sellable, :polymorphic => true
 
-  attr_accessible :buyable, :sellable, :amount
+  attr_accessible :buyable, :sellable
 
+  # 人から人への評価のスコープ
   scope :for_person, where(:buyable_type => 'Person', :sellable_type => 'Person')
 
   # 評価は値をもつ
-  # attr_accessor :amount
+  attr_accessible :amount
 
   # 評価行列を取得する
   def self.person_matrix

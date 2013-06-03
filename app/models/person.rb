@@ -28,7 +28,7 @@ class Person < ActiveRecord::Base
 
   # 貢献度を計算する
   def calculate_contribution
-    self.class.contributions[self.id]
+    self.class.contributions_hash[self.id]
   end
 
   # 他の経済主体に評価を与える
@@ -66,15 +66,6 @@ class Person < ActiveRecord::Base
     end
   end
 
-  # 貢献度の配列
-  def self.contributions
-    eigenvalues = Evaluation.person_matrix.eigensystem.eigenvalues
-    ids.each.with_index.inject({}) do |h, (person_id, i)|
-      h[person_id] = eigenvalues[i]
-      h
-    end
-  end
-
   # 初期評価行列を生成する
   def self.initialize_matrix
     size = count
@@ -94,8 +85,24 @@ class Person < ActiveRecord::Base
     end
   end
 
+  # 貢献度の配列
+  # Evaluation.person_matrixの固有値ベクトルを配列で返す
+  def self.contributions
+    Evaluation.person_matrix.eigensystem.eigenvalues
+  end
+
+  # 貢献度のハッシュ
+  # { Person#id => Float, ... } のハッシュで返す
+  def self.contributions_hash
+    cs = contributions
+    ids.each.with_index.inject({}) do |h, (person_id, i)|
+      h[person_id] = cs[i]
+      h
+    end
+  end
+
   # マルコフ過程を用い貢献度を評価行列から計算し、各々のPersonにContributionを格納する
-  def self.calculate_contributions
+  def self.update_contributions!
     # 評価行列を取得
     m = Evaluation.person_matrix
     
