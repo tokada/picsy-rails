@@ -1,4 +1,5 @@
 require 'matrix'
+require 'picsy'
 
 # 個人／Person
 #

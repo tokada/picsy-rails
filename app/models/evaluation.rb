@@ -17,7 +17,7 @@ class Evaluation < ActiveRecord::Base
   attr_accessible :buyable, :sellable
 
   # 人から人への評価のスコープ
-  scope :for_person, where(:buyable_type => 'Person', :sellable_type => 'Person')
+  scope :for_person, -> { where(:buyable_type => 'Person', :sellable_type => 'Person') }
 
   # 評価は値をもつ
   attr_accessible :amount
