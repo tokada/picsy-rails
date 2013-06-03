@@ -26,7 +26,6 @@ describe Person do
       end
       
       it "貢献度を計算すること" do
-        # TODO: 正しいか不明
         expect(@person1.calculate_contribution).to eq(-0.25)
         expect(@person2.calculate_contribution).to eq(-0.25)
       end
