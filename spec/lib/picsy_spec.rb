@@ -54,7 +54,7 @@ describe Picsy do
       end
 
       it "マルコフ過程を用い貢献度を評価行列から計算し、貢献度ベクトルを返すこと" do
-        expect(@contributions).to eq(Vector[1.0, 1.0, 1.0, 1.0, 1.0])
+        expect(@contributions).to eq(@initial_expected)
       end
     end
 
