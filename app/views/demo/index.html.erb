@@ -1,2 +1,11 @@
-<h1>Demo#index</h1>
-<p>Find me in app/views/demo/index.html.erb</p>
+
+<table>
+  <% @matrix.each.with_index do |row, i| %>
+  <tr>
+    <% row.each.with_index do |col, j| %>
+    <td><%= col %></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
