@@ -20,6 +20,9 @@ class Evaluation < ActiveRecord::Base
   # 評価は値をもつ
   attr_accessible :amount
 
+  cattr_accessor :natural_recovery_ratio
+  @@natural_recovery_ratio = 0.01
+
   # 評価行列を取得する
   def self.person_matrix
     # TODO: 更新ロックをかける
@@ -33,6 +36,19 @@ class Evaluation < ActiveRecord::Base
       a[i][j] = ev.amount
     end
     Matrix[*a]
+  end
+
+  # 自然回収
+  def self.natural_recovery!(nr_ratio=@@natural_recovery_ratio)
+    for_person.each do |ev|
+      # 全評価から一定率を徴収
+      ev.amount = (1 - nr_ratio) * ev.amount
+      if ev.buyable == ev.sellable
+        # 自己評価に自然回収率を上乗せ
+        ev.amount = ev.amount + nr_ratio * (1 - ev.amount)
+      end
+      ev.save
+    end
   end
 
 end
