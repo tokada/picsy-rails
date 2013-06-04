@@ -44,9 +44,11 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
-gem 'devise', :github => 'plataformatec/devise', :branch => 'rails4'
+gem 'devise', :github => 'plataformatec/devise', :branch => 'rails4' # 認証
 gem 'protected_attributes'
-gem 'omniauth-twitter'
+gem 'omniauth-twitter' # Twitter認証（Devise用）
+
+gem 'state_machine' # 状態遷移
 
 group :development do
   gem 'rails-erd'

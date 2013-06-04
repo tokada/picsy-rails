@@ -30,6 +30,25 @@ class Person < ActiveRecord::Base
   # 個人は貢献度の値をもつ
   attr_accessible :contribution
 
+  # 状態遷移
+  state_machine :state, :initial => :alive do
+    state :alive
+    state :dead
+    state :purged
+
+    event :kill do
+      transition :alive => :dead
+    end
+
+    event :resurrect do
+      transition :dead => :alive
+    end
+
+    event :purge do
+      transition :dead => :purged
+    end
+  end
+
   # 評価を与える取引を行う（支払う）
   def pay(seller, amount)
     # TODO: should be transactional
@@ -40,12 +59,12 @@ class Person < ActiveRecord::Base
     e_bs.amount += amount
     e_bs.save
 
-    # 買い手の評価値を下げる
+    # 買い手（自分）の評価値を下げる
     e_bb = given_evaluations.where(:buyable => self, :sellable => self).first_or_initialize
     e_bb.amount -= amount
     e_bb.save
 
-    # 貢献度を更新する
+    # 全員の貢献度を更新する
     old_contributions = Vector.elements(self.class.contributions)
     self.class.update_contributions!
     new_contributions = Vector.elements(self.class.contributions)
@@ -56,6 +75,11 @@ class Person < ActiveRecord::Base
     diff.each.with_index do |amount, i|
       trade.propagations.create(:evaluatable => people_list[i], :amount => amount)
     end
+  end
+
+  # 評価を得る取引を行う（稼ぐ）
+  def earn(buyer, amount)
+    buyer.pay(self, amount)
   end
 
   # 他の経済主体に評価を与える
@@ -80,14 +104,9 @@ class Person < ActiveRecord::Base
     evaluation_to(self)
   end
 
-  # PersonのID一覧
-  def self.ids
-    pluck(:id)
-  end
-  
   # PersonのID一覧と順番のハッシュ
   def self.id_seq
-    ids.each.with_index.inject({}) do |h, (person_id, i)|
+    pluck(:id).each.with_index.inject({}) do |h, (person_id, i)|
       h[person_id] = i
       h
     end
@@ -122,7 +141,7 @@ class Person < ActiveRecord::Base
   # { Person#id => Float, ... } のハッシュで返す
   def self.contributions_hash
     cs = contributions
-    ids.each.with_index.inject({}) do |h, (person_id, i)|
+    pluck(:id).each.with_index.inject({}) do |h, (person_id, i)|
       h[person_id] = cs[i]
       h
     end
@@ -137,8 +156,7 @@ class Person < ActiveRecord::Base
   def self.update_contributions!(matrix=nil)
     contributions = calculate_contributions(matrix)
     all.each.with_index do |person, i|
-      person.contribution = contributions[i]
-      person.save
+      person.update_attribute(:contribution, contributions[i])
     end
     contributions
   end

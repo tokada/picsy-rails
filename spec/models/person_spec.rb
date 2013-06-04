@@ -72,6 +72,44 @@ describe Person do
     end
   end
 
+  describe "\#earn(buyer, amount)" do
+    context "「なめ敵」図4.4のシナリオの場合" do
+      before do
+        Person.initialize_matrix!(@n44matrix)
+        people = Person.all
+        @person1 = people[0]
+        @person2 = people[1]
+        @person3 = people[2]
+        @person4 = people[3]
+        @person5 = people[4]
+        @person1.earn(@person4, 0.1)
+        @contributions = Person.contributions
+        @trade1 = @person4.given_trades.first
+      end
+
+      it "全員の貢献度が変化すること" do
+        @n44expected_2.each.with_index do |expected, i|
+          expect(@contributions[i]).to be_within(@delta).of(expected)
+        end
+      end
+
+      it "購入者=4、販売者=1、取引額0.1の取引履歴が記録されること" do
+        expect(@person4.given_trades.count).to eq(1)
+        expect(@trade1.buyable).to eq(@person4)
+        expect(@trade1.sellable).to eq(@person1)
+        expect(@trade1.amount).to eq(0.1)
+      end
+
+      it "貢献度の伝播履歴が記録されること" do
+        expect(@trade1.propagations.count).to eq(5)
+        @trade1.propagations.pluck(:amount).each.with_index do |actual, i|
+          expect(actual).to be_within(@delta).of(@n44expected_diff[i])
+        end
+        expect(@trade1.propagations.pluck(:evaluatable_id)).to eq(Person.pluck(:id))
+      end
+    end
+  end
+
   describe "\#evaluate!(seller, amount)" do
     before do
       Evaluation.delete_all
