@@ -1,4 +1,5 @@
 PicsyRails::Application.routes.draw do
+  get "demo/index"
   resources :propagations
 
   resources :trades
