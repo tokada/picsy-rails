@@ -6,8 +6,15 @@ gem 'rails', '4.0.0.rc1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 4.0.0.rc1'
+group :assets do
+  gem 'less-rails'
+  gem 'less-rails-bootstrap'
+  gem 'sass-rails', '~> 4.0.0.rc1'
+  gem 'compass-colors'
+  gem 'compass-rails'
+  gem 'sassy-buttons'
+  gem 'zurui-sass-rails'
+end
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
