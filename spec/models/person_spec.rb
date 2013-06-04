@@ -5,6 +5,15 @@ describe Person do
     # テストケースの許容誤差
     @delta = 0.0001
 
+    # 初期評価行列
+    @expected_initial_matrix = Matrix[
+      [0.0, 0.25, 0.25, 0.25, 0.25],
+      [0.25, 0.0, 0.25, 0.25, 0.25],
+      [0.25, 0.25, 0.0, 0.25, 0.25],
+      [0.25, 0.25, 0.25, 0.0, 0.25],
+      [0.25, 0.25, 0.25, 0.25, 0.0]
+    ]
+
     # 「なめ敵」図4.4の評価行列
     @n44matrix = Matrix[
       [0.1 , 0.2 , 0.15, 0.3 , 0.25],
@@ -14,17 +23,53 @@ describe Person do
       [0.2 , 0.1 , 0.25, 0.3 , 0.15],
     ]
     # 「なめ敵」図4.4の貢献度ベクトル
-    @n44expected = Vector[1.0697, 0.7756, 0.9910, 1.2677, 0.8961]
+    @n44expected  = Vector[1.0697, 0.7756, 0.9910, 1.2677, 0.8961]
+    @n44expected_2 = Vector[1.1737, 0.7711, 0.9773, 1.1622, 0.9157]
+    @n44expected_diff = [0.1040, -0.0045, -0.0136, -0.1055, 0.0196]
   end
 
   before(:each) do
-    5.times { FactoryGirl.create(:person) }
-    # 初期評価行列
-    @initial_matrix = Person.initialize_matrix
-    @initial_expected = Vector[1.0, 1.0, 1.0, 1.0, 1.0]
-
+    FactoryGirl.create_list(:person, 5)
     @person1 = Person.first
     @person2 = Person.first(2).last
+  end
+
+  describe "\#pay(seller, amount)" do
+    context "「なめ敵」図4.4のシナリオの場合" do
+      before do
+        Person.initialize_matrix!(@n44matrix)
+        people = Person.all
+        @person1 = people[0]
+        @person2 = people[1]
+        @person3 = people[2]
+        @person4 = people[3]
+        @person5 = people[4]
+        @person4.pay(@person1, 0.1)
+        @contributions = Person.contributions
+        @trade1 = @person4.given_trades.first
+      end
+
+      it "全員の貢献度が変化すること" do
+        @n44expected_2.each.with_index do |expected, i|
+          expect(@contributions[i]).to be_within(@delta).of(expected)
+        end
+      end
+
+      it "購入者=4、販売者=1、取引額0.1の取引履歴が記録されること" do
+        expect(@person4.given_trades.count).to eq(1)
+        expect(@trade1.buyable).to eq(@person4)
+        expect(@trade1.sellable).to eq(@person1)
+        expect(@trade1.amount).to eq(0.1)
+      end
+
+      it "貢献度の伝播履歴が記録されること" do
+        expect(@trade1.propagations.count).to eq(5)
+        @trade1.propagations.pluck(:amount).each.with_index do |actual, i|
+          expect(actual).to be_within(@delta).of(@n44expected_diff[i])
+        end
+        expect(@trade1.propagations.pluck(:evaluatable_id)).to eq(Person.pluck(:id))
+      end
+    end
   end
 
   describe "\#evaluate!(seller, amount)" do
@@ -43,22 +88,12 @@ describe Person do
     context "メンバー数が5人の場合" do
       it "初期評価行列として、対角要素が0.0、非対角要素が0.25の行列を返すこと" do
         m = Person.initialize_matrix
-        expect(m).to eq(
-          Matrix[
-            [0.0, 0.25, 0.25, 0.25, 0.25],
-            [0.25, 0.0, 0.25, 0.25, 0.25],
-            [0.25, 0.25, 0.0, 0.25, 0.25],
-            [0.25, 0.25, 0.25, 0.0, 0.25],
-            [0.25, 0.25, 0.25, 0.25, 0.0]
-          ]
-        )
+        expect(m).to eq(@expected_initial_matrix)
       end
     end
   end
 
   describe ".initialize_matrix!" do
-    # TODO: update_contributions!も同時に行うようにリファクタする（DB保存を分けない）
-
     context "評価行列を与えない場合" do
       before do
         Person.initialize_matrix!
@@ -114,7 +149,6 @@ describe Person do
     context "初期評価行列の場合" do
       before do
         Person.initialize_matrix!
-        Person.update_contributions!
       end
 
       it "貢献度の配列を取得すること" do
@@ -125,13 +159,12 @@ describe Person do
     context "「なめ敵」図4.4の評価行列の場合" do
       before do
         Person.initialize_matrix!(@n44matrix)
-        Person.update_contributions!
         @contributions = Person.contributions
       end
 
       it "貢献度の配列を取得すること" do
         @n44expected.each.with_index do |expected, i|
-          expect(@contributions[i]).to be_within(@delta).of(@n44expected[i])
+          expect(@contributions[i]).to be_within(@delta).of(expected)
         end
       end
     end
@@ -141,7 +174,6 @@ describe Person do
     context "初期評価行列の場合" do
       before do
         Person.initialize_matrix!
-        Person.update_contributions!
       end
 
       it "貢献度のハッシュを取得すること" do
@@ -152,7 +184,6 @@ describe Person do
     context "「なめ敵」図4.4の評価行列の場合" do
       before do
         Person.initialize_matrix!(@n44matrix)
-        Person.update_contributions!
         @contributions_hash = Person.contributions_hash
       end
 
@@ -160,19 +191,6 @@ describe Person do
         @n44expected.each.with_index do |expected, i|
           expect(@contributions_hash[i+1]).to be_within(@delta).of(@n44expected[i])
         end
-      end
-    end
-  end
-
-  describe ".update_contributions!" do
-    context "「なめ敵」図4.4の行列の場合" do
-      before do
-        Person.initialize_matrix!(@n44matrix)
-        Person.update_contributions!
-      end
-
-      it "マルコフ過程によって貢献度が更新されること" do
-        pending
       end
     end
   end

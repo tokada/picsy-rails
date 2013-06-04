@@ -5,10 +5,10 @@
 class Propagation < ActiveRecord::Base
   # 伝播は一つの取引に属する
   belongs_to :trade
-  # 伝播は価値を与える経済主体に属する
-  belongs_to :actor_from, :polymorphic => true
-  # 伝播は価値を貰う経済主体に属する
-  belongs_to :actor_to, :polymorphic => true
+
+  # 伝播は評価対象者に属する
+  belongs_to :evaluatable, :polymorphic => true
+  attr_accessible :evaluatable
 
   # 伝播は評価値をもつ
   attr_accessible :amount

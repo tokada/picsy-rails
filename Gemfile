@@ -48,6 +48,10 @@ gem 'devise', :github => 'plataformatec/devise', :branch => 'rails4'
 gem 'protected_attributes'
 gem 'omniauth-twitter'
 
+group :development do
+  gem 'rails-erd'
+end
+
 group :test do
   gem 'rspec-rails'
   # gem 'spork-rails', git: 'git://github.com/koriroys/spork-rails.git'

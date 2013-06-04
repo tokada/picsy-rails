@@ -5,9 +5,11 @@
 class Trade < ActiveRecord::Base
   # 取引は商品を買う経済主体に属する
   belongs_to :buyable, :polymorphic => true
+  attr_accessible :buyable
 
   # 取引は商品を売る経済主体に属する
   belongs_to :sellable, :polymorphic => true
+  attr_accessible :sellable
 
   # 取引は一つの商品からなる
   belongs_to :item
@@ -16,6 +18,6 @@ class Trade < ActiveRecord::Base
   has_many :propagations
 
   # 取引は一つの評価値をもつ
-  # attr_accessor :amount
+  attr_accessible :amount
 
 end

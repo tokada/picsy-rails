@@ -21,11 +21,42 @@ class Person < ActiveRecord::Base
   # 個人は商品を所有する
   has_many :items, :as => :ownable
 
+  # 個人は貢献度の伝播履歴をもつ
+  has_many :propagations, :as => :evaluatable
+
   # 個人は名前をもつ
   attr_accessible :name
 
   # 個人は貢献度の値をもつ
   attr_accessible :contribution
+
+  # 評価を与える取引を行う（支払う）
+  def pay(seller, amount)
+    # TODO: should be transactional
+    trade = given_trades.create(:sellable => seller, :amount => amount)
+
+    # 売り手の評価値を上げる
+    e_bs = given_evaluations.where(:buyable => self, :sellable => seller).first_or_initialize
+    e_bs.amount += amount
+    e_bs.save
+
+    # 買い手の評価値を下げる
+    e_bb = given_evaluations.where(:buyable => self, :sellable => self).first_or_initialize
+    e_bb.amount -= amount
+    e_bb.save
+
+    # 貢献度を更新する
+    old_contributions = Vector.elements(self.class.contributions)
+    self.class.update_contributions!
+    new_contributions = Vector.elements(self.class.contributions)
+    diff = new_contributions - old_contributions
+
+    # 貢献度の変化を伝播として記録する
+    people_list = self.class.all
+    diff.each.with_index do |amount, i|
+      trade.propagations.create(:evaluatable => people_list[i], :amount => amount)
+    end
+  end
 
   # 他の経済主体に評価を与える
   def evaluate!(seller, amount)
@@ -71,14 +102,15 @@ class Person < ActiveRecord::Base
   end
 
   # 初期評価行列を生成し、永続化する
-  def self.initialize_matrix!(matrix = nil)
-    matrix ||= initialize_matrix
+  def self.initialize_matrix!(matrix = initialize_matrix)
     Evaluation.delete_all
     all.each.with_index do |buyer, i|
       all.each.with_index do |seller, j|
         buyer.evaluate!(seller, matrix[i, j])
       end
     end
+    update_contributions!
+    matrix
   end
 
   # 貢献度の配列
@@ -96,10 +128,14 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def self.calculate_contributions(matrix=nil)
+    matrix ||= Evaluation.person_matrix
+    Picsy.calculate_contribution_by_markov(matrix)
+  end
+
   # 貢献度をマルコフ過程によって更新する
-  def self.update_contributions!
-    matrix = Evaluation.person_matrix
-    contributions = Picsy.calculate_contribution_by_markov(matrix)
+  def self.update_contributions!(matrix=nil)
+    contributions = calculate_contributions(matrix)
     all.each.with_index do |person, i|
       person.contribution = contributions[i]
       person.save

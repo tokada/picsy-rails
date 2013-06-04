@@ -48,15 +48,14 @@ ActiveRecord::Schema.define(version: 20130602184210) do
 
   create_table "propagations", force: true do |t|
     t.integer  "trade_id"
-    t.integer  "actor_from_id"
-    t.integer  "actor_to_id"
+    t.integer  "evaluatable_id"
+    t.string   "evaluatable_type"
     t.float    "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "propagations", ["actor_from_id"], name: "index_propagations_on_actor_from_id"
-  add_index "propagations", ["actor_to_id"], name: "index_propagations_on_actor_to_id"
+  add_index "propagations", ["evaluatable_id", "evaluatable_type"], name: "index_propagations_on_evaluatable_id_and_evaluatable_type"
   add_index "propagations", ["trade_id"], name: "index_propagations_on_trade_id"
 
   create_table "trades", force: true do |t|
