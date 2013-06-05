@@ -1,7 +1,15 @@
-
 <table>
+  <tr>
+    <th>アクター</th>
+    <th>貢献度</th>
+    <% @matrix[0].each.with_index do |col, i| %>
+    <th>To P<%= i %></th>
+    <% end %>
+  </tr>
   <% @matrix.each.with_index do |row, i| %>
   <tr>
+    <th>P<%= i %></th>
+    <td><%= @contributions[i] %></td>
     <% row.each.with_index do |col, j| %>
     <td><%= col %></td>
     <% end %>
