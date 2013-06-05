@@ -7,24 +7,23 @@ gem 'rails', '4.0.0.rc1'
 gem 'sqlite3'
 
 gem 'compass-rails', github: 'milgner/compass-rails', branch: 'rails4'
-group :assets do
-  gem 'sass-rails', '~> 4.0.0.rc1'
+gem 'sass-rails', '~> 4.0.0.rc1'
+#group :assets do
   gem 'compass-colors'
   gem 'sassy-buttons'
   gem 'zurui-sass-rails'
-end
-
-#gem "therubyracer", :path => '../therubyracer-0.11.0beta1-x86-mingw32'
+#end
 
 #if RUBY_PLATFORM =~ /mingw/
-#  gem 'therubyracer', '0.11.0beta1'
+#  gem "therubyracer", :path => '../therubyracer-0.11.0beta1-x86-mingw32'
+##  gem 'therubyracer', '0.11.0beta1'
 #else
 #  gem 'therubyracer'
 #end
-
-gem "less"
-gem "less-rails"
-gem 'twitter-bootstrap-rails'
+#
+#gem "less"
+#gem "less-rails"
+#gem 'twitter-bootstrap-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
