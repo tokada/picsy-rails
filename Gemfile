@@ -14,16 +14,16 @@ gem 'sass-rails', '~> 4.0.0.rc1'
   gem 'zurui-sass-rails'
 #end
 
-#if RUBY_PLATFORM =~ /mingw/
-#  gem "therubyracer", :path => '../therubyracer-0.11.0beta1-x86-mingw32'
-##  gem 'therubyracer', '0.11.0beta1'
-#else
-#  gem 'therubyracer'
-#end
-#
-#gem "less"
-#gem "less-rails"
-#gem 'twitter-bootstrap-rails'
+if RUBY_PLATFORM =~ /mingw/
+  gem "therubyracer", :path => '../therubyracer-0.11.0beta1-x86-mingw32'
+#  gem 'therubyracer', '0.11.0beta1'
+else
+  gem 'therubyracer'
+end
+
+gem "less"
+gem "less-rails"
+gem 'twitter-bootstrap-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'

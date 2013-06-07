@@ -1,19 +1,43 @@
-<table>
+<h4>evaluation matrix</h4>
+<table class="table table-bordered">
   <tr>
     <th>アクター</th>
     <th>貢献度</th>
     <% @matrix[0].each.with_index do |col, i| %>
-    <th>To P<%= i %></th>
+    <th>To P<%= i+1 %></th>
     <% end %>
   </tr>
   <% @matrix.each.with_index do |row, i| %>
   <tr>
-    <th>P<%= i %></th>
-    <td><%= @contributions[i] %></td>
+    <th>P<%= i+1 %></th>
+    <td><%= sprintf("%0.04f", @contributions[i]) %></td>
     <% row.each.with_index do |col, j| %>
-    <td><%= col %></td>
+    <td><%= sprintf("%0.04f", col) %></td>
     <% end %>
   </tr>
   <% end %>
 </table>
 
+<% if @trades.size > 0 %>
+<h4>trade history</h4>
+<table class="table table-striped table-bordered table-condensed">
+  <tr>
+    <th>#</th>
+    <th>actors</th>
+    <th>amount</th>
+    <% @matrix[0].each.with_index do |col, i| %>
+    <th>P<%= i+1 %></th>
+    <% end %>
+  </tr>
+  <% @trades.each do |trade| %>
+  <tr>
+    <th>#<%= trade.id %></th>
+    <td>P<%= trade.buyable_id %> &rarr; P<%= trade.sellable_id %></td>
+    <td><%= sprintf("%0.04f", trade.amount) %></td>
+    <% trade.propagations.each do |prop| %>
+    <td><%= sprintf("%0.04f", prop.amount) %></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+<% end %>

@@ -4,5 +4,6 @@ class DemoController < ApplicationController
       r.map{|c| sprintf("%10.4f", c) }
     }
     @contributions = Person.contributions
+    @trades = Trade.all.order("id desc")
   end
 end
