@@ -24,15 +24,15 @@ $("table.selectable tr").each(function(r){
       .hover(
 				function(){
 					if ($(this).data("cellIndex") > 0) {
-						$(this).addClass("alert alert-info");
-						$("#from-p"+$(this).data("rowIndex")).addClass("alert alert-success");
-						$("#to-p"+$(this).data("cellIndex")).addClass("alert alert-success");
+						$(this).addClass("alert");
+						$("#from-p"+$(this).data("rowIndex")).addClass("alert");
+						$("#to-p"+$(this).data("cellIndex")).addClass("alert");
 					}
         },function(){
 					if ($(this).data("cellIndex") > 0) {
-						$(this).removeClass("alert alert-info");
-						$("#from-p"+$(this).data("rowIndex")).removeClass("alert alert-success");
-						$("#to-p"+$(this).data("cellIndex")).removeClass("alert alert-success");
+						$(this).removeClass("alert");
+						$("#from-p"+$(this).data("rowIndex")).removeClass("alert");
+						$("#to-p"+$(this).data("cellIndex")).removeClass("alert");
 					}
       });
   });

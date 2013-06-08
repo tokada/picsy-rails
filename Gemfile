@@ -11,37 +11,17 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-# stylesheets
-gem "less-rails"
-#gem "less-rails-bootstrap"
-
-group :assets do
-  if RUBY_PLATFORM =~ /mingw/
-    gem "therubyracer", :path => '../therubyracer-0.11.0beta1-x86-mingw32'
-  else
-    gem 'therubyracer'
-  end
-end
-
-gem 'twitter-bootstrap-rails'
-
-# twitter bootstrap css & javascript toolkit
-gem 'twitter-bootswatch-rails'
-
-# font awesome extension gem
-gem 'twitter-bootswatch-rails-fontawesome'
-
-# twitter bootstrap helpers gem, e.g., alerts etc...
-gem 'twitter-bootswatch-rails-helpers'
-
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-
-# Use CoffeeScript for .js.coffee assets and views
-gem 'coffee-rails', '~> 4.0.0'
-
-# Use jquery as the JavaScript library
 gem 'jquery-rails'
+
+gem 'less-rails'
+gem "font-awesome-rails"
+group :assets do
+	gem 'coffee-rails', '~> 4.0.0'
+  gem 'therubyracer'
+  gem 'uglifier', '>= 1.3.0'
+end
+gem 'twitter-bootswatch-rails'
+gem 'twitter-bootswatch-rails-helpers'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
