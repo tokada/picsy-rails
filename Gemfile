@@ -6,24 +6,18 @@ gem 'rails', '4.0.0.rc1'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3'
 
-gem 'compass-rails', github: 'milgner/compass-rails', branch: 'rails4'
-gem 'sass-rails', '~> 4.0.0.rc1'
-#group :assets do
-  gem 'compass-colors'
-  gem 'sassy-buttons'
-  gem 'zurui-sass-rails'
-#end
+gem "less-rails"
+gem "less-rails-bootstrap"
 
-if RUBY_PLATFORM =~ /mingw/
-  gem "therubyracer", :path => '../therubyracer-0.11.0beta1-x86-mingw32'
-#  gem 'therubyracer', '0.11.0beta1'
-else
-  gem 'therubyracer'
+group :assets do
+  if RUBY_PLATFORM =~ /mingw/
+    gem "therubyracer", :path => '../therubyracer-0.11.0beta1-x86-mingw32'
+  else
+    gem 'therubyracer'
+  end
 end
 
-gem "less"
-gem "less-rails"
-gem 'twitter-bootstrap-rails'
+#gem 'twitter-bootstrap-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
