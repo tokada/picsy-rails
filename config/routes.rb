@@ -1,4 +1,5 @@
 PicsyRails::Application.routes.draw do
+  get "admin/index"
   get "demo/index"
 
   resources :propagations

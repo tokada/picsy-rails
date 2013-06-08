@@ -1,0 +1,6 @@
+/* Cosmo
+ * Bootswatch
+ *= require_self
+ *= require cosmo/loader
+*/
+body { padding-top: 60px; }
