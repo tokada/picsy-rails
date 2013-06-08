@@ -15,6 +15,7 @@ class DeviseCreateUsers < ActiveRecord::Migration
       t.integer :uid, :limit => 8 #bigint‚É‚·‚é
       t.string :name
       t.string :provider
+      t.string :image
       t.string :password
 
       t.timestamps

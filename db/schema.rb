@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(version: 20130602184210) do
     t.integer  "uid",                 limit: 8
     t.string   "name"
     t.string   "provider"
+    t.string   "image"
     t.string   "password"
     t.datetime "created_at"
     t.datetime "updated_at"
