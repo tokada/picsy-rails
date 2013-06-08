@@ -5,39 +5,11 @@
 // or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
 //
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file.
+// the compiled file.
 //
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
-
-$("table.selectable tr").each(function(r){
-  var row = r;
-  $("td", this).each(function(d){
-    var cell = d;
-    $(this)
-      .data("rowIndex", row)
-      .data("cellIndex", cell)
-      .click(function(){
-          $("#message").show().text("Row-Index is: " + $(this).data("rowIndex") +
-																	  " and Cell-Index is: " + $(this).data("cellIndex") );
-        })
-      .hover(
-				function(){
-					if ($(this).data("cellIndex") > 0) {
-						$(this).addClass("alert");
-						$("#from-p"+$(this).data("rowIndex")).addClass("alert");
-						$("#to-p"+$(this).data("cellIndex")).addClass("alert");
-					}
-        },function(){
-					if ($(this).data("cellIndex") > 0) {
-						$(this).removeClass("alert");
-						$("#from-p"+$(this).data("rowIndex")).removeClass("alert");
-						$("#to-p"+$(this).data("cellIndex")).removeClass("alert");
-					}
-      });
-  });
-});
-
-$(document).ready(function(){
-
-});
+//
+//= require jquery
+//= require jquery_ujs
+//= require bootswatch/loader

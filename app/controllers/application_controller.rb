@@ -5,6 +5,24 @@ class ApplicationController < ActionController::Base
 	before_filter :select_theme
 
 	def select_theme
-		@theme = session[:theme] || 'amelia'
+		@themes = %w[
+			amelia
+			cerulean
+			cosmo
+			cyborg
+			journal
+			readable
+			simplex
+			slate
+			spacelab
+			spruce
+			superhero
+			united
+		]
+		if @themes.include?(session[:theme])
+			@theme = session[:theme]
+		else
+			@theme = 'amelia'
+		end
 	end
 end

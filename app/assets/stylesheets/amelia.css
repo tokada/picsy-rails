@@ -2,6 +2,5 @@
  * Bootswatch
  *= require_self
  *= require amelia/loader
- *= require font-awesome
+ *= require common
 */
-body { padding-top: 60px; }

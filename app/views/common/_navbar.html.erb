@@ -1,22 +1,22 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-      <a class="brand" href="#">PICSY-Rails</a>
+			<a class="brand" href="/">PICSY-Rails</a>
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav">
-          <li><%= link_to "Home", root_path %></li>
-          <li><%= link_to "Demo", demo_index_path %></li>
+          <li><%= link_to "PICSY", demo_index_path %></li>
+          <li><%= link_to "SECSY", demo_index_path %></li>
           <li><%= link_to "Admin", admin_index_path %></li>
         </ul>
 
         <ul class="nav pull-right">
           <li class="dropdown">
-            <a href="properties.php?type=showall" class="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <% if user_signed_in? %>
               <%= image_tag current_user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
               <%= current_user.name %>
             <% else %>
-							<i class="icon-twitter" style="margin:-7px 2px -2px 0"></i>
+							<i class="icon-twitter icon-large"></i>
             <% end %>
               <b class="caret"></b>
             </a>
@@ -30,12 +30,15 @@
             </ul>
           </li>
           <li class="dropdown">
-            <a href="properties.php?type=showall" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="icon-cog"></i>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="icon-cog icon-large"></i>
               <b class="caret"></b>
             </a>
 
             <ul class="dropdown-menu">
+							<% @themes.each do |theme| %>
+								<li><%= link_to theme, { :controller => "home", :action => "change_theme", :theme => h(theme) }, :method => :post %></li>
+							<% end %>
             </ul>
           </li>
         </ul>

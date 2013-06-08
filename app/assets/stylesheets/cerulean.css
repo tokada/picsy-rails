@@ -2,5 +2,5 @@
  * Bootswatch
  *= require_self
  *= require cerulean/loader
+ *= require common
 */
-body { padding-top: 60px; }

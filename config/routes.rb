@@ -1,5 +1,6 @@
 PicsyRails::Application.routes.draw do
   get "admin/index"
+  post "change_theme", :to => "home#change_theme"
   get "demo/index"
 
   resources :propagations
@@ -8,7 +9,7 @@ PicsyRails::Application.routes.draw do
   resources :items
   resources :people
 
-  root :to => 'home#index'
+  root :to => 'demo#index'
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   devise_scope :user do
