@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 	def select_theme
 		@themes = %w[
 			amelia
+			bootswatch
 			cerulean
 			cosmo
 			cyborg
@@ -22,7 +23,7 @@ class ApplicationController < ActionController::Base
 		if @themes.include?(session[:theme])
 			@theme = session[:theme]
 		else
-			@theme = 'amelia'
+			@theme = 'bootswatch'
 		end
 	end
 end
