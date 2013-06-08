@@ -1,9 +1,9 @@
 source 'http://rubygems.org'
 ruby "2.0.0"
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0.rc1'
 
+# database
 group :production do
   gem 'pg'
 end
@@ -11,8 +11,9 @@ group :development, :test do
   gem 'sqlite3'
 end
 
+# stylesheets
 gem "less-rails"
-gem "less-rails-bootstrap"
+#gem "less-rails-bootstrap"
 
 group :assets do
   if RUBY_PLATFORM =~ /mingw/
@@ -22,16 +23,22 @@ group :assets do
   end
 end
 
-#gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails'
+
+# twitter bootstrap css & javascript toolkit
+gem 'twitter-bootswatch-rails'
+
+# font awesome extension gem
+gem 'twitter-bootswatch-rails-fontawesome'
+
+# twitter bootstrap helpers gem, e.g., alerts etc...
+gem 'twitter-bootswatch-rails-helpers'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 
 # Use CoffeeScript for .js.coffee assets and views
 gem 'coffee-rails', '~> 4.0.0'
-
-# See https://github.com/sstephenson/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -71,7 +78,6 @@ end
 
 group :test do
   gem 'rspec-rails'
-  # gem 'spork-rails', git: 'git://github.com/koriroys/spork-rails.git'
   gem 'spork-rails', github: 'railstutorial/spork-rails'
   gem 'factory_girl_rails'
 end
