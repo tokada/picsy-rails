@@ -1,31 +1,46 @@
-<h1>Listing evaluations</h1>
-
-<table>
+<%- model_class = Evaluation -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Buyable</th>
-      <th>Sellable</th>
-      <th>Amount</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:market_id) %></th>
+      <th><%= model_class.human_attribute_name(:buyable_id) %></th>
+      <th><%= model_class.human_attribute_name(:buyable_type) %></th>
+      <th><%= model_class.human_attribute_name(:sellable_id) %></th>
+      <th><%= model_class.human_attribute_name(:sellable_type) %></th>
+      <th><%= model_class.human_attribute_name(:amount) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
     <% @evaluations.each do |evaluation| %>
       <tr>
-        <td><%= evaluation.buyable %></td>
-        <td><%= evaluation.sellable %></td>
+        <td><%= link_to evaluation.id, evaluation_path(evaluation) %></td>
+        <td><%= evaluation.market_id %></td>
+        <td><%= evaluation.buyable_id %></td>
+        <td><%= evaluation.buyable_type %></td>
+        <td><%= evaluation.sellable_id %></td>
+        <td><%= evaluation.sellable_type %></td>
         <td><%= evaluation.amount %></td>
-        <td><%= link_to 'Show', evaluation %></td>
-        <td><%= link_to 'Edit', edit_evaluation_path(evaluation) %></td>
-        <td><%= link_to 'Destroy', evaluation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%=l evaluation.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_evaluation_path(evaluation), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      evaluation_path(evaluation),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Evaluation', new_evaluation_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_evaluation_path,
+            :class => 'btn btn-primary' %>

@@ -1,33 +1,44 @@
-<%= form_for(@propagation) do |f| %>
-  <% if @propagation.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@propagation.errors.count, "error") %> prohibited this propagation from being saved:</h2>
-
-      <ul>
-      <% @propagation.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<%= form_for @propagation, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= f.label :market_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :market_id, :class => 'text_field' %>
     </div>
-  <% end %>
+  </div>
+  <div class="control-group">
+    <%= f.label :trade_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :trade_id, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :evaluatable_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :evaluatable_id, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :evaluatable_type, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :evaluatable_type, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :amount, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :amount, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :category, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :category, :class => 'text_field' %>
+    </div>
+  </div>
 
-  <div class="field">
-    <%= f.label :trade %><br>
-    <%= f.text_field :trade %>
-  </div>
-  <div class="field">
-    <%= f.label :actor_from %><br>
-    <%= f.text_field :actor_from %>
-  </div>
-  <div class="field">
-    <%= f.label :actor_to %><br>
-    <%= f.text_field :actor_to %>
-  </div>
-  <div class="field">
-    <%= f.label :amount %><br>
-    <%= f.text_field :amount %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                propagations_path, :class => 'btn' %>
   </div>
 <% end %>

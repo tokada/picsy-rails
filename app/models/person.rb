@@ -6,6 +6,8 @@ require 'picsy'
 # 伝播投資貨幣を使用している個人。
 #
 class Person < ActiveRecord::Base
+	belongs_to :market
+
   # 個人は他の経済主体に評価を与える
   has_many :given_evaluations, :as => :buyable, :class_name => 'Evaluation'
 

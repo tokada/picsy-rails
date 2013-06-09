@@ -1,33 +1,50 @@
-<%= form_for(@trade) do |f| %>
-  <% if @trade.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@trade.errors.count, "error") %> prohibited this trade from being saved:</h2>
-
-      <ul>
-      <% @trade.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+<%= form_for @trade, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= f.label :market_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :market_id, :class => 'text_field' %>
     </div>
-  <% end %>
+  </div>
+  <div class="control-group">
+    <%= f.label :buyable_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :buyable_id, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :buyable_type, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :buyable_type, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :sellable_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :sellable_id, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :sellable_type, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :sellable_type, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :item_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :item_id, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :amount, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :amount, :class => 'text_field' %>
+    </div>
+  </div>
 
-  <div class="field">
-    <%= f.label :buyable %><br>
-    <%= f.text_field :buyable %>
-  </div>
-  <div class="field">
-    <%= f.label :sellable %><br>
-    <%= f.text_field :sellable %>
-  </div>
-  <div class="field">
-    <%= f.label :item %><br>
-    <%= f.text_field :item %>
-  </div>
-  <div class="field">
-    <%= f.label :amount %><br>
-    <%= f.text_field :amount %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                trades_path, :class => 'btn' %>
   </div>
 <% end %>

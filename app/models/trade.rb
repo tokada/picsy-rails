@@ -3,6 +3,8 @@
 # 経済主体Aと経済主体Bとの間で、商品と評価を交換すること。
 #
 class Trade < ActiveRecord::Base
+	belongs_to :market
+
   # 取引は商品を買う経済主体に属する
   belongs_to :buyable, :polymorphic => true
   attr_accessible :buyable

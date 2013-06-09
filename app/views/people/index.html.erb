@@ -6,10 +6,12 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:market_id) %></th>
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:state) %></th>
       <th><%= model_class.human_attribute_name(:contribution) %></th>
       <th><%= model_class.human_attribute_name(:purchase_power) %></th>
+      <th><%= model_class.human_attribute_name(:picsy_effect) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -18,10 +20,12 @@
     <% @people.each do |person| %>
       <tr>
         <td><%= link_to person.id, person_path(person) %></td>
+        <td><%= person.market_id %></td>
         <td><%= person.name %></td>
         <td><%= person.state %></td>
         <td><%= person.contribution %></td>
         <td><%= person.purchase_power %></td>
+        <td><%= person.picsy_effect %></td>
         <td><%=l person.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

@@ -1,31 +1,42 @@
-<h1>Listing items</h1>
-
-<table>
+<%- model_class = Item -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Sellable</th>
-      <th>Name</th>
-      <th>Fixed price</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:sellable_id) %></th>
+      <th><%= model_class.human_attribute_name(:sellable_type) %></th>
+      <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:fixed_price) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
     <% @items.each do |item| %>
       <tr>
-        <td><%= item.sellable %></td>
+        <td><%= link_to item.id, item_path(item) %></td>
+        <td><%= item.sellable_id %></td>
+        <td><%= item.sellable_type %></td>
         <td><%= item.name %></td>
         <td><%= item.fixed_price %></td>
-        <td><%= link_to 'Show', item %></td>
-        <td><%= link_to 'Edit', edit_item_path(item) %></td>
-        <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%=l item.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_item_path(item), :class => 'btn btn-mini' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      item_path(item),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-mini btn-danger' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Item', new_item_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_item_path,
+            :class => 'btn btn-primary' %>

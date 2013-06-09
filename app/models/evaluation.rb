@@ -8,6 +8,8 @@ require 'matrix'
 # 自分自身を含めた全ての人への評価の値の合計は全ての人において一定値１である。
 #
 class Evaluation < ActiveRecord::Base
+	belongs_to :market
+
   # ある評価は買った人からの評価となる
   belongs_to :buyable, :polymorphic => true
 

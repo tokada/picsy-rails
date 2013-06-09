@@ -3,6 +3,8 @@
 # 取引によって価値が他の経済主体へと波及すること
 #
 class Propagation < ActiveRecord::Base
+	belongs_to :market
+
   # 伝播は一つの取引に属する
   belongs_to :trade
 
