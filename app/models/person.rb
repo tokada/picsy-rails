@@ -158,7 +158,8 @@ class Person < ActiveRecord::Base
   end
 
   # 貢献度をゲーム用に整数化したもの
-  def self.contributions_quantized(n=100000)
+  def self.contributions_quantized(n=nil)
+		n ||= (market.evaluation_parameter || 100000)
 		contributions.map{|c| (c * n).to_i }
   end
 

@@ -43,7 +43,8 @@ class Propagation < ActiveRecord::Base
 	end
 
 	# ゲーム用に整数化する
-	def amount_quantized(n=100000)
+	def amount_quantized(n=nil)
+		n ||= (market.evaluation_parameter || 100000)
 		a = (amount * n).to_i
 		if a == 0
 			""

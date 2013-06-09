@@ -50,7 +50,8 @@ class Market < ActiveRecord::Base
 		end
 
 		# 貢献度をゲーム用に整数化したもの
-		def contributions_quantized(n=100000)
+		def contributions_quantized(n=nil)
+			n = proxy_association.owner.evaluation_parameter || 100000
 			contributions.map{|c| (c * n).to_i }
 		end
 
@@ -118,7 +119,7 @@ class Market < ActiveRecord::Base
 		name = current_user.name + "の市場"
 		2.upto(20) do |i|
 			if self.class.where(:name => name).first
-				name = current_user.name + "の市場その" + i
+				name = current_user.name + "の市場その#{i}"
 			else
 				break
 			end
@@ -129,7 +130,7 @@ class Market < ActiveRecord::Base
 	def create_people
 		count = people_count
 		people.delete_all
-		names = AmericanName.pick_even(count)
+		names = AmericanName.pick_even(count).map(&:capitalize).sort
 		count.times {|i| people.create(:name => names[i]) }
 		people.initialize_matrix!(self_evaluation_by_rate)
 	end
@@ -142,4 +143,11 @@ class Market < ActiveRecord::Base
 		people.person_matrix
 	end
 	
+	# 評価行列をゲーム用に整数化したもの
+	def matrix_quantized(n=nil)
+		n ||= (self.evaluation_parameter || 100000)
+    Picsy.fix_matrix(matrix).to_a.map do |r|
+      r.map{|c| (c * n).to_i }
+		end
+	end
 end

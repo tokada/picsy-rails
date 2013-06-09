@@ -11,6 +11,10 @@ class MarketsController < ApplicationController
   # GET /markets/1
   # GET /markets/1.json
   def show
+		@people = @market.people
+    @matrix = @market.matrix_quantized
+    @contributions = @market.people.contributions_quantized
+    @trades = @market.trades.order("id desc")
   end
 
   # GET /markets/new
@@ -21,7 +25,7 @@ class MarketsController < ApplicationController
 		@market.user = current_user
 		@market.people_count = 3
 		@market.evaluation_parameter = 100000
-		@market.initial_self_evaluation = 20000
+		@market.initial_self_evaluation = 10000
 		@market.natural_recovery_rate = 1
   end
 

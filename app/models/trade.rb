@@ -28,7 +28,8 @@ class Trade < ActiveRecord::Base
   # 取引は一つの評価値をもつ
   attr_accessible :amount
 
-	def amount_quantized(n=100000)
+	def amount_quantized(n=nil)
+		n ||= (market.evaluation_parameter || 100000)
 		(amount * n).to_i
 	end
 end

@@ -1,16 +1,107 @@
 <%- model_class = Market -%>
-<div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.titleize %></h1>
+<h1><%= @market.name %></h1>
+
+<table class="table table-bordered selectable">
+  <tr>
+    <th>アクター</th>
+    <th>貢献度</th>
+    <th>予算制約</th>
+    <th>PICSY効果</th>
+    <% @people.each.with_index do |person, i| %>
+    <th id="to-p<%= person.id %>"><%= person.name %></th>
+    <% end %>
+  </tr>
+  <% @matrix.each.with_index do |row, i| %>
+  <tr>
+    <th id="from-p<%= @people[i].id %>"><%= @people[i].name %></th>
+    <td><%= @contributions[i] %></td>
+		<td id="self-p<%= @people[i].id %>"><%= @people[i].self_evaluation_quantized %></td>
+		<td class="<% if @people[i].picsy_effect_quantized > 0 %>text-info<% end %>"><%= @people[i].picsy_effect_quantized %></td>
+    <% row.each.with_index do |col, j| %>
+			<% if i == j %>
+				<td>-</td>
+			<% else %>
+				<td class="ev" id="ev-p<%= @people[i].id %>-p<%= @people[j].id %>"><%= col %></td>
+			<% end %>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+
+<div class="well">
+	<%= form_tag trade_path do %>
+		<div class="control-group error" style="display:inline">
+			<select name="person-from" id="person-from" class="input-medium" required>
+				<option></option>
+				<% @people.each.with_index do |person, i| %>
+				<option value="<%= person.id %>"><%= person.name %></option>
+				<% end %>
+			</select>
+			<span class="help-inline" style="margin-right:5px">から</span>
+		</div>
+
+		<div class="control-group success" style="display:inline">
+			<select name="person-to" id="person-to" class="input-medium" required>
+				<option></option>
+				<% @people.each.with_index do |person, i| %>
+				<option value="<%= person.id %>"><%= person.name %></option>
+				<% end %>
+			</select>
+			<span class="help-inline" style="margin-right:5px">へ</span>
+		</div>
+
+		<div class="input-append" style="">
+			<div class="control-group" style="display:inline">
+				<span>
+					<%= text_field_tag :amount, "", :class => "input-small", :style => "text-align:right",
+						:type => "number", :min => "0", :max => "100000", :required => "required" %>
+				</span>
+				<button type="submit" class="btn btn-primary">取引実行</button>
+			</div>
+		</div>
+	<% end %>
+
+	<%= form_tag natural_recovery_path, :class => "input-append", :style => "margin:0;padding:0" do %>
+		<%= text_field_tag :natural_recovery, "1", :class => "input-xlarge", :style => "width:100px",
+			:type => "number", :min => "1", :max => "99", :required => "required" %>
+		<span class="add-on">%</span>
+		<button type="submit" class="btn btn-primary">自然回収</button>
+	<% end %>
 </div>
 
-<dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
-  <dd><%= @market.name %></dd>
-</dl>
+<% if @trades.size > 0 %>
+<h2>取引履歴</h2>
+<table class="table table-striped table-bordered table-condensed">
+  <tr>
+    <th>#</th>
+    <th>アクター</th>
+    <th>取引額</th>
+    <% @people.each do |person| %>
+    <th><%= person.name %></th>
+    <% end %>
+  </tr>
+  <% @trades.each do |trade| %>
+  <tr>
+    <th>#<%= trade.id %></th>
+    <td><%= trade.buyable.name %> &rarr; <%= trade.sellable.name %></td>
+    <td><%= trade.amount_quantized %></td>
+    <% trade.propagations.each do |prop| %>
+		<td class="<% if prop.spence? %>text-error<% elsif prop.earn? %>text-success<% else %>text-info<% end %>"><%= prop.amount_quantized %></td>
+    <% end %>
+  </tr>
+  <% end %>
+</table>
+<% end %>
 
-<div class="form-actions">
-  <%= link_to t('.back', :default => t("helpers.links.back")),
-              markets_path, :class => 'btn'  %>
+<div class="well form-actions text-right">
+	<span>
+		オーナー
+		<%= image_tag @market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
+		<%= @market.user.name %>
+	</span>
+
+	<% if owner? %>
+	<span style="margin-left:1em">
   <%= link_to t('.edit', :default => t("helpers.links.edit")),
               edit_market_path(@market), :class => 'btn' %>
   <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
@@ -18,4 +109,6 @@
               :method => 'delete',
               :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
               :class => 'btn btn-danger' %>
+	</span>
+<% end %>
 </div>

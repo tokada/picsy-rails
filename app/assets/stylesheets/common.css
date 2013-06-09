@@ -3,4 +3,4 @@
  *= require font-awesome
 */
 body { padding-top: 60px; }
-td.evaluation { cursor:pointer; }
+td.ev { cursor:pointer; }
