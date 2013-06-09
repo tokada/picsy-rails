@@ -43,6 +43,12 @@ ActiveRecord::Schema.define(version: 20130609090051) do
     t.integer  "user_id"
     t.string   "name"
     t.integer  "people_count"
+    t.string   "system",                        default: "PICSY"
+    t.integer  "evaluation_parameter"
+    t.integer  "initial_self_evaluation"
+    t.integer  "natural_recovery_rate"
+    t.integer  "natural_recovery_interval_sec"
+    t.datetime "last_natural_recovery_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

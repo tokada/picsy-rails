@@ -6,3 +6,7 @@ ja:
     attributes:
       market:
         name: 名称
+        people_count: 参加人数
+        evaluation_parameter: 評価値の母数
+        initial_self_evaluation: 予算制約の初期値
+        natural_recovery_rate: 自然回収率

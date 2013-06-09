@@ -18,6 +18,11 @@ class MarketsController < ApplicationController
     @market = Market.new
 		# デフォルト名称をセットする
 		@market.set_default_name(current_user)
+		@market.user = current_user
+		@market.people_count = 3
+		@market.evaluation_parameter = 100000
+		@market.initial_self_evaluation = 10000
+		@market.natural_recovery_rate = 1
   end
 
   # GET /markets/1/edit
@@ -28,7 +33,8 @@ class MarketsController < ApplicationController
   # POST /markets.json
   def create
     @market = Market.new(market_params)
-
+		@market.user = current_user
+		
     respond_to do |format|
       if @market.save
         format.html { redirect_to @market, notice: 'Market was successfully created.' }
