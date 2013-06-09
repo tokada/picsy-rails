@@ -1,4 +1,6 @@
 PicsyRails::Application.routes.draw do
+  resources :markets
+
   get "admin/index"
   post "change_theme", :to => "home#change_theme"
   post "natural_recovery", :to => "demo#natural_recovery"
