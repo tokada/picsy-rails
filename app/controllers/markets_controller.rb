@@ -1,6 +1,6 @@
 class MarketsController < ApplicationController
 	before_filter :authenticate_user!, :except => [:index, :show];
-  before_action :set_market, only: [:show, :edit, :update, :destroy]
+  before_action :set_market, only: [:show, :edit, :update, :destroy, :trade, :natural_recovery]
 
   # GET /markets
   # GET /markets.json
@@ -73,6 +73,29 @@ class MarketsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+	# 取引
+	# POST /markets/1/trade
+	def trade
+		@amount = params[:amount].to_i / @market.evaluation_parameter.to_f
+		@person_from = Person.find(params["person-from"].to_i)
+		@person_to = Person.find(params["person-to"].to_i)
+		if @person_from.present? and @person_to.present? and @amount > 0.0
+			@person_from.pay(@person_to, @amount)
+		end
+		redirect_to market_path(@market)
+	end
+
+	# 自然回収
+	# POST /markets/1/natural_recovery
+	def natural_recovery
+		n = params[:natural_recovery].to_i
+		n = nil if n == 0
+		if n > 0 and n < 100
+			@market.natural_recovery!(n / 100.0)
+		end
+		redirect_to market_path(@market)
+	end
 
   private
     # Use callbacks to share common setup or constraints between actions.

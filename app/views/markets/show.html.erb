@@ -29,7 +29,7 @@
 </table>
 
 <div class="well">
-	<%= form_tag trade_path do %>
+	<%= form_for :market, :url => { :action => :trade } do %>
 		<div class="control-group error" style="display:inline">
 			<select name="person-from" id="person-from" class="input-medium" required>
 				<option></option>
@@ -61,7 +61,8 @@
 		</div>
 	<% end %>
 
-	<%= form_tag natural_recovery_path, :class => "input-append", :style => "margin:0;padding:0" do %>
+	<%= form_for :market, :url => { :action => :natural_recovery },
+		:html => { :class => "input-append", :style => "margin:0;padding:0" } do %>
 		<%= text_field_tag :natural_recovery, "1", :class => "input-xlarge", :style => "width:100px",
 			:type => "number", :min => "1", :max => "99", :required => "required" %>
 		<span class="add-on">%</span>
@@ -85,8 +86,12 @@
     <th>#<%= trade.id %></th>
     <td><%= trade.buyable.name %> &rarr; <%= trade.sellable.name %></td>
     <td><%= trade.amount_quantized %></td>
-    <% trade.propagations.each do |prop| %>
-		<td class="<% if prop.spence? %>text-error<% elsif prop.earn? %>text-success<% else %>text-info<% end %>"><%= prop.amount_quantized %></td>
+    <% trade.propagations(true).filled_list.each do |prop| %>
+			<% if prop.amount.nil? %>
+				<td>&nbsp;</td>
+			<% else %>
+				<td class="<% if prop.spence? %>text-error<% elsif prop.earn? %>text-success<% else %>text-info<% end %>"><%= prop.amount_quantized %></td>
+			<% end %>
     <% end %>
   </tr>
   <% end %>

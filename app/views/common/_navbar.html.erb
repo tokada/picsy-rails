@@ -5,7 +5,6 @@
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav">
           <li><%= link_to "市場", :markets %></li>
-          <li><%= link_to "管理", admin_index_path %></li>
         </ul>
 
         <ul class="nav pull-right">
@@ -46,3 +45,11 @@
   </div>
 </div>
 
+<% [:notice, :error, :alert].each do |level| %>
+  <% unless flash[level].blank? %>
+    <div class="alert-message <%= flash_class(level) %>">
+      <a class="close" href="#">×</a>
+      <%= content_tag :p, flash[level] %>
+    </div>
+  <% end %>
+<% end %>

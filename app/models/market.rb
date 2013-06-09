@@ -150,4 +150,19 @@ class Market < ActiveRecord::Base
       r.map{|c| (c * n).to_i }
 		end
 	end
+
+  # 自然回収
+  def natural_recovery!(nr_ratio=nil)
+		nr_ratio ||= natural_recovery_ratio / 100.0
+		return if nr_ratio.zero?
+    evaluations.for_person.each do |ev|
+      # 全評価から一定率を徴収
+      ev.amount = (1 - nr_ratio) * ev.amount
+      if ev.buyable == ev.sellable
+        # 自己評価に自然回収率を上乗せ
+        ev.amount = ev.amount + nr_ratio * (1 - ev.amount)
+      end
+      ev.save
+    end
+  end
 end
