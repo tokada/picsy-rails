@@ -12,23 +12,24 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
     <![endif]-->
 
-    <%= stylesheet_link_tag @theme, :media => "all" %>
+		<%= stylesheet_link_tag "bootswatch/#{@theme}", :media => "all" %>
 
     <%= yield(:page_stylesheet) if content_for?(:page_stylesheet) %>
 
   </head>
   <body>
 
-    <%= render 'common/navbar' %>
+    <%= render 'common/header' %>
 
 		<div class="container">
+			<%= render 'common/notice' %>
 			<%= yield %>
 		</div> <!-- /container -->
 
     <!-- Javascripts
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <%= javascript_include_tag @theme %>
+		<%= javascript_include_tag "bootswatch/#{@theme}" %>
     <%= javascript_include_tag "application" %>
     <%= yield(:page_javascript) if content_for?(:page_javascript) %>
   </body>
