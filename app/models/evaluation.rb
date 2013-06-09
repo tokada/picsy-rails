@@ -38,6 +38,13 @@ class Evaluation < ActiveRecord::Base
     Matrix[*a]
   end
 
+	# 評価行列をゲーム用に整数化したもの
+	def self.person_matrix_quantized(n=100000)
+    person_matrix.to_a.map do |r|
+      r.map{|c| (c * n).to_i - 1 }
+		end
+	end
+
   # 自然回収
   def self.natural_recovery!(nr_ratio=@@natural_recovery_ratio)
     for_person.each do |ev|

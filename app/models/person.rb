@@ -104,6 +104,11 @@ class Person < ActiveRecord::Base
     evaluation_to(self)
   end
 
+  # ゲーム用に自己評価値を整数化したもの
+  def self_evaluation_quantized(n=100000)
+		(self_evaluation * n).to_i
+  end
+
   # PersonのID一覧と順番のハッシュ
   def self.id_seq
     pluck(:id).each.with_index.inject({}) do |h, (person_id, i)|
@@ -135,6 +140,11 @@ class Person < ActiveRecord::Base
   # 貢献度の配列
   def self.contributions
     pluck(:contribution)
+  end
+
+  # 貢献度をゲーム用に整数化したもの
+  def self.contributions_quantized(n=100000)
+		contributions.map{|c| (c * n).to_i + 1 }
   end
 
   # 貢献度のハッシュ

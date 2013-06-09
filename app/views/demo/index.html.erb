@@ -1,10 +1,10 @@
-<h1>PICSY Demo</h1>
+<h1>PICSY</h1>
 
-<h2>評価行列</h2>
 <table class="table table-bordered selectable">
   <tr>
     <th>アクター</th>
     <th>貢献度</th>
+    <th>予算制約</th>
     <% @people.each.with_index do |person, i| %>
     <th id="to-p<%= i+1 %>">To P<%= i+1 %></th>
     <% end %>
@@ -12,58 +12,53 @@
   <% @matrix.each.with_index do |row, i| %>
   <tr>
     <th id="from-p<%= i+1 %>">P<%= i+1 %></th>
-    <td><%= sprintf("%0.04f", @contributions[i]) %></td>
+    <td><%= @contributions[i] %></td>
+    <td id="self-p<%= i+1 %>"><%= @people[i].self_evaluation_quantized %></td>
     <% row.each.with_index do |col, j| %>
-    <td style="cursor:pointer"><%= sprintf("%0.04f", col) %></td>
+			<% if i == j %>
+				<td>-</td>
+			<% else %>
+				<td class="evaluation" id="ev-p<%= i+1 %>-p<%= j+1 %>"><%= col %></td>
+			<% end %>
     <% end %>
   </tr>
   <% end %>
 </table>
 
-<div id="message" class="alert alert-info" style="display:none"></div>
+<form class="well">
 
-<h2>取引実行</h2>
-<div style="text-valign:center">
-	<span>From</span>
-	<div class="btn-group">
-		<button class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-			Person
-			<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu">
-			<% @people.each.with_index do |person, i| %>
-			<li><%= link_to_function "P#{i+1}", "#" %></li>
-			<% end %>
-		</ul>
-	</div>
-	<span>To</span>
-	<div class="btn-group">
-		<button class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-			Person
-			<span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu">
-			<% @people.each.with_index do |person, i| %>
-			<li><%= link_to_function "P#{i+1}", "#" %></li>
-			<% end %>
-		</ul>
-	</div>
-	<span>
-		<%= text_field_tag :amount, "", :style => "width:50px" %>
-	</span>
-</div>
+		<div class="control-group error" style="display:inline">
+			<select id="person-from" class="input-medium">
+				<% @people.each.with_index do |person, i| %>
+				<option value="<%= i+1 %>">P<%= i+1 %></option>
+				<% end %>
+			</select>
+			<span class="help-inline" style="margin-right:5px">から</span>
+		</div>
 
-<div style="display:none">
-	<form class="navbar-search">
-		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-			<% @people.each.with_index do |person, i| %>
-			<li>P<%= i+1 %></li>
-			<% end %>
-		</ul>
-		<input type="text" class="span2">
-		<button type="submit" class="btn">取引実行</button>
-	</form>
-</div>
+		<div class="control-group success" style="display:inline">
+			<select id="person-to" class="input-medium">
+				<% @people.each.with_index do |person, i| %>
+				<option value="<%= i+1 %>">P<%= i+1 %></option>
+				<% end %>
+			</select>
+			<span class="help-inline" style="margin-right:5px">へ</span>
+		</div>
+
+	<div class="input-append" style="">
+		<div class="control-group" style="display:inline">
+			<span>
+				<%= text_field_tag :amount, "", :class => "input-small", :style => "text-align:right" %>
+			</span>
+			<button type="submit" class="btn btn-primary">取引実行</button>
+		</div>
+	</div>
+
+	<div class="input-append" style="display:block;margin:20px 0 0 0">
+		<%= text_field_tag :natural_recovery, "100", :class => "input-xlarge", :style => "width:100px" %>
+		<button type="submit" class="btn btn-primary">自然回収</button>
+	</div>
+</form>
 
 <% if @trades.size > 0 %>
 <h2>取引履歴</h2>
