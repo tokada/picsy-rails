@@ -1,5 +1,5 @@
 PicsyRails::Application.routes.draw do
-  resources :markets
+  root :to => 'home#index'
 
   get "admin/index"
   post "change_theme", :to => "home#change_theme"
@@ -7,13 +7,12 @@ PicsyRails::Application.routes.draw do
   post "trade", :to => "demo#trade"
   get "demo/index"
 
-  resources :propagations
-  resources :trades
+  resources :markets
+  resources :people
   resources :evaluations
   resources :items
-  resources :people
-
-  root :to => 'demo#index'
+  resources :trades
+  resources :propagations
 
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   devise_scope :user do

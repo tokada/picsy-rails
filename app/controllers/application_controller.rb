@@ -26,4 +26,12 @@ class ApplicationController < ActionController::Base
 			@theme = 'bootswatch'
 		end
 	end
+
+  before_filter do |controller|
+    session[:last_url] = request.url unless request.url =~ %r!/users/!
+  end
+
+  def after_sign_in_path_for(resource)
+    session[:last_url]
+  end
 end

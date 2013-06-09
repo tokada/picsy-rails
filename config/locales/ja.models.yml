@@ -1,0 +1,8 @@
+ja:
+  activerecord:
+    models:
+      market: 市場
+      person: 個人
+    attributes:
+      market:
+        name: 名称

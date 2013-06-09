@@ -1,4 +1,5 @@
 class MarketsController < ApplicationController
+	before_filter :authenticate_user!, :except => [:index, :show];
   before_action :set_market, only: [:show, :edit, :update, :destroy]
 
   # GET /markets
@@ -15,6 +16,8 @@ class MarketsController < ApplicationController
   # GET /markets/new
   def new
     @market = Market.new
+		# デフォルト名称をセットする
+		@market.set_default_name(current_user)
   end
 
   # GET /markets/1/edit

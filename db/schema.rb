@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20130609090051) do
   add_index "items", ["sellable_id", "sellable_type"], name: "index_items_on_sellable_id_and_sellable_type"
 
   create_table "markets", force: true do |t|
+    t.integer  "user_id"
     t.string   "name"
     t.integer  "people_count"
     t.datetime "created_at"
@@ -47,6 +48,7 @@ ActiveRecord::Schema.define(version: 20130609090051) do
   end
 
   create_table "people", force: true do |t|
+    t.integer  "user_id"
     t.integer  "market_id"
     t.string   "name"
     t.string   "state"
@@ -58,6 +60,7 @@ ActiveRecord::Schema.define(version: 20130609090051) do
   end
 
   add_index "people", ["market_id"], name: "index_people_on_market_id"
+  add_index "people", ["user_id"], name: "index_people_on_user_id"
 
   create_table "propagations", force: true do |t|
     t.integer  "market_id"
