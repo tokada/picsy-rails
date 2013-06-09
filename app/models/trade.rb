@@ -15,9 +15,12 @@ class Trade < ActiveRecord::Base
   belongs_to :item
 
   # 取引は評価の伝播を記録する
-  has_many :propagations
+  has_many :propagations, :dependent => :destroy
 
   # 取引は一つの評価値をもつ
   attr_accessible :amount
 
+	def amount_quantized(n=100000)
+		(amount * n).to_i
+	end
 end

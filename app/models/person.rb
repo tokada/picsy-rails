@@ -144,7 +144,7 @@ class Person < ActiveRecord::Base
 
   # 貢献度をゲーム用に整数化したもの
   def self.contributions_quantized(n=100000)
-		contributions.map{|c| (c * n).to_i + 1 }
+		contributions.map{|c| (c * n).to_i }
   end
 
   # 貢献度のハッシュ

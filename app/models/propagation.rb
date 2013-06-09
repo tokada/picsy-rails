@@ -12,4 +12,13 @@ class Propagation < ActiveRecord::Base
 
   # 伝播は評価値をもつ
   attr_accessible :amount
+
+	def amount_quantized(n=100000)
+		a = (amount * n).to_i
+		if a == 0
+			""
+		else
+			a.to_s
+		end
+	end
 end

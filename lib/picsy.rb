@@ -53,20 +53,26 @@ class Picsy
       # 貢献度ベクトルのデフォルトの初期値は人数分1が並ぶ配列とする
       last_c ||= Vector.elements([@@initial_contribution]*size)
       new_c = nil
-      catch(:convergent) do
-        @@max_markov_process.times do |i|
-          # matrixをlast_cに掛け合わせる
-          new_c = Vector.elements(matrix.transpose.to_a.map{|col|
-            last_c.map.with_index {|c, j| c * col[j] }.sum
-          })
-          diff = new_c - last_c # 差分の確認
-          #許容範囲内で収束していればVectorを更新させる。
-          throw :convergent if diff.all?{|d| d.abs < @@markov_stop_value }
-          last_c = new_c
-        end
-      end
+			matrix_t = fix_matrix(matrix).transpose.to_a
+			@@max_markov_process.times do |i|
+				# matrixをlast_cに掛け合わせる
+				new_c = Vector.elements(matrix_t.map{|col|
+					last_c.map.with_index {|c, j| c * col[j] }.sum
+				})
+				diff = new_c - last_c # 差分の確認
+				#許容範囲内で収束していればVectorを更新させる。
+				break if diff.all?{|d| d.abs < @@markov_stop_value }
+				last_c = new_c
+			end
       new_c
     end
 
+		# 各行のトータルが1になるように評価行列を修正する
+		def fix_matrix(matrix)
+			Matrix[*matrix.to_a.map{|row|
+				rate = (1.0 / row.sum)
+				row.map{|c| c * rate }
+			}]
+		end
   end
 end
