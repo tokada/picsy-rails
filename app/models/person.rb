@@ -73,8 +73,20 @@ class Person < ActiveRecord::Base
     # 貢献度の変化を伝播として記録する
     people_list = self.class.all
     diff.each.with_index do |amount, i|
-      trade.propagations.create(:evaluatable => people_list[i], :amount => amount)
+			next if amount == 0.0
+      prop = trade.propagations.build(:evaluatable => people_list[i], :amount => amount)
+			if prop.evaluatable == self
+				prop.category = "spence"
+			elsif prop.evaluatable == seller
+				prop.category = "earn"
+			else
+				prop.category = "effect"
+			end
+			prop.save
     end
+
+		# 全員のPICSY効果を更新する
+		self.class.update_picsy_effect!
   end
 
   # 評価を得る取引を行う（稼ぐ）
@@ -170,5 +182,28 @@ class Person < ActiveRecord::Base
     end
     contributions
   end
+
+	# PICSY効果
+	def picsy_effect_quantized(n=100000)
+		(picsy_effect.to_f * n).to_i
+	end
+
+	# PICSY効果を更新する
+	def update_picsy_effect!
+		effect = propagations.effect.pluck(:amount).sum
+		update_attribute(:picsy_effect, effect)
+	end
+
+	# 全員のPICSY効果を更新する
+	def self.update_picsy_effect!
+		effects = {}
+		Propagation.effect.each do |prop|
+			effects[prop.evaluatable_id] ||= 0.0
+			effects[prop.evaluatable_id] += prop.amount
+		end
+		effects.each_pair do |person_id, effect|
+			Person.find(person_id).update_attribute(:picsy_effect, effect)
+		end
+	end
 
 end

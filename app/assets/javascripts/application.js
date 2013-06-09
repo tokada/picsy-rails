@@ -8,7 +8,7 @@ $("table.selectable tr").each(function(r){
     var cell = d;
     $(this)
       .data("r", row)
-      .data("c", cell-1)
+      .data("c", cell-2)
       .click(function(){
 				  // 評価行列の評価値セルクリック時
           if ($(this).data("c") > 0 && $(this).data("c") != $(this).data("r")) {

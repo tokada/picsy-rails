@@ -4,6 +4,7 @@ class CreatePropagations < ActiveRecord::Migration
       t.belongs_to :trade, index: true
       t.references :evaluatable, index: true, :polymorphic => true
       t.float :amount
+			t.string :category
 
       t.timestamps
     end

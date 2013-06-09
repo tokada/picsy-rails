@@ -5,6 +5,7 @@
     <th>アクター</th>
     <th>貢献度</th>
     <th>予算制約</th>
+    <th>PICSY効果</th>
     <% @people.each.with_index do |person, i| %>
     <th id="to-p<%= person.id %>">To P<%= person.id %></th>
     <% end %>
@@ -13,7 +14,8 @@
   <tr>
     <th id="from-p<%= i+1 %>">P<%= @people[i].id %></th>
     <td><%= @contributions[i] %></td>
-    <td id="self-p<%= i+1 %>"><%= @people[i].self_evaluation_quantized %></td>
+		<td id="self-p<%= i+1 %>"><%= @people[i].self_evaluation_quantized %></td>
+		<td class="<% if @people[i].picsy_effect_quantized > 0 %>text-info<% end %>"><%= @people[i].picsy_effect_quantized %></td>
     <% row.each.with_index do |col, j| %>
 			<% if i == j %>
 				<td>-</td>
@@ -28,7 +30,7 @@
 <div class="well">
 	<%= form_tag trade_path do %>
 		<div class="control-group error" style="display:inline">
-			<select name="person-from" id="person-from" class="input-medium">
+			<select name="person-from" id="person-from" class="input-medium" required>
 				<option></option>
 				<% @people.each.with_index do |person, i| %>
 				<option value="<%= person.id %>">P<%= person.id %></option>
@@ -38,7 +40,7 @@
 		</div>
 
 		<div class="control-group success" style="display:inline">
-			<select name="person-to" id="person-to" class="input-medium">
+			<select name="person-to" id="person-to" class="input-medium" required>
 				<option></option>
 				<% @people.each.with_index do |person, i| %>
 				<option value="<%= person.id %>">P<%= person.id %></option>
@@ -51,7 +53,7 @@
 			<div class="control-group" style="display:inline">
 				<span>
 					<%= text_field_tag :amount, "", :class => "input-small", :style => "text-align:right",
-						:type => "number", :min => "0", :max => "100000", :step => "1" %>
+						:type => "number", :min => "0", :max => "100000", :required => "required" %>
 				</span>
 				<button type="submit" class="btn btn-primary">取引実行</button>
 			</div>
@@ -60,7 +62,7 @@
 
 	<%= form_tag natural_recovery_path, :class => "input-append" do %>
 		<%= text_field_tag :natural_recovery, "1", :class => "input-xlarge", :style => "width:100px",
-			:type => "number", :min => "1", :max => "100", :step => "1" %>
+			:type => "number", :min => "1", :max => "99", :required => "required" %>
 		<span class="add-on">%</span>
 		<button type="submit" class="btn btn-primary">自然回収</button>
 	<% end %>
@@ -83,7 +85,7 @@
     <td>P<%= trade.buyable_id %> &rarr; P<%= trade.sellable_id %></td>
     <td><%= trade.amount_quantized %></td>
     <% trade.propagations.each do |prop| %>
-    <td><%= prop.amount_quantized %></td>
+		<td class="<% if prop.spence? %>text-error<% elsif prop.earn? %>text-success<% else %>text-info<% end %>"><%= prop.amount_quantized %></td>
     <% end %>
   </tr>
   <% end %>

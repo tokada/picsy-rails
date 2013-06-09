@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20130602184210) do
     t.string   "state"
     t.float    "contribution"
     t.float    "purchase_power"
+    t.float    "picsy_effect"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -51,6 +52,7 @@ ActiveRecord::Schema.define(version: 20130602184210) do
     t.integer  "evaluatable_id"
     t.string   "evaluatable_type"
     t.float    "amount"
+    t.string   "category"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
