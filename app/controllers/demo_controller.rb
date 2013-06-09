@@ -6,9 +6,10 @@ class DemoController < ApplicationController
     @trades = Trade.all.order("id desc")
   end
 
-	def run_natural_recovery
-		n = params[:natural_recovery].to_f
-		n = nil if n == 0.0
-		Evaluation.natural_recovery! n
+	def natural_recovery
+		n = params[:natural_recovery].to_i
+		n = nil if n == 0
+		Evaluation.natural_recovery!(n / 100000.0)
+		redirect_to root_path
 	end
 end
