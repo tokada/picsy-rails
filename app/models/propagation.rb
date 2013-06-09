@@ -15,6 +15,12 @@ class Propagation < ActiveRecord::Base
   # 伝播は評価値をもつ
   attr_accessible :amount
 
+	before_save :insert_foreign_ids
+
+	def insert_foreign_ids
+		self.market = self.trade.market
+	end
+
   # 伝播は種別をもつ
 	# "spence": 支払った場合
 	# "earn": 得た場合

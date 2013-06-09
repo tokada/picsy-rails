@@ -25,9 +25,14 @@ class Evaluation < ActiveRecord::Base
   cattr_accessor :natural_recovery_ratio
   @@natural_recovery_ratio = 0.01
 
+	before_save :insert_foreign_ids
+
+	def insert_foreign_ids
+		self.market = self.buyable.market
+	end
+
   # 評価行列を取得する
   def self.person_matrix
-    # TODO: 更新ロックをかける
     a = []
     seq = Person.id_seq # { id1 => 0, id2 => 1, ... }
     for_person.find_each do |ev|

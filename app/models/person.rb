@@ -9,22 +9,22 @@ class Person < ActiveRecord::Base
 	belongs_to :market
 
   # 個人は他の経済主体に評価を与える
-  has_many :given_evaluations, :as => :buyable, :class_name => 'Evaluation'
+  has_many :given_evaluations, :as => :buyable, :class_name => 'Evaluation', :dependent => :destroy
 
   # 個人は他の経済主体から評価を与えられる
-  has_many :earned_evaluations, :as => :sellable, :class_name => 'Evaluation'
+  has_many :earned_evaluations, :as => :sellable, :class_name => 'Evaluation', :dependent => :destroy
 
   # 個人は取引時に他の経済主体から商品を買い、その売主に評価を与える
-  has_many :given_trades, :as => :buyable, :class_name => 'Trade'
+  has_many :given_trades, :as => :buyable, :class_name => 'Trade', :dependent => :destroy
 
   # 個人は取引時に他の経済主体に商品を売り、その買主から評価をもらう
-  has_many :earned_trades, :as => :sellable, :class_name => 'Trade'
+  has_many :earned_trades, :as => :sellable, :class_name => 'Trade', :dependent => :destroy
 
   # 個人は商品を所有する
   has_many :items, :as => :ownable
 
   # 個人は貢献度の伝播履歴をもつ
-  has_many :propagations, :as => :evaluatable
+  has_many :propagations, :as => :evaluatable, :dependent => :destroy
 
   # 個人は名前をもつ
   attr_accessible :name
@@ -53,42 +53,43 @@ class Person < ActiveRecord::Base
 
   # 評価を与える取引を行う（支払う）
   def pay(seller, amount)
-    # TODO: should be transactional
-    trade = given_trades.create(:sellable => seller, :amount => amount)
+		transaction do
+			trade = given_trades.create(:sellable => seller, :amount => amount)
 
-    # 売り手の評価値を上げる
-    e_bs = given_evaluations.where(:buyable => self, :sellable => seller).first_or_initialize
-    e_bs.amount += amount
-    e_bs.save
+			# 売り手の評価値を上げる
+			e_bs = given_evaluations.where(:buyable => self, :sellable => seller).first_or_initialize
+			e_bs.amount += amount
+			e_bs.save
 
-    # 買い手（自分）の評価値を下げる
-    e_bb = given_evaluations.where(:buyable => self, :sellable => self).first_or_initialize
-    e_bb.amount -= amount
-    e_bb.save
+			# 買い手（自分）の評価値を下げる
+			e_bb = given_evaluations.where(:buyable => self, :sellable => self).first_or_initialize
+			e_bb.amount -= amount
+			e_bb.save
 
-    # 全員の貢献度を更新する
-    old_contributions = Vector.elements(self.class.contributions)
-    self.class.update_contributions!
-    new_contributions = Vector.elements(self.class.contributions)
-    diff = new_contributions - old_contributions
+			# 全員の貢献度を更新する
+			old_contributions = Vector.elements(self.class.contributions)
+			self.class.update_contributions!
+			new_contributions = Vector.elements(self.class.contributions)
+			diff = new_contributions - old_contributions
 
-    # 貢献度の変化を伝播として記録する
-    people_list = self.class.all
-    diff.each.with_index do |amount, i|
-			next if amount == 0.0
-      prop = trade.propagations.build(:evaluatable => people_list[i], :amount => amount)
-			if prop.evaluatable == self
-				prop.category = "spence"
-			elsif prop.evaluatable == seller
-				prop.category = "earn"
-			else
-				prop.category = "effect"
+			# 貢献度の変化を伝播として記録する
+			people_list = self.class.all
+			diff.each.with_index do |amount, i|
+				next if amount == 0.0
+				prop = trade.propagations.build(:evaluatable => people_list[i], :amount => amount)
+				if prop.evaluatable == self
+					prop.category = "spence"
+				elsif prop.evaluatable == seller
+					prop.category = "earn"
+				else
+					prop.category = "effect"
+				end
+				prop.save
 			end
-			prop.save
-    end
 
-		# 全員のPICSY効果を更新する
-		self.class.update_picsy_effect!
+			# 全員のPICSY効果を更新する
+			self.class.update_picsy_effect!
+		end
   end
 
   # 評価を得る取引を行う（稼ぐ）

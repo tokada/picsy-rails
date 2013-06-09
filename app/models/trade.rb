@@ -19,6 +19,12 @@ class Trade < ActiveRecord::Base
   # 取引は評価の伝播を記録する
   has_many :propagations, :dependent => :destroy
 
+	before_save :insert_foreign_ids
+
+	def insert_foreign_ids
+		self.market = self.buyable.market
+	end
+
   # 取引は一つの評価値をもつ
   attr_accessible :amount
 

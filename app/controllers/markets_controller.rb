@@ -21,7 +21,7 @@ class MarketsController < ApplicationController
 		@market.user = current_user
 		@market.people_count = 3
 		@market.evaluation_parameter = 100000
-		@market.initial_self_evaluation = 10000
+		@market.initial_self_evaluation = 20000
 		@market.natural_recovery_rate = 1
   end
 
@@ -78,6 +78,7 @@ class MarketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def market_params
-      params.require(:market).permit(:name, :people_count)
+      params.require(:market).permit(:name, :people_count,
+				:evaluation_parameter, :initial_self_evaluation, :natural_recovery_rate)
     end
 end
