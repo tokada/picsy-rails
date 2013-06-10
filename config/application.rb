@@ -21,11 +21,5 @@ module PicsyRails
     config.i18n.default_locale = :ja
 
 		config.assets.initialize_on_precompile = false
-
-    # LESS
-    config.app_generators.stylesheet_engine :less
-    config.less.paths << "#{Rails.root}/lib/less/protractor/stylesheets"
-    config.less.compress = true
-    config.assets.compress = true
   end
 end
