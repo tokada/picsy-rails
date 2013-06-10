@@ -13,6 +13,9 @@
     <![endif]-->
 
 		<%= stylesheet_link_tag "application", :media => "all" %>
+		<% @themes.each do |theme| %>
+		<%= stylesheet_link_tag "bootswatch/#{theme}", :title => theme, :media => "all", :rel => "alternate stylesheet" %>
+		<% end %>
     <%= yield(:page_stylesheet) if content_for?(:page_stylesheet) %>
   </head>
   <body>

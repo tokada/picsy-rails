@@ -1,6 +1,6 @@
 PicsyRails::Application.routes.draw do
   root :to => 'home#index'
-  post "change_theme", :to => "home#change_theme"
+  get "change_theme", :to => "home#change_theme"
 
   resources :markets do
 		post :trade, on: :member
