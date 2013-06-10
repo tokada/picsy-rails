@@ -67,6 +67,7 @@ var select_theme = function(theme) {
 	var theme_enabled = false;
   $('link.theme').each(function(i) {
     if (this.id == "theme-"+theme) {
+      this.disabled = true; // chromeで切り替わらないバグ回避
       this.disabled = false;
 			theme_enabled = true;
     }
