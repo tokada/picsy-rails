@@ -10,7 +10,7 @@ namespace :config do
 '
     str.sub!('__CK__', ENV['CONSUMER_KEY'])
     str.sub!('__CS__', ENV['CONSUMER_SECRET'])
-    filename = 'config/test.yml.sample'
+    filename = ENV['FILENAME'] || 'config/omniauth.yml'
     File.open(filename, "w") {|f| f.puts str }
     puts "created #{filename} with your keys."
   end
