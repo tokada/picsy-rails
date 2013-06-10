@@ -77,4 +77,12 @@ PicsyRails::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
+
+  omniauth_config = YAML.load_file('./config/omniauth.yml')
+  Devise.setup do |config|
+    config.omniauth :twitter,
+                    omniauth_config["twitter"]["consumer_key"],
+                    omniauth_config["twitter"]["consumer_secret"],
+                    :display => 'popup'
+  end
 end
