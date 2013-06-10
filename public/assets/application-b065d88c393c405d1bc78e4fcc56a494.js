@@ -63,27 +63,13 @@ $("td.ev").each(function(d){
 
 // CSS切り替えとCookie保存
 var select_theme = function(theme) {
-	if (theme == null) return;
-	var theme_enabled = false;
-  $('link.theme').each(function(i) {
-    if (this.id == "theme-"+theme) {
-      this.disabled = false;
-			theme_enabled = true;
-    }
-    else {
-      this.disabled = true;
-    }
-  });
-	if (!theme_enabled) {
-		theme = "default";
-		$('link#theme-default')[0].disabled = false;
-	}
-	$("li.select-theme").removeClass("disabled");
-	$("li#select-theme-"+theme).addClass("disabled");
-	$.cookie('theme', theme, { expires: 30, path: '/' });
+	var css_href = $("#theme-"+theme).attr("href");
+  $('#theme').attr({ href: css_href });
+  $.cookie('theme', css_href, { expires: 30, path: '/' });
 };
 
-$(function(){
-  //select_theme($.cookie('theme'));
+$(document).ready(function(){
+	// CookieからCSSセット
+  $("#theme").attr({ href: $.cookie('theme') });
 });
 

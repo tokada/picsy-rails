@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
 			cerulean
 			cosmo
 			cyborg
+			default
 			flatly
 			journal
 			readable

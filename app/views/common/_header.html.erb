@@ -35,7 +35,7 @@
 
             <ul class="dropdown-menu">
 							<% @themes.each do |theme| %>
-								<li><%= link_to theme, { :controller => "home", :action => "change_theme", :theme => h(theme) }, :method => :post %></li>
+								<li class="select-theme<% if current_theme?(theme) %> disabled<% end %>" id="select-theme-<%= theme %>"><%= link_to_function theme, "select_theme('#{theme}')" %></li>
 							<% end %>
             </ul>
           </li>

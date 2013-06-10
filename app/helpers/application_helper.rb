@@ -6,4 +6,8 @@ module ApplicationHelper
     when :alert then "warning"
     end
   end
+
+  def current_theme?(theme)
+    (cookies[:theme].blank? and theme == "default") or theme == cookies[:theme]
+  end
 end
