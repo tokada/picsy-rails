@@ -12,13 +12,14 @@ group :development, :test do
 end
 
 #group :assets do
-	gem 'sass-rails', '~> 4.0.0.rc1'
+	gem 'sass-rails', :git => 'git://github.com/rails/sass-rails.git'
 	gem 'uglifier', '>= 1.3.0'
 	gem 'coffee-rails', '~> 4.0.0'
 #end
 gem 'jquery-rails'
 gem 'bootstrap-sass'
 gem 'bootswatch-rails'
+gem "font-awesome-rails"
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'

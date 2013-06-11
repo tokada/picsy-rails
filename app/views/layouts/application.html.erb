@@ -12,7 +12,6 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
     <![endif]-->
 
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet" />
     <% @themes.each do |theme| %>
 			<% if current_theme?(theme) %>
 				<%= stylesheet_link_tag "bootswatch/#{theme}", :title => theme,
@@ -22,6 +21,11 @@
 					:media => "all", :rel => "alternate stylesheet", :id => "theme-#{theme}", :class => "theme" %>
 			<% end %>
     <% end %>
+
+    <!--[if lt IE 8]>
+    <%= stylesheet_link_tag "font-awesome-ie7.min.css", media: "all" %>
+    <![endif]-->
+
     <%= yield(:page_stylesheet) if content_for?(:page_stylesheet) %>
   </head>
   <body>

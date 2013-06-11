@@ -1,7 +1,7 @@
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
-			<a class="brand" href="/">PICSY-Rails</a>
+      <a class="brand" href="/">PICSY-Rails</a>
       <div class="nav-collapse collapse navbar-responsive-collapse">
         <ul class="nav">
           <li><%= link_to "市場", :markets %></li>
@@ -14,7 +14,7 @@
               <%= image_tag current_user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
               <%= current_user.name %>
             <% else %>
-							<i class="icon-twitter icon-large"></i>
+              <i class="icon-twitter icon-large"></i>
             <% end %>
               <b class="caret"></b>
             </a>
@@ -29,14 +29,14 @@
           </li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="icon-cog icon-large"></i>
+              <i class="icon-cog icon-large"></i>
               <b class="caret"></b>
             </a>
 
             <ul class="dropdown-menu">
-							<% @themes.each do |theme| %>
-								<li class="select-theme<% if current_theme?(theme) %> disabled<% end %>" id="select-theme-<%= theme %>"><%= link_to_function theme, "select_theme('#{theme}')" %></li>
-							<% end %>
+              <% @themes.each do |theme| %>
+                <li class="select-theme<% if current_theme?(theme) %> disabled<% end %>" id="select-theme-<%= theme %>"><%= link_to_function theme, "select_theme('#{theme}')" %></li>
+              <% end %>
             </ul>
           </li>
         </ul>
