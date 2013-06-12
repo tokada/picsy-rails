@@ -125,6 +125,7 @@ ja:
         one: ! '%{model}にエラーが発生しました。'
         other: ! '%{model}に%{count}個のエラーが発生しました。'
   helpers:
+    actions: 操作
     select:
       prompt: 選択してください。
     submit:

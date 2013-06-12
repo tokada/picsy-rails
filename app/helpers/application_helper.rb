@@ -10,4 +10,8 @@ module ApplicationHelper
   def current_theme?(theme)
     (cookies[:theme].blank? and theme == "default") or theme == cookies[:theme]
   end
+
+  def twitter_url(twitter_id)
+    "https://twitter.com/#{twitter_id}"
+  end
 end

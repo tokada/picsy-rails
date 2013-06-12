@@ -4,12 +4,13 @@
 
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_market_path,
-            :class => 'btn btn-primary' %>
+            :class => 'btn btn-primary', :style => "margin:1em 0" %>
 
 <table class="table table-striped">
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:name) %></th>
+      <th><%= model_class.human_attribute_name(:user) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:last_trade_at) %></th>
       <th><%= model_class.human_attribute_name(:people_count) %></th>
@@ -22,12 +23,17 @@
     <% @markets.each do |market| %>
       <tr>
         <td><%= link_to market.name, market_path(market) %></td>
+        <td>
+          <%= image_tag market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
+          <%= link_to market.user.name, twitter_url(market.user.name), :target => :_blank %>
+        </td>
         <td><%=l market.created_at.to_date %></td>
         <td><%= market.human_last_trade_at %></td>
         <td><%= market.people.count %></td>
         <td><%= number_with_delimiter market.trades.count %></td>
         <td><%= number_with_delimiter market.evaluation_parameter %></td>
         <td>
+          <% if owner?(market) %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_market_path(market), :class => 'btn btn-mini' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
@@ -35,6 +41,7 @@
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-mini btn-danger' %>
+          <% end %>
         </td>
       </tr>
     <% end %>

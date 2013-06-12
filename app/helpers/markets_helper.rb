@@ -1,5 +1,5 @@
 module MarketsHelper
-	def owner?
-		current_user == @market.user
-	end
+  def owner?(market=@market)
+    market and user_signed_in? and current_user == market.user rescue false
+  end
 end

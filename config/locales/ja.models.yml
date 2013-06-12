@@ -7,6 +7,7 @@ ja:
       person: 個人
     attributes:
       market:
+        user: オーナー
         name: 市場の名前
         people_count: 参加人数
         trades_count: 取引回数
