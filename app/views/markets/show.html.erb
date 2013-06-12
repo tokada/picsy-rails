@@ -63,7 +63,8 @@
 
 	<%= form_for :market, :url => { :action => :natural_recovery },
 		:html => { :class => "input-append", :style => "margin:0;padding:0" } do %>
-		<%= text_field_tag :natural_recovery, "1", :class => "input-xlarge", :style => "width:100px",
+    <%= text_field_tag :natural_recovery_ratio_percent, "1",
+      :class => "input-xlarge", :style => "width:100px",
 			:type => "number", :min => "1", :max => "99", :required => "required" %>
 		<span class="add-on">%</span>
 		<button type="submit" class="btn btn-primary">自然回収</button>

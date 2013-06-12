@@ -13,7 +13,7 @@ class MarketsController < ApplicationController
   def show
 		@people = @market.people
     @matrix = @market.matrix_quantized
-    @contributions = @market.people.contributions_quantized
+    @contributions = @market.contributions_quantized
     @trades = @market.trades.order("id desc")
   end
 
@@ -78,22 +78,24 @@ class MarketsController < ApplicationController
 	# 取引
 	# POST /markets/1/trade
 	def trade
-		@amount = params[:amount].to_i / @market.evaluation_parameter.to_f
-		@person_from = Person.find(params["person-from"].to_i)
-		@person_to = Person.find(params["person-to"].to_i)
+		@amount_human = params[:amount].to_i
+		@amount = @amount_human / @market.evaluation_parameter.to_f
+		@person_from = @market.people.find(params["person-from"].to_i)
+		@person_to = @market.people.find(params["person-to"].to_i)
 		if @person_from.present? and @person_to.present? and @amount > 0.0
-			@person_from.pay(@person_to, @amount)
+			@market.trade(@person_from, @person_to, @amount)
+      redirect_to @market, :notice => "取引を実施しました。（#{@person_from.name} から #{@person_to.name} へ #{@amount_human}）"
+    else
+      redirect_to @market, :error => "パラメータが正常でないため、取引を実施しませんでした。"
 		end
-		redirect_to market_path(@market)
 	end
 
 	# 自然回収
 	# POST /markets/1/natural_recovery
 	def natural_recovery
-		n = params[:natural_recovery].to_i
-		n = nil if n == 0
-		if n > 0 and n < 100
-			@market.natural_recovery!(n / 100.0)
+    @market.natural_recovery_ratio_percent = params[:natural_recovery_ratio_percent]
+    if @market.valid?
+			@market.natural_recovery!
 		end
 		redirect_to market_path(@market)
 	end

@@ -1,11 +1,10 @@
-require 'matrix'
-require 'picsy'
-
 # 個人／Person
 #
 # 伝播投資貨幣を使用している個人。
 #
 class Person < ActiveRecord::Base
+  default_scope { order :id }
+
 	belongs_to :market
 
   # 個人は他の経済主体に評価を与える
