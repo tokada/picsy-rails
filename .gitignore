@@ -19,5 +19,3 @@
 /log/*.log
 /tmp
 
-/config/omniauth.yml
-

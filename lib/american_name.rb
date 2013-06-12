@@ -42,7 +42,7 @@ class AmericanName
 	end
 
 	def self.pick_even(n=1)
-		if n == 1
+		if n.to_i <= 1
 			pick
 		else
 			halfs = [n / 2, n - n / 2].shuffle!
