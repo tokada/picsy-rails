@@ -89,6 +89,9 @@ class Person < ActiveRecord::Base
 
 			# 全員のPICSY効果を更新する
 			self.class.update_picsy_effect!
+
+      # 市場の更新日を更新
+      self.market.touch(:last_trade_at)
 		end
   end
 

@@ -26,7 +26,7 @@ class MarketsController < ApplicationController
 		@market.people_count = 3
 		@market.evaluation_parameter = 100000
 		@market.initial_self_evaluation = 10000
-		@market.natural_recovery_rate = 1
+		@market.natural_recovery_ratio_percent = 1
   end
 
   # GET /markets/1/edit
@@ -38,6 +38,7 @@ class MarketsController < ApplicationController
   def create
     @market = Market.new(market_params)
 		@market.user = current_user
+    flash[:notice] = @market.natural_recovery_ratio_percent
 		
     respond_to do |format|
       if @market.save
@@ -106,6 +107,6 @@ class MarketsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def market_params
       params.require(:market).permit(:name, :people_count,
-				:evaluation_parameter, :initial_self_evaluation, :natural_recovery_rate)
+				:evaluation_parameter, :initial_self_evaluation, :natural_recovery_ratio_percent)
     end
 end

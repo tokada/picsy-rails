@@ -11,7 +11,7 @@ describe Market do
 			expect(@market.name).not_to be_nil
 			expect(@market.evaluation_parameter).to be(100000)
 			expect(@market.initial_self_evaluation).to be(20000)
-			expect(@market.natural_recovery_rate).to be(1)
+			expect(@market.natural_recovery_ratio).to be(1)
 		end
 
 		it "個人を作成すること" do

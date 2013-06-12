@@ -2,8 +2,8 @@
   <div class="control-group">
     <%= f.label 'オーナー', :class => 'control-label' %>
     <div class="controls">
-			<%= image_tag @market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
-			<%= @market.user.name %>
+      <%= image_tag @market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
+      <%= @market.user.name %>
     </div>
   </div>
   <div class="control-group">
@@ -15,36 +15,36 @@
   <div class="control-group">
     <%= f.label :people_count, :class => 'control-label' %>
     <div class="controls">
-			<%= f.text_field :people_count, :class => 'text_field input-small',
-				:style => "text-align:right",
-			 	:type => "number", :min => "3", :max => "99", :required => "required" %>
+      <%= f.text_field :people_count, :class => 'text_field input-small',
+        :style => "text-align:right",
+         :type => "number", :min => "3", :max => "99", :required => "required" %>
     </div>
   </div>
   <div class="control-group">
     <%= f.label :evaluation_parameter, :class => 'control-label' %>
     <div class="controls">
-			<%= f.text_field :evaluation_parameter, :class => 'text_field input-small',
-				:style => "text-align:right",
-			 	:type => "number", :min => "1", :max => "10000000", :required => "required" %>
-			<span class="help-inline">各行の評価値の合計1.0に掛ける数を設定します。</span>
+      <%= f.text_field :evaluation_parameter, :class => 'text_field input-small',
+        :style => "text-align:right",
+         :type => "number", :min => "1", :max => "10000000", :required => "required" %>
+      <span class="help-inline">各参加者が他の参加者に与える評価値の合計1.0に掛ける数を設定します。</span>
     </div>
   </div>
   <div class="control-group">
     <%= f.label :initial_self_evaluation, :class => 'control-label' %>
     <div class="controls">
-			<%= f.text_field :initial_self_evaluation, :class => 'text_field input-small',
-				:style => "text-align:right",
-			 	:type => "number", :min => "0", :max => "100000", :required => "required" %>
-			<span class="help-inline">「あげられるお金」の初期値を設定します。</span>
+      <%= f.text_field :initial_self_evaluation, :class => 'text_field input-small',
+        :style => "text-align:right",
+         :type => "number", :min => "0", :max => "100000", :required => "required" %>
+      <span class="help-inline">「あげられるお金」の初期値を設定します。</span>
     </div>
   </div>
   <div class="control-group input-append">
-    <%= f.label :natural_recovery_rate, :class => 'control-label' %>
+    <%= f.label :natural_recovery_ratio_percent, :class => 'control-label' %>
     <div class="controls">
-			<%= f.text_field :natural_recovery_rate, :class => 'text_field input-small',
-				:style => "text-align:right",
-			 	:type => "number", :min => "1", :max => "99", :required => "required" %>
-			<span class="add-on">%</span>
+      <%= f.text_field :natural_recovery_ratio_percent, :class => 'text_field input-small',
+        :style => "text-align:right",
+         :type => "number", :min => "1", :max => "99", :required => "required" %>
+      <span class="add-on">%</span>
     </div>
   </div>
   <div class="form-actions">

@@ -140,7 +140,7 @@ ja:
       cancel: キャンセル
       back: 戻る
     titles:
-      new: '新しい%{model}の作成'
+      new: '新しい%{model}をつくる'
   number:
     currency:
       format:

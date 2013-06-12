@@ -1,12 +1,18 @@
 ja:
   activerecord:
     models:
-      market: 市場
+      market:
+        one: 市場
+        other: 市場
       person: 個人
     attributes:
       market:
-        name: 名称
+        name: 市場の名前
         people_count: 参加人数
+        trades_count: 取引回数
         evaluation_parameter: 評価値の母数
         initial_self_evaluation: 予算制約の初期値
-        natural_recovery_rate: 自然回収率
+        natural_recovery_ratio: 自然回収率
+        natural_recovery_ratio_percent: 自然回収率
+        created_at: 作成日
+        last_trade_at: 直近の取引日
