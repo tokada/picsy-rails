@@ -140,6 +140,8 @@ ja:
       destroy: 削除
       cancel: キャンセル
       back: 戻る
+      open: 取引再開
+      close: 取引停止
     titles:
       new: '新しい%{model}をつくる'
   number:

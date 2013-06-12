@@ -53,18 +53,19 @@ ActiveRecord::Schema.define(version: 20130609090051) do
     t.datetime "last_trade_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "state",                         default: "opened"
   end
 
   create_table "people", force: true do |t|
     t.integer  "user_id"
     t.integer  "market_id"
     t.string   "name"
-    t.string   "state"
     t.float    "contribution",   default: 0.0
     t.float    "purchase_power", default: 0.0
     t.float    "picsy_effect",   default: 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "state",          default: "alive"
   end
 
   add_index "people", ["market_id"], name: "index_people_on_market_id", using: :btree

@@ -17,6 +17,8 @@ class CreateMarkets < ActiveRecord::Migration
       t.timestamp :last_natural_recovery_at
       t.timestamp :last_trade_at
       t.timestamps
+
+      t.string :state, :default => "opened"
     end
   end
 end

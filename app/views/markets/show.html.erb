@@ -28,6 +28,11 @@
   <% end %>
 </table>
 
+<% if @market.closed? %>
+<div class="well">
+  <p class="muted">市場は取引停止中です。取引を再開するには、オーナーに依頼してください。</p>
+</div>
+<% else %>
 <div class="well">
 	<%= form_for :market, :url => { :action => :trade } do %>
 		<div class="control-group error" style="display:inline">
@@ -70,6 +75,7 @@
 		<button type="submit" class="btn btn-primary">自然回収</button>
 	<% end %>
 </div>
+<% end %>
 
 <% if @trades.size > 0 %>
 <h2>取引履歴</h2>
@@ -108,13 +114,20 @@
 
 	<% if owner? %>
 	<span style="margin-left:1em">
-  <%= link_to t('.edit', :default => t("helpers.links.edit")),
-              edit_market_path(@market), :class => 'btn' %>
-  <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-              market_path(@market),
-              :method => 'delete',
-              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
-              :class => 'btn btn-danger' %>
+    <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                edit_market_path(@market), :class => 'btn' %>
+    <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                market_path(@market),
+                :method => 'delete',
+                :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                :class => 'btn btn-danger' %>
+    <% if @market.opened? %>
+      <%= link_to t('.close', :default => t("helpers.links.close")),
+        close_market_path(@market), :method => 'put', :class => 'btn btn-warning' %>
+    <% elsif @market.closed? %>
+      <%= link_to t('.open', :default => t("helpers.links.open")),
+        open_market_path(@market), :method => 'put', :class => 'btn btn-primary' %>
+    <% end %>
 	</span>
 <% end %>
 </div>

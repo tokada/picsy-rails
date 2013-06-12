@@ -1,6 +1,7 @@
 class MarketsController < ApplicationController
-	before_filter :authenticate_user!, :except => [:index, :show];
-  before_action :set_market, only: [:show, :edit, :update, :destroy, :trade, :natural_recovery]
+	before_action :authenticate_user!, except: [:index, :show];
+  before_action :set_market, only: [:show, :edit, :update, :destroy, :trade, :natural_recovery, :open, :close]
+	before_action :authenticate_owner, only: [:edit, :update, :destroy, :open, :close]
 
   # GET /markets
   # GET /markets.json
@@ -78,16 +79,20 @@ class MarketsController < ApplicationController
 	# 取引
 	# POST /markets/1/trade
 	def trade
-		@amount_human = params[:amount].to_i
-		@amount = @amount_human / @market.evaluation_parameter.to_f
-		@person_from = @market.people.find(params["person-from"].to_i)
-		@person_to = @market.people.find(params["person-to"].to_i)
-		if @person_from.present? and @person_to.present? and @amount > 0.0
-			@market.trade(@person_from, @person_to, @amount)
-      redirect_to @market, :notice => "取引を実施しました。（#{@person_from.name} から #{@person_to.name} へ #{@amount_human}）"
+    if @market.closed?
+      redirect_to @market, :error => "#{@market.name}は取引停止中です。"
     else
-      redirect_to @market, :error => "パラメータが正常でないため、取引を実施しませんでした。"
-		end
+      @amount_human = params[:amount].to_i
+      @amount = @amount_human / @market.evaluation_parameter.to_f
+      @person_from = @market.people.find(params["person-from"].to_i)
+      @person_to = @market.people.find(params["person-to"].to_i)
+      if @person_from.present? and @person_to.present? and @amount > 0.0
+        @market.trade(@person_from, @person_to, @amount)
+        redirect_to @market, :notice => "取引を実施しました。（#{@person_from.name} から #{@person_to.name} へ #{@amount_human}）"
+      else
+        redirect_to @market, :error => "パラメータが正常でないため、取引を実施しませんでした。"
+      end
+    end
 	end
 
 	# 自然回収
@@ -97,10 +102,36 @@ class MarketsController < ApplicationController
     if @market.valid?
 			@market.natural_recovery!
 		end
-		redirect_to market_path(@market)
+		redirect_to @market
 	end
 
+  # 市場をオープンする
+  def open
+    if @market.closed?
+      @market.open!
+      redirect_to @market, :notice => "市場を取引再開しました。"
+    else
+      redirect_to @market, :error => "市場はすでに取引を受け付けています。"
+    end
+  end
+
+  # 市場をクローズする
+  def close
+    if @market.opened?
+      @market.close!
+      redirect_to @market, :notice => "市場を取引停止しました。"
+    else
+      redirect_to @market, :error => "市場はすでに取引停止しています。"
+    end
+  end
+
   private
+    def authenticate_owner
+      if current_user != @market.user
+        redirect_to @market, :error => "オーナーにしか許可されていない操作です。"
+      end
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_market
       @market = Market.find(params[:id])

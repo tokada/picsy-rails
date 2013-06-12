@@ -3,8 +3,10 @@ PicsyRails::Application.routes.draw do
   get "change_theme", :to => "home#change_theme"
 
   resources :markets do
-		post :trade, on: :member
+		post :trade           , on: :member
 		post :natural_recovery, on: :member
+		put :open             , on: :member
+		put :close            , on: :member
 	end
   resources :people
   resources :evaluations

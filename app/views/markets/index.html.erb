@@ -10,28 +10,33 @@
   <thead>
     <tr>
       <th><%= model_class.human_attribute_name(:name) %></th>
-      <th><%= model_class.human_attribute_name(:user) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%= model_class.human_attribute_name(:last_trade_at) %></th>
       <th><%= model_class.human_attribute_name(:people_count) %></th>
       <th><%= model_class.human_attribute_name(:trades_count) %></th>
       <th><%= model_class.human_attribute_name(:evaluation_parameter) %></th>
+      <th><%= model_class.human_attribute_name(:user) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
   <tbody>
     <% @markets.each do |market| %>
       <tr>
-        <td><%= link_to market.name, market_path(market) %></td>
         <td>
-          <%= image_tag market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
-          <%= link_to market.user.name, twitter_url(market.user.name), :target => :_blank %>
+          <%= link_to market.name, market_path(market) %>
+          <% if market.closed? %>
+            <small class="muted">[取引停止中]</small>
+          <% end %>
         </td>
         <td><%=l market.created_at.to_date %></td>
         <td><%= market.human_last_trade_at %></td>
         <td><%= market.people.count %></td>
         <td><%= number_with_delimiter market.trades.count %></td>
         <td><%= number_with_delimiter market.evaluation_parameter %></td>
+        <td>
+          <%= image_tag market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
+          <%= link_to market.user.name, twitter_url(market.user.name), :target => :_blank %>
+        </td>
         <td>
           <% if owner?(market) %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

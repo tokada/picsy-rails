@@ -3,7 +3,7 @@
 # 経済主体Aと経済主体Bとの間で、商品と評価を交換すること。
 #
 class Trade < ActiveRecord::Base
-	belongs_to :market
+  belongs_to :market
 
   # 取引は商品を買う経済主体に属する
   belongs_to :buyable, :polymorphic => true
@@ -18,25 +18,25 @@ class Trade < ActiveRecord::Base
 
   # 取引は評価の伝播を記録する
   has_many :propagations, :dependent => :destroy do
-		def filled_list
-			proxy_association.owner.market.people.map do |person|
-				proxy_association.target.detect{|prop|
-					prop.evaluatable == person } || proxy_association.owner.propagations.new
-			end
-		end
-	end
+    def filled_list
+      proxy_association.owner.market.people.map do |person|
+        proxy_association.target.detect{|prop|
+          prop.evaluatable == person } || proxy_association.owner.propagations.new
+      end
+    end
+  end
 
-	before_save :insert_foreign_ids
+  before_save :insert_foreign_ids
 
-	def insert_foreign_ids
-		self.market = self.buyable.market
-	end
+  def insert_foreign_ids
+    self.market = self.buyable.market
+  end
 
   # 取引は一つの評価値をもつ
   attr_accessible :amount
 
-	def amount_quantized(n=nil)
-		n ||= (market.evaluation_parameter || 100000)
-		(amount * n).to_i
-	end
+  def amount_quantized(n=nil)
+    n ||= (market.evaluation_parameter || 100000)
+    (amount * n).to_i
+  end
 end

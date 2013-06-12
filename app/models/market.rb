@@ -9,6 +9,20 @@ require 'american_name'
 class Market < ActiveRecord::Base
   belongs_to :user
 
+  # 状態遷移
+  state_machine :state, :initial => :opened do
+    state :opened
+    state :closed
+
+    event :close! do
+      transition :opened => :closed
+    end
+
+    event :open! do
+      transition :closed => :opened
+    end
+  end
+
   # 市場は取引に参加する複数の個人を持つ
   has_many :people, :dependent => :destroy, :counter_cache => true do
 
