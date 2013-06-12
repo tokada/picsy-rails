@@ -5,7 +5,7 @@ class MarketsController < ApplicationController
   # GET /markets
   # GET /markets.json
   def index
-    @markets = Market.all
+    @markets = Market.all.order("updated_at desc")
   end
 
   # GET /markets/1
@@ -38,11 +38,11 @@ class MarketsController < ApplicationController
   def create
     @market = Market.new(market_params)
 		@market.user = current_user
-    flash[:notice] = @market.natural_recovery_ratio_percent
+    flash[:notice] = market_params
 		
     respond_to do |format|
       if @market.save
-        format.html { redirect_to @market, notice: 'Market was successfully created.' }
+        format.html { redirect_to @market, notice: '市場を作成しました。' }
         format.json { render action: 'show', status: :created, location: @market }
       else
         format.html { render action: 'new' }
@@ -56,7 +56,7 @@ class MarketsController < ApplicationController
   def update
     respond_to do |format|
       if @market.update(market_params)
-        format.html { redirect_to @market, notice: 'Market was successfully updated.' }
+        format.html { redirect_to @market, notice: '市場の設定を更新しました。' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

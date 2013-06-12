@@ -67,9 +67,9 @@ class Person < ActiveRecord::Base
 			e_bb.save
 
 			# 全員の貢献度を更新する
-			old_contributions = Vector.elements(self.class.contributions)
+			old_contributions = Vector.elements(market.people.contributions)
 			self.class.update_contributions!
-			new_contributions = Vector.elements(self.class.contributions)
+			new_contributions = Vector.elements(market.people.contributions)
 			diff = new_contributions - old_contributions
 
 			# 貢献度の変化を伝播として記録する
@@ -125,69 +125,6 @@ class Person < ActiveRecord::Base
   # ゲーム用に自己評価値を整数化したもの
   def self_evaluation_quantized(n=100000)
 		(self_evaluation * n).to_i
-  end
-
-  # PersonのID一覧と順番のハッシュ
-  def self.id_seq
-    pluck(:id).each.with_index.inject({}) do |h, (person_id, i)|
-      h[person_id] = i
-      h
-    end
-  end
-
-  # 初期評価行列を生成する
-  def self.initialize_matrix
-    size = count
-    v = (1.0 / (size - 1))
-    # 対角要素（自己評価）は0.0、非対角要素は1.0を自己を除く評価対象数で配分したものとする
-    Matrix.build(size) {|r, c| r == c ? 0.0 : v }
-  end
-
-  # 初期評価行列を生成し、永続化する
-  def self.initialize_matrix!(matrix = initialize_matrix)
-    Evaluation.delete_all
-    all.each.with_index do |buyer, i|
-      all.each.with_index do |seller, j|
-        buyer.evaluate!(seller, matrix[i, j])
-      end
-    end
-    update_contributions!
-    matrix
-  end
-
-  # 貢献度の配列
-  def self.contributions
-    pluck(:contribution)
-  end
-
-  # 貢献度をゲーム用に整数化したもの
-  def self.contributions_quantized(n=nil)
-		n ||= (market.evaluation_parameter || 100000)
-		contributions.map{|c| (c * n).to_i }
-  end
-
-  # 貢献度のハッシュ
-  # { Person#id => Float, ... } のハッシュで返す
-  def self.contributions_hash
-    cs = contributions
-    pluck(:id).each.with_index.inject({}) do |h, (person_id, i)|
-      h[person_id] = cs[i]
-      h
-    end
-  end
-
-  def self.calculate_contributions(matrix=nil)
-    matrix ||= Evaluation.person_matrix
-    Picsy.calculate_contribution_by_markov(matrix)
-  end
-
-  # 貢献度をマルコフ過程によって更新する
-  def self.update_contributions!(matrix=nil)
-    contributions = calculate_contributions(matrix)
-    all.each.with_index do |person, i|
-      person.update_attribute(:contribution, contributions[i])
-    end
-    contributions
   end
 
 	# PICSY効果

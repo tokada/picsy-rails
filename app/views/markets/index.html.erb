@@ -15,8 +15,6 @@
       <th><%= model_class.human_attribute_name(:people_count) %></th>
       <th><%= model_class.human_attribute_name(:trades_count) %></th>
       <th><%= model_class.human_attribute_name(:evaluation_parameter) %></th>
-      <th><%= model_class.human_attribute_name(:initial_self_evaluation) %></th>
-      <th><%= model_class.human_attribute_name(:natural_recovery_ratio) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -25,12 +23,10 @@
       <tr>
         <td><%= link_to market.name, market_path(market) %></td>
         <td><%=l market.created_at.to_date %></td>
-        <td><%=l market.last_trade_at.to_date %></td>
+        <td><%= market.human_last_trade_at %></td>
         <td><%= market.people.count %></td>
-        <td><%= market.trades.count %></td>
-        <td><%= market.evaluation_parameter %></td>
-        <td><%= market.initial_self_evaluation %></td>
-        <td><%= market.natural_recovery_ratio.percentage %></td>
+        <td><%= number_with_delimiter market.trades.count %></td>
+        <td><%= number_with_delimiter market.evaluation_parameter %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_market_path(market), :class => 'btn btn-mini' %>
