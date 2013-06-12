@@ -170,4 +170,59 @@ class Market < ActiveRecord::Base
   def human_last_trade_at
     last_trade_at.nil? ? '' : last_trade_at.to_date
   end
+
+  # 評価を与える取引を行う（支払う）
+  def trade(buyer, seller, amount)
+		transaction do
+			trade = trades.create(:buyable => buyer, :sellable => seller, :amount => amount)
+
+			# 買い手から売り手への評価値を上げる
+			e_bs = evaluations.where(:buyable => buyer, :sellable => seller).first_or_initialize
+			e_bs.amount += amount
+			e_bs.save
+
+			# 買い手の自己評価値を下げる
+			e_bb = evaluations.where(:buyable => buyer, :sellable => buyer).first_or_initialize
+			e_bb.amount -= amount
+			e_bb.save
+
+			# 全員の貢献度を更新する
+			old_contributions = Vector.elements(contributions)
+			update_contributions!
+			new_contributions = Vector.elements(contributions)
+			diff = new_contributions - old_contributions
+
+			# 貢献度の変化を伝播として記録する
+			diff.each.with_index do |amount, i|
+				next if amount == 0.0
+				prop = trade.propagations.build(:evaluatable => people[i], :amount => amount)
+				if prop.evaluatable == buyer
+					prop.category = "spence"
+				elsif prop.evaluatable == seller
+					prop.category = "earn"
+				else
+					prop.category = "effect"
+				end
+				prop.save
+			end
+
+			# 全員のPICSY効果を更新する
+			update_picsy_effect!
+
+      # 市場の更新日を更新
+      touch(:last_trade_at)
+		end
+  end
+
+  # 全員のPICSY効果を更新する
+  def update_picsy_effect!
+    effects = {}
+    propagations.effect.each do |prop|
+      effects[prop.evaluatable_id] ||= 0.0
+      effects[prop.evaluatable_id] += prop.amount
+    end
+    effects.each_pair do |person_id, effect|
+      Person.find(person_id).update_attribute(:picsy_effect, effect)
+    end
+  end
 end

@@ -165,5 +165,36 @@ describe Market do
       end
     end
 
+    describe "\#trade(buyer, seller, amount)" do
+      context "「なめ敵」図4.4のシナリオの場合" do
+        before do
+          @market.initialize_matrix!(0.0, @n44matrix)
+          @market.trade(@market.people[3], @market.people[0], 0.1)
+          @contributions = @market.contributions
+          @trade1 = @market.people[3].given_trades.first
+        end
+
+        it "全員の貢献度が変化すること" do
+          @n44expected_2.each.with_index do |expected, i|
+            expect(@contributions[i]).to be_within(@delta).of(expected)
+          end
+        end
+
+        it "購入者=4、販売者=1、取引額0.1の取引履歴が記録されること" do
+          expect(@market.people[3].given_trades.count).to eq(1)
+          expect(@trade1.buyable).to eq(@market.people[3])
+          expect(@trade1.sellable).to eq(@market.people[0])
+          expect(@trade1.amount).to eq(0.1)
+        end
+
+        it "貢献度の伝播履歴が記録されること" do
+          expect(@trade1.propagations.count).to eq(5)
+          @trade1.propagations.pluck(:amount).reverse.each.with_index do |actual, i|
+            expect(actual).to be_within(@delta).of(@n44expected_diff[i])
+          end
+        end
+      end
+    end
+
   end # of describe '市場がひとつの場合' do
 end

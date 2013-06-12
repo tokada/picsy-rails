@@ -53,51 +53,12 @@ class Person < ActiveRecord::Base
 
   # 評価を与える取引を行う（支払う）
   def pay(seller, amount)
-		transaction do
-			trade = given_trades.create(:sellable => seller, :amount => amount)
-
-			# 売り手の評価値を上げる
-			e_bs = given_evaluations.where(:buyable => self, :sellable => seller).first_or_initialize
-			e_bs.amount += amount
-			e_bs.save
-
-			# 買い手（自分）の評価値を下げる
-			e_bb = given_evaluations.where(:buyable => self, :sellable => self).first_or_initialize
-			e_bb.amount -= amount
-			e_bb.save
-
-			# 全員の貢献度を更新する
-			old_contributions = Vector.elements(market.people.contributions)
-			self.class.update_contributions!
-			new_contributions = Vector.elements(market.people.contributions)
-			diff = new_contributions - old_contributions
-
-			# 貢献度の変化を伝播として記録する
-			people_list = self.class.all
-			diff.each.with_index do |amount, i|
-				next if amount == 0.0
-				prop = trade.propagations.build(:evaluatable => people_list[i], :amount => amount)
-				if prop.evaluatable == self
-					prop.category = "spence"
-				elsif prop.evaluatable == seller
-					prop.category = "earn"
-				else
-					prop.category = "effect"
-				end
-				prop.save
-			end
-
-			# 全員のPICSY効果を更新する
-			self.class.update_picsy_effect!
-
-      # 市場の更新日を更新
-      self.market.touch(:last_trade_at)
-		end
+    market.trade(self, seller, amount)
   end
 
   # 評価を得る取引を行う（稼ぐ）
   def earn(buyer, amount)
-    buyer.pay(self, amount)
+    market.trade(buyer, self, amount)
   end
 
   # 他の経済主体に評価を与える
@@ -136,18 +97,6 @@ class Person < ActiveRecord::Base
 	def update_picsy_effect!
 		effect = propagations.effect.pluck(:amount).sum
 		update_attribute(:picsy_effect, effect)
-	end
-
-	# 全員のPICSY効果を更新する
-	def self.update_picsy_effect!
-		effects = {}
-		Propagation.effect.each do |prop|
-			effects[prop.evaluatable_id] ||= 0.0
-			effects[prop.evaluatable_id] += prop.amount
-		end
-		effects.each_pair do |person_id, effect|
-			Person.find(person_id).update_attribute(:picsy_effect, effect)
-		end
 	end
 
 end
