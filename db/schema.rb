@@ -24,9 +24,9 @@ ActiveRecord::Schema.define(version: 20130609090051) do
     t.datetime "updated_at"
   end
 
-  add_index "evaluations", ["buyable_id", "buyable_type"], name: "index_evaluations_on_buyable_id_and_buyable_type"
-  add_index "evaluations", ["market_id"], name: "index_evaluations_on_market_id"
-  add_index "evaluations", ["sellable_id", "sellable_type"], name: "index_evaluations_on_sellable_id_and_sellable_type"
+  add_index "evaluations", ["buyable_id", "buyable_type"], name: "index_evaluations_on_buyable_id_and_buyable_type", using: :btree
+  add_index "evaluations", ["market_id"], name: "index_evaluations_on_market_id", using: :btree
+  add_index "evaluations", ["sellable_id", "sellable_type"], name: "index_evaluations_on_sellable_id_and_sellable_type", using: :btree
 
   create_table "items", force: true do |t|
     t.integer  "sellable_id"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20130609090051) do
     t.datetime "updated_at"
   end
 
-  add_index "items", ["sellable_id", "sellable_type"], name: "index_items_on_sellable_id_and_sellable_type"
+  add_index "items", ["sellable_id", "sellable_type"], name: "index_items_on_sellable_id_and_sellable_type", using: :btree
 
   create_table "markets", force: true do |t|
     t.integer  "user_id"
@@ -65,8 +65,8 @@ ActiveRecord::Schema.define(version: 20130609090051) do
     t.datetime "updated_at"
   end
 
-  add_index "people", ["market_id"], name: "index_people_on_market_id"
-  add_index "people", ["user_id"], name: "index_people_on_user_id"
+  add_index "people", ["market_id"], name: "index_people_on_market_id", using: :btree
+  add_index "people", ["user_id"], name: "index_people_on_user_id", using: :btree
 
   create_table "propagations", force: true do |t|
     t.integer  "market_id"
@@ -79,9 +79,9 @@ ActiveRecord::Schema.define(version: 20130609090051) do
     t.datetime "updated_at"
   end
 
-  add_index "propagations", ["evaluatable_id", "evaluatable_type"], name: "index_propagations_on_evaluatable_id_and_evaluatable_type"
-  add_index "propagations", ["market_id"], name: "index_propagations_on_market_id"
-  add_index "propagations", ["trade_id"], name: "index_propagations_on_trade_id"
+  add_index "propagations", ["evaluatable_id", "evaluatable_type"], name: "index_propagations_on_evaluatable_id_and_evaluatable_type", using: :btree
+  add_index "propagations", ["market_id"], name: "index_propagations_on_market_id", using: :btree
+  add_index "propagations", ["trade_id"], name: "index_propagations_on_trade_id", using: :btree
 
   create_table "trades", force: true do |t|
     t.integer  "market_id"
@@ -95,10 +95,10 @@ ActiveRecord::Schema.define(version: 20130609090051) do
     t.datetime "updated_at"
   end
 
-  add_index "trades", ["buyable_id", "buyable_type"], name: "index_trades_on_buyable_id_and_buyable_type"
-  add_index "trades", ["item_id"], name: "index_trades_on_item_id"
-  add_index "trades", ["market_id"], name: "index_trades_on_market_id"
-  add_index "trades", ["sellable_id", "sellable_type"], name: "index_trades_on_sellable_id_and_sellable_type"
+  add_index "trades", ["buyable_id", "buyable_type"], name: "index_trades_on_buyable_id_and_buyable_type", using: :btree
+  add_index "trades", ["item_id"], name: "index_trades_on_item_id", using: :btree
+  add_index "trades", ["market_id"], name: "index_trades_on_market_id", using: :btree
+  add_index "trades", ["sellable_id", "sellable_type"], name: "index_trades_on_sellable_id_and_sellable_type", using: :btree
 
   create_table "users", force: true do |t|
     t.datetime "remember_created_at"
