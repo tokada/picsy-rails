@@ -170,6 +170,7 @@ describe Market do
         before do
           @market.initialize_matrix!(0.0, @n44matrix)
           @market.trade(@market.people[3], @market.people[0], 0.1)
+          #@market.people.reload
           @contributions = @market.contributions
           @trade1 = @market.people[3].given_trades.first
         end
