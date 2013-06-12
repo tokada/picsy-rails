@@ -28,7 +28,7 @@ class Evaluation < ActiveRecord::Base
 	before_save :insert_foreign_ids
 
 	def insert_foreign_ids
-		self.market = self.buyable.market
+		self.market = buyable_type.constantize.find(buyable_id).market
 	end
 
   # 評価行列を取得する
