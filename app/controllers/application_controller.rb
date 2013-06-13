@@ -8,6 +8,15 @@ class ApplicationController < ActionController::Base
 			amelia
 			cerulean
 			cosmo
+			default
+			flatly
+			slate
+		]
+
+		@themes_all = %w[
+			amelia
+			cerulean
+			cosmo
 			cyborg
 			default
 			flatly
