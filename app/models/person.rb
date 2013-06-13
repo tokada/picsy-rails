@@ -115,7 +115,7 @@ class Person < ActiveRecord::Base
 
   # @ではじまる場合にTwitter IDを取得する
   def update_twitter_name(current_user)
-    if name =~ /^\@([0-9a-z_]{1,15})/
+    if name =~ /^\@([0-9a-zA-Z_]{1,15})/
       tw_name = $1
       self.user = User.find_for_twitter_user(tw_name, current_user)
       save
