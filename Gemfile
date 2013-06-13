@@ -12,9 +12,9 @@ group :development, :test do
 end
 
 #group :assets do
-	gem 'sass-rails', :git => 'git://github.com/rails/sass-rails.git'
-	gem 'uglifier', '>= 1.3.0'
-	gem 'coffee-rails', '~> 4.0.0'
+  gem 'sass-rails', :git => 'git://github.com/rails/sass-rails.git'
+  gem 'uglifier', '>= 1.3.0'
+  gem 'coffee-rails', '~> 4.0.0'
 #end
 gem 'jquery-rails'
 gem 'bootstrap-sass'
