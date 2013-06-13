@@ -28,7 +28,7 @@
       <%= @contributions[i] %>
       <% if @last_propagations.present? and @last_propagations[i].amount.present? %>
         <!-- 直近取引の差分表示（貢献度） -->
-        <span class="<% if @last_propagations[i].spence? %>text-error<% elsif @last_propagations[i].earn? %>text-success<% else %>text-info<% end %>"><% if @last_propagations[i].amount_quantized %>(<%= @last_propagations[i].amount_quantized %>)<% end %></span>
+        <span class="<% if @last_propagations[i].spence? %>text-error<% elsif @last_propagations[i].earn? %>text-success<% else %>text-info<% end %>"><% if @last_propagations[i].amount_quantized.to_f != 0.0 %>(<%= @last_propagations[i].amount_quantized %>)<% end %></span>
       <% end %>
     </td>
     <!-- 予算制約 -->
