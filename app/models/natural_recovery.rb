@@ -36,6 +36,7 @@ class NaturalRecovery < ActiveRecord::Base
   def filled_quantized(n=nil)
     n ||= (market.evaluation_parameter || 100000)
     filled.map do |q|
+      q *= n
       q = (n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q))
       q == "0" ? "" : "+#{q}"
     end
