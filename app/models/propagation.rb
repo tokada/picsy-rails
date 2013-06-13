@@ -45,13 +45,14 @@ class Propagation < ActiveRecord::Base
 	# ゲーム用に整数化する
 	def amount_quantized(n=nil)
 		n ||= (market.evaluation_parameter || 100000)
-		a = (amount * n).to_i
-		if a == 0
-			""
-    elsif a < 0
-      a
+		q = amount * n
+    q = (n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q))
+    if q.to_i == 0
+      ""
+    elsif q.to_i > 0
+      "+#{q}"
     else
-			"+#{a}"
-		end
+      q
+    end
 	end
 end

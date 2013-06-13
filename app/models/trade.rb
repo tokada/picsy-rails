@@ -36,6 +36,7 @@ class Trade < ActiveRecord::Base
 
   def amount_quantized(n=nil)
     n ||= (market.evaluation_parameter || 100000)
-    (amount * n).to_i
+    q = amount * n
+    n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q)
   end
 end

@@ -118,7 +118,10 @@ class Market < ActiveRecord::Base
   # 貢献度をゲーム用に整数化したもの
   def contributions_quantized(n=nil)
     n = evaluation_parameter || 100000
-    contributions.map{|c| (c * n).to_i }
+    contributions.map{|c| 
+      q = c * n
+      n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q)
+    }
   end
 
   # 評価行列を取得する
@@ -162,7 +165,10 @@ class Market < ActiveRecord::Base
   def matrix_quantized(n=nil)
     n ||= (self.evaluation_parameter || 100000)
     Picsy.fix_matrix(matrix).to_a.map do |r|
-      r.map{|c| (c * n).to_i }
+      r.map{|c| 
+        q = c * n
+        n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q)
+      }
     end
   end
 

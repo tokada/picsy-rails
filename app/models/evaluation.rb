@@ -48,7 +48,10 @@ class Evaluation < ActiveRecord::Base
 	# 評価行列をゲーム用に整数化したもの
 	def self.person_matrix_quantized(n=100000)
     person_matrix.to_a.map do |r|
-      r.map{|c| (c * n).to_i - 1 }
+      r.map{|c|
+        q = c * n
+        n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q)
+      }
 		end
 	end
 

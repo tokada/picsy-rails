@@ -91,7 +91,8 @@
 			<div class="control-group" style="display:inline">
 				<span>
 					<%= text_field_tag :amount, "", :class => "input-small", :style => "text-align:right",
-						:type => "number", :min => "0", :max => "100000", :required => "required" %>
+            :type => ("number" if @market.evaluation_parameter <= 1),
+            :min => "0", :max => @market.evaluation_parameter, :required => "required" %>
 				</span>
 				<button type="submit" class="btn btn-primary">取引実行</button>
 			</div>
