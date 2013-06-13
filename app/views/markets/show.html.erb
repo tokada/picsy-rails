@@ -1,5 +1,6 @@
 <%- model_class = Market -%>
-<h1><%= @market.name %></h1>
+<%= content_tag :h1, @market.name, :class => ("rest-in-place" if owner?), :data => {
+    :url => market_path(@market), :object => "market", :attribute => "name" } %>
 
 <table class="table table-bordered selectable">
   <tr>
@@ -88,14 +89,10 @@
 		</div>
 
 		<div class="input-append" style="">
-			<div class="control-group" style="display:inline">
-				<span>
-					<%= text_field_tag :amount, "", :class => "input-small", :style => "text-align:right",
-            :type => ("number" if @market.evaluation_parameter > 1),
-            :min => "0", :max => @market.evaluation_parameter, :required => "required" %>
-				</span>
-				<button type="submit" class="btn btn-primary">取引実行</button>
-			</div>
+      <%= text_field_tag :amount, "", :class => "input-small", :style => "text-align:right",
+        :type => "number", :step => "any",
+        :min => "0", :max => @market.evaluation_parameter, :required => "required" %>
+      <button type="submit" class="btn btn-primary">取引実行</button>
 		</div>
 	<% end %>
 

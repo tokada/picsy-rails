@@ -68,16 +68,16 @@ get_person = (person_id, timeout) ->
     , timeout
 
 # rest-in-placeの編集開始時に名前だけの文字列に書き換える
-$('.rest-in-place').bind 'activate.rest-in-place', (event) ->
+$('.rest-in-place-person').bind 'activate.rest-in-place', (event) ->
   $(this).text($(this).data("name"))
 
 # rest-in-placeの編集キャンセル時にHTMLを再取得する
-$('.rest-in-place').bind 'abort.rest-in-place', (event) ->
+$('.rest-in-place-person').bind 'abort.rest-in-place', (event) ->
   if $(this).find("input").val().match("^@")
     get_person($(this).data("id"), 1)
 
 # rest-in-placeの更新後にHTMLを再取得する
-$('.rest-in-place').bind 'success.rest-in-place', (event, data) ->
+$('.rest-in-place-person').bind 'success.rest-in-place', (event, data) ->
   person_id = $(this).data("id")
   get_person(person_id, 1)
   $("option#person-from-p"+person_id).html(data.name)
