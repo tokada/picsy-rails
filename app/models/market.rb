@@ -40,7 +40,7 @@ class Market < ActiveRecord::Base
   has_many :propagations, :dependent => :destroy
   has_many :natural_recoveries, :dependent => :destroy
 
-  attr_accessible :name, :people_count,
+  attr_accessible :name, :description, :people_count,
     :evaluation_parameter, :initial_self_evaluation, :natural_recovery_ratio
 
   validates :name, :people_count, :evaluation_parameter, :initial_self_evaluation,
@@ -48,6 +48,8 @@ class Market < ActiveRecord::Base
 
   validates :natural_recovery_ratio_percent, :numericality => true
   validates :natural_recovery_ratio_percent, :inclusion => { :in => 1..99 }
+
+  validates :people_count, :inclusion => { :in => 2..99 }
 
   validate :ise_should_be_no_more_than_ep
 

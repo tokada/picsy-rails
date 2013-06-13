@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130613180523) do
+ActiveRecord::Schema.define(version: 20130613192302) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "market_id"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20130613180523) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "state",                         default: "opened"
+    t.string   "description"
   end
 
   create_table "natural_recoveries", force: true do |t|

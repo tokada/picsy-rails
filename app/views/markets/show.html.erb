@@ -2,6 +2,9 @@
 <%= content_tag :h1, @market.name, :class => ("rest-in-place" if owner?), :data => {
     :url => market_path(@market), :object => "market", :attribute => "name" } %>
 
+<%= content_tag :p, @market.description, :class => "lead"+(" rest-in-place" if owner?).to_s, :data => {
+    :url => market_path(@market), :object => "market", :attribute => "description" } %>
+
 <table class="table table-bordered selectable">
   <tr>
     <th>アクター</th>
@@ -25,7 +28,7 @@
       <%= @contributions[i] %>
       <% if @last_propagations.present? and @last_propagations[i].amount.present? %>
         <!-- 直近取引の差分表示（貢献度） -->
-        <span class="<% if @last_propagations[i].spence? %>text-error<% elsif @last_propagations[i].earn? %>text-success<% else %>text-info<% end %>">(<%= @last_propagations[i].amount_quantized %>)</span>
+        <span class="<% if @last_propagations[i].spence? %>text-error<% elsif @last_propagations[i].earn? %>text-success<% else %>text-info<% end %>"><% if @last_propagations[i].amount_quantized %>(<%= @last_propagations[i].amount_quantized %>)<% end %></span>
       <% end %>
     </td>
     <!-- 予算制約 -->

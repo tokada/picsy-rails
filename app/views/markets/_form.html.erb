@@ -13,11 +13,17 @@
     </div>
   </div>
   <div class="control-group">
+    <%= f.label :description, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :description, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
     <%= f.label :people_count, :class => 'control-label' %>
     <div class="controls">
       <%= f.text_field :people_count, :class => 'text_field input-small',
         :style => "text-align:right",
-         :type => "number", :min => "3", :max => "99", :required => "required" %>
+         :type => "number", :min => "2", :max => "99", :required => "required" %>
     </div>
   </div>
   <div class="control-group">
