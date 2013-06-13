@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130609090051) do
+ActiveRecord::Schema.define(version: 20130613094005) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "market_id"
@@ -117,6 +117,8 @@ ActiveRecord::Schema.define(version: 20130609090051) do
     t.string   "password"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "oauth_token"
+    t.string   "oauth_token_secret"
   end
 
 end

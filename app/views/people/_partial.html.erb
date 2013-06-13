@@ -1,0 +1,9 @@
+<% if person.user %>
+  <span class="rest-in-place" data-url-partial="<%= partial_person_path(person) %>" data-url="<%= person_path(person) %>" data-object="person" data-attribute="name" data-name="<%= person.name %>" data-id="<%= person.id %>">
+    <%= image_tag person.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
+    <%= person.user.name %>
+  </span>
+<% else %>
+  <%= content_tag :span, person.name, :class => "rest-in-place", :data => {
+    :url => person_path(person), :object => "person", :attribute => "name", :name => person.name, :id => person.id } %>
+<% end %>

@@ -44,13 +44,15 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 # Use debugger
 # gem 'debugger', group: [:development, :test]
 
+gem 'twitter'
+
 gem 'devise', :github => 'plataformatec/devise', :branch => 'rails4' # 認証
 gem 'protected_attributes'
 gem 'omniauth-twitter' # Twitter認証（Devise用）
 
 gem 'state_machine' # 状態遷移
 
-gem 'rest_in_place' # AJAX Inplace Editor
+#gem 'rest_in_place' # AJAX Inplace Editor
 
 group :development do
   gem 'rails-erd'

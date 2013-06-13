@@ -34,8 +34,11 @@
         <td><%= number_with_delimiter market.trades.count %></td>
         <td><%= number_with_delimiter market.evaluation_parameter %></td>
         <td>
+          <% if market.user.present? %>
           <%= image_tag market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
           <%= link_to market.user.name, twitter_url(market.user.name), :target => :_blank %>
+          <% end %>
+          &nbsp;
         </td>
         <td>
           <% if owner?(market) %>

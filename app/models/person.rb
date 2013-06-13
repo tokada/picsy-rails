@@ -7,6 +7,8 @@ class Person < ActiveRecord::Base
 
 	belongs_to :market
 
+	belongs_to :user
+
   # 個人は他の経済主体に評価を与える
   has_many :given_evaluations, :as => :buyable, :class_name => 'Evaluation', :dependent => :destroy
 
@@ -106,5 +108,14 @@ class Person < ActiveRecord::Base
 		effect = propagations.effect.pluck(:amount).sum
 		update_attribute(:picsy_effect, effect)
 	end
+
+  # @ではじまる場合にTwitter IDを取得する
+  def update_twitter_name(current_user)
+    if name =~ /^\@([0-9a-z_]{1,15})/
+      tw_name = $1
+      self.user = User.find_for_twitter_user(tw_name, current_user)
+      save
+    end
+  end
 
 end

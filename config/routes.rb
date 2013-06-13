@@ -8,7 +8,9 @@ PicsyRails::Application.routes.draw do
 		put :open             , on: :member
 		put :close            , on: :member
 	end
-  resources :people
+  resources :people do
+    get :partial, on: :member
+  end
   resources :evaluations
   resources :items
   resources :trades

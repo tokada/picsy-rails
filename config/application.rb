@@ -27,6 +27,11 @@ module PicsyRails
       config.omniauth :twitter, ENV['TWITTER_CONSUMER_KEY'], ENV['TWITTER_CONSUMER_SECRET'], :display => 'popup'
     end
 
+    Twitter.configure do |config|
+      config.consumer_key = ENV['TWITTER_CONSUMER_KEY']
+      config.consumer_secret = ENV['TWITTER_CONSUMER_SECRET']
+    end
+
     # prepile all assets
     config.assets.precompile << Proc.new do |path|
       if path =~ /\.(css|js)\z/

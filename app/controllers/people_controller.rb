@@ -1,5 +1,6 @@
 class PeopleController < ApplicationController
-  before_action :set_person, only: [:show, :edit, :update, :destroy]
+	before_action :authenticate_user!, except: [:index, :show];
+  before_action :set_person, only: [:show, :edit, :update, :destroy, :partial]
 
   # GET /people
   # GET /people.json
@@ -10,6 +11,10 @@ class PeopleController < ApplicationController
   # GET /people/1
   # GET /people/1.json
   def show
+  end
+
+  def partial
+    render :template => "people/_partial", :locals => { :person => @person }, :layout => false
   end
 
   # GET /people/new
@@ -24,10 +29,9 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.json
   def create
-    @person = Person.new(person_params)
-
     respond_to do |format|
       if @person.save
+        @person = Person.new(person_params)
         format.html { redirect_to @person, notice: 'Person was successfully created.' }
         format.json { render action: 'show', status: :created, location: @person }
       else
@@ -40,6 +44,9 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1
   # PATCH/PUT /people/1.json
   def update
+    # Twitter名の取得（@ではじまる場合）
+    @person.update_twitter_name(current_user)
+
     respond_to do |format|
       if @person.update(person_params)
         format.html { redirect_to @person, notice: 'Person was successfully updated.' }

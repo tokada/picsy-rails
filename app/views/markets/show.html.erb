@@ -8,15 +8,16 @@
     <th>予算制約</th>
     <th>PICSY効果</th>
     <% @people.each.with_index do |person, i| %>
-    <th id="to-p<%= person.id %>"><%= person.name %></th>
+      <th id="to-p<%= person.id %>">
+        <%= render :partial => "people/partial", :locals => { :person => person } %>
+      </th>
     <% end %>
   </tr>
   <% @matrix.each.with_index do |row, i| %>
   <tr>
     <!-- アクター -->
     <th id="from-p<%= @people[i].id %>">
-      <%= content_tag :span, @people[i].name, :class => "rest-in-place", :data => {
-        :url => person_path(@people[i]), :object => "person", :attribute => "name" } %>
+      <%= render :partial => "people/partial", :locals => { :person => @people[i] } %>
     </th>
     <!-- 貢献度 -->
     <td>
@@ -137,11 +138,13 @@
 <% end %>
 
 <div class="well form-actions text-right">
+  <% if @market.user.present? %>
 	<span>
 		オーナー
 		<%= image_tag @market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
 		<%= @market.user.name %>
 	</span>
+  <% end %>
 
 	<% if owner? %>
 	<span style="margin-left:1em">

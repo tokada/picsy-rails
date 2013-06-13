@@ -51,6 +51,34 @@ $("td.ev").each (d) ->
         $("#from-p" + $(this).data("r")).removeClass "btn-danger"
       $("#to-p" + $(this).data("c")).removeClass "btn-success"  unless saved.cell[1] is $(this).data("c")
 
+# アクターのHTMLを更新
+get_person = (person_id, timeout) ->
+  element1 = $("#from-p"+person_id+" .rest-in-place")
+  element2 = $("#to-p"+person_id+" .rest-in-place")
+  setTimeout ->
+    $.ajax(
+      url: element1.data("url-partial"),
+      type: "GET",
+      dataType: "html",
+      success: (data) ->
+        element1.html("").html(data)
+        element2.html("").html(data)
+    )
+  , timeout
+
+# rest-in-placeの編集開始時に名前だけの文字列に書き換える
+$('.rest-in-place').bind 'activate.rest-in-place', (event) ->
+  $(this).text($(this).data("name"))
+
+# rest-in-placeの編集キャンセル時にHTMLを再取得する
+$('.rest-in-place').bind 'abort.rest-in-place', (event) ->
+  if $(this).find("input").val().match("^@")
+    get_person($(this).data("id"), 1)
+
+# rest-in-placeの更新後にHTMLを再取得する
+$('.rest-in-place').bind 'success.rest-in-place', (event) ->
+  get_person($(this).data("id"), 2000)
+
 $ ->
   # CSS切り替えとCookie保存
   $("a[data-select-theme]").click ->
