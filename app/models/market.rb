@@ -38,6 +38,7 @@ class Market < ActiveRecord::Base
   has_many :evaluations, :dependent => :destroy
   has_many :trades, :dependent => :destroy, :counter_cache => true
   has_many :propagations, :dependent => :destroy
+  has_many :natural_recoveries, :dependent => :destroy
 
   attr_accessible :name, :people_count,
     :evaluation_parameter, :initial_self_evaluation, :natural_recovery_ratio
@@ -185,19 +186,23 @@ class Market < ActiveRecord::Base
     nr_ratio ||= natural_recovery_ratio
     return if nr_ratio.zero?
     transaction do
+      nr_history = natural_recoveries.build(:ratio => nr_ratio)
       evaluations.for_person.each do |ev|
         # 全評価から一定率を徴収
-        ev.amount = (1 - nr_ratio) * ev.amount
+        ev.amount *= (1 - nr_ratio)
         if ev.buyable == ev.sellable
           # 自己評価に自然回収率を上乗せ
-          ev.amount = ev.amount + nr_ratio * (1 - ev.amount)
+          additions = nr_ratio * (1 - ev.amount)
+          nr_history.add(ev.buyable, additions)
+          ev.amount += additions
         end
         ev.save
       end
       if nr_ratio != natural_recovery_ratio
         self.natural_recovery_ratio = nr_ratio
       end
-      self.last_natural_recovery_at = Time.now
+      nr_history.save
+      self.last_natural_recovery_at = nr_history.created_at
       save
     end
   end
@@ -264,5 +269,10 @@ class Market < ActiveRecord::Base
   # 前回の貢献度の増減
   def last_propagations
     trades.order("id desc").first.filled_propagations if trades.present?
+  end
+
+  # 履歴情報（自然回収歴、取引履歴）を並べたリスト
+  def nr_or_trades
+    (trades + natural_recoveries).sort{|a,b| b.created_at <=> a.created_at }
   end
 end

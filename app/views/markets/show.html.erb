@@ -118,19 +118,34 @@
     <th><%= person.name %></th>
     <% end %>
   </tr>
-  <% @trades.each do |trade| %>
-  <tr>
-    <th>#<%= trade.id %></th>
-    <td><%= trade.buyable.name %> &rarr; <%= trade.sellable.name %></td>
-    <td><%= trade.amount_quantized %></td>
-    <% trade.filled_propagations.each do |prop| %>
-			<% if prop.amount.nil? %>
-				<td>&nbsp;</td>
-			<% else %>
-				<td class="<% if prop.spence? %>text-error<% elsif prop.earn? %>text-success<% else %>text-info<% end %>"><%= prop.amount_quantized %></td>
-			<% end %>
+  <% @nr_or_trades.each.with_index do |trade, i| %>
+    <% if trade.is_a?(Trade) %>
+    <tr>
+      <th>#<%= @nr_or_trades.size - i %></th>
+      <td><%= trade.buyable.name %> &rarr; <%= trade.sellable.name %></td>
+      <td><%= trade.amount_quantized %></td>
+      <% trade.filled_propagations.each do |prop| %>
+        <% if prop.amount.nil? %>
+          <td>&nbsp;</td>
+        <% else %>
+          <td class="<% if prop.spence? %>text-error<% elsif prop.earn? %>text-success<% else %>text-info<% end %>"><%= prop.amount_quantized %></td>
+        <% end %>
+      <% end %>
+    </tr>
+    <% elsif trade.is_a?(NaturalRecovery) %>
+    <tr>
+      <th>#<%= @nr_or_trades.size - i %></th>
+      <td>自然回収</td>
+      <td><%= trade.ratio_percent %></td>
+      <% trade.filled_quantized.each do |value| %>
+        <% if value.nil? %>
+          <td>&nbsp;</td>
+        <% else %>
+          <td class="text-success"><%= value %></td>
+        <% end %>
+      <% end %>
+    </tr>
     <% end %>
-  </tr>
   <% end %>
 </table>
 <% end %>

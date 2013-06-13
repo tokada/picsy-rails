@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130613165859) do
+ActiveRecord::Schema.define(version: 20130613180523) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "market_id"
@@ -55,6 +55,16 @@ ActiveRecord::Schema.define(version: 20130613165859) do
     t.datetime "updated_at"
     t.string   "state",                         default: "opened"
   end
+
+  create_table "natural_recoveries", force: true do |t|
+    t.integer  "market_id",  null: false
+    t.float    "ratio",      null: false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "natural_recoveries", ["market_id"], name: "index_natural_recoveries_on_market_id", using: :btree
 
   create_table "people", force: true do |t|
     t.integer  "user_id"
