@@ -48,8 +48,10 @@ class Propagation < ActiveRecord::Base
 		a = (amount * n).to_i
 		if a == 0
 			""
-		else
-			a.to_s
+    elsif a < 0
+      a
+    else
+			"+#{a}"
 		end
 	end
 end

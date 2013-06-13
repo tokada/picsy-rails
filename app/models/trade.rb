@@ -17,16 +17,15 @@ class Trade < ActiveRecord::Base
   belongs_to :item
 
   # 取引は評価の伝播を記録する
-  has_many :propagations, :dependent => :destroy do
-    def filled_list
-      proxy_association.owner.market.people.map do |person|
-        proxy_association.target.detect{|prop|
-          prop.evaluatable == person } || proxy_association.owner.propagations.new
-      end
-    end
-  end
+  has_many :propagations, :dependent => :destroy
 
   before_save :insert_foreign_ids
+
+  def filled_propagations
+    market.people.map do |person|
+      propagations.detect{|prop| prop.evaluatable == person } || propagations.new
+    end
+  end
 
   def insert_foreign_ids
     self.market = self.buyable.market

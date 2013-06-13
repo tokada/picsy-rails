@@ -239,4 +239,9 @@ class Market < ActiveRecord::Base
       Person.find(person_id).update_attribute(:picsy_effect, effect)
     end
   end
+
+  # 前回の貢献度の増減
+  def last_propagations
+    trades.order("id desc").first.filled_propagations if trades.present?
+  end
 end

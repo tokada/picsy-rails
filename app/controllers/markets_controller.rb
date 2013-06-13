@@ -16,6 +16,8 @@ class MarketsController < ApplicationController
     @matrix = @market.matrix_quantized
     @contributions = @market.contributions_quantized
     @trades = @market.trades.order("id desc")
+    @last_trade = @trades.first
+    @last_propagations = @market.last_propagations
   end
 
   # GET /markets/new

@@ -14,14 +14,32 @@
   <% @matrix.each.with_index do |row, i| %>
   <tr>
     <th id="from-p<%= @people[i].id %>"><%= @people[i].name %></th>
-    <td><%= @contributions[i] %></td>
-		<td id="self-p<%= @people[i].id %>"><%= @people[i].self_evaluation_quantized %></td>
+    <td>
+      <%= @contributions[i] %>
+      <% if @last_propagations.present? and @last_propagations[i].amount.present? %>
+        <!-- 直近取引の差分表示 -->
+        <span class="<% if @last_propagations[i].spence? %>text-error<% elsif @last_propagations[i].earn? %>text-success<% else %>text-info<% end %>">(<%= @last_propagations[i].amount_quantized %>)</span>
+      <% end %>
+    </td>
+    <td id="self-p<%= @people[i].id %>">
+      <%= @people[i].self_evaluation_quantized %>
+      <% if @last_trade and @people[i] == @last_trade.buyable %>
+        <!-- 直近取引の差分表示 -->
+        <span class="text-error">(-<%= @last_trade.amount_quantized %>)</span>
+      <% end %>
+    </td>
 		<td class="<% if @people[i].picsy_effect_quantized > 0 %>text-info<% end %>"><%= @people[i].picsy_effect_quantized %></td>
     <% row.each.with_index do |col, j| %>
 			<% if i == j %>
 				<td>-</td>
 			<% else %>
-				<td class="ev" id="ev-p<%= @people[i].id %>-p<%= @people[j].id %>"><%= col %></td>
+        <td class="ev" id="ev-p<%= @people[i].id %>-p<%= @people[j].id %>">
+          <%= col %>
+          <% if @last_trade and @people[i] == @last_trade.buyable and @people[j] == @last_trade.sellable %>
+            <!-- 直近取引の差分表示 -->
+            <span class="text-success">(+<%= @last_trade.amount_quantized %>)</span>
+          <% end %>
+        </td>
 			<% end %>
     <% end %>
   </tr>
@@ -93,7 +111,7 @@
     <th>#<%= trade.id %></th>
     <td><%= trade.buyable.name %> &rarr; <%= trade.sellable.name %></td>
     <td><%= trade.amount_quantized %></td>
-    <% trade.propagations(true).filled_list.each do |prop| %>
+    <% trade.filled_propagations.each do |prop| %>
 			<% if prop.amount.nil? %>
 				<td>&nbsp;</td>
 			<% else %>
