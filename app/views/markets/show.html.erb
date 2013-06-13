@@ -69,8 +69,10 @@
   <p class="muted">市場は取引停止中です。取引を再開するには、オーナーに依頼してください。</p>
 </div>
 <% else %>
-<div class="well">
-	<%= form_for :market, :url => { :action => :trade } do %>
+<div class="well" style="overflow:hidden">
+  <div style="float:left">
+	<%= form_for :market, :url => { :action => :trade },
+		:html => { :style => "margin:0;padding:0" } do %>
 		<div class="control-group error" style="display:inline">
 			<select name="person-from" id="person-from" class="input-medium" required>
 				<option></option>
@@ -98,7 +100,9 @@
       <button type="submit" class="btn btn-primary">取引実行</button>
 		</div>
 	<% end %>
+  </div>
 
+  <div style="float:right">
 	<%= form_for :market, :url => { :action => :natural_recovery },
 		:html => { :class => "input-append", :style => "margin:0;padding:0" } do %>
     <%= text_field_tag :natural_recovery_ratio_percent, "1",
@@ -107,6 +111,7 @@
 		<span class="add-on">%</span>
 		<button type="submit" class="btn btn-primary">自然回収</button>
 	<% end %>
+  </div>
 </div>
 <% end %>
 
