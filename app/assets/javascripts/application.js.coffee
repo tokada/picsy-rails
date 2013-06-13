@@ -32,7 +32,7 @@ $("td.ev").each (d) ->
         $("#person-from").val saved.cell[0]
         $("#person-to").val saved.cell[1]
         # 取引値をセットする（予算制約の10分の1）
-        $("#amount").val ~~(parseInt($("#self-p" + saved.cell[0]).text()) / 10)
+        $("#amount").val ~~(parseFloat($("#self-p" + saved.cell[0]).text()) / 10)
   ).hover (->
     # 評価行列の評価値セルマウスオーバー時
     if $(this).data("c") > 0 and $(this).data("c") isnt $(this).data("r")

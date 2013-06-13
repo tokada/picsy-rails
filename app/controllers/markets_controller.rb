@@ -41,7 +41,6 @@ class MarketsController < ApplicationController
   def create
     @market = Market.new(market_params)
 		@market.user = current_user
-    flash[:notice] = market_params
 		
     respond_to do |format|
       if @market.save
@@ -84,7 +83,7 @@ class MarketsController < ApplicationController
     if @market.closed?
       redirect_to @market, :error => "#{@market.name}は取引停止中です。"
     else
-      @amount_human = params[:amount].to_i
+      @amount_human = params[:amount].to_f
       @amount = @amount_human / @market.evaluation_parameter.to_f
       @person_from = @market.people.find(params["person-from"].to_i)
       @person_to = @market.people.find(params["person-to"].to_i)

@@ -46,7 +46,8 @@ class Evaluation < ActiveRecord::Base
   end
 
 	# 評価行列をゲーム用に整数化したもの
-	def self.person_matrix_quantized(n=100000)
+	def self.person_matrix_quantized(n=nil)
+    n ||= (market.evaluation_parameter || 100000)
     person_matrix.to_a.map do |r|
       r.map{|c|
         q = c * n

@@ -87,18 +87,20 @@ class Person < ActiveRecord::Base
   end
 
   # ゲーム用に自己評価値を整数化したもの
-  def self_evaluation_quantized(n=100000)
+  def self_evaluation_quantized(n=nil)
+    n ||= (market.evaluation_parameter || 100000)
 		q = self_evaluation * n
     n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q)
   end
 
 	# PICSY効果
-	def picsy_effect_quantized(n=100000)
+	def picsy_effect_quantized(n=nil)
+    n ||= (market.evaluation_parameter || 100000)
 		q = picsy_effect.to_f * n
     q = (n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q))
-    if q.to_i == 0
+    if q.to_f == 0.0
       ""
-    elsif q.to_i > 0
+    elsif q.to_f > 0.0
       "+#{q}"
     else
       q

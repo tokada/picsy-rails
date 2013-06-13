@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130613094005) do
+ActiveRecord::Schema.define(version: 20130613165859) do
 
   create_table "evaluations", force: true do |t|
     t.integer  "market_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20130613094005) do
     t.integer  "trades_count"
     t.string   "system",                        default: "PICSY"
     t.integer  "evaluation_parameter"
-    t.integer  "initial_self_evaluation"
+    t.float    "initial_self_evaluation",       default: 0.0
     t.float    "natural_recovery_ratio"
     t.integer  "natural_recovery_interval_sec"
     t.datetime "last_natural_recovery_at"

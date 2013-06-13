@@ -26,15 +26,14 @@
       <%= f.text_field :evaluation_parameter, :class => 'text_field input-small',
         :style => "text-align:right",
          :type => "number", :min => "1", :max => "10000000", :required => "required" %>
-      <span class="help-inline">各参加者が他の参加者に与える評価値の合計1.0に掛ける数を設定します。</span>
+      <span class="help-inline">各参加者がもつ評価値の合計数を設定します。</span>
     </div>
   </div>
   <div class="control-group">
     <%= f.label :initial_self_evaluation, :class => 'control-label' %>
     <div class="controls">
       <%= f.text_field :initial_self_evaluation, :class => 'text_field input-small',
-        :style => "text-align:right",
-         :type => "number", :min => "0", :max => "100000", :required => "required" %>
+        :style => "text-align:right", :required => "required" %>
       <span class="help-inline">「あげられるお金」の初期値を設定します。</span>
     </div>
   </div>

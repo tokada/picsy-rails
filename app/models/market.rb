@@ -48,6 +48,14 @@ class Market < ActiveRecord::Base
   validates :natural_recovery_ratio_percent, :numericality => true
   validates :natural_recovery_ratio_percent, :inclusion => { :in => 1..99 }
 
+  validate :ise_should_be_no_more_than_ep
+
+  def ise_should_be_no_more_than_ep
+    if initial_self_evaluation > evaluation_parameter
+      errors.add :initial_self_evaluation, "は評価値の母数 #{evaluation_parameter} 以下である必要があります。"
+    end
+  end
+
   after_create :create_people
 
   attr_accessible :natural_recovery_ratio_percent

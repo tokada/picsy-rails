@@ -47,9 +47,9 @@ class Propagation < ActiveRecord::Base
 		n ||= (market.evaluation_parameter || 100000)
 		q = amount * n
     q = (n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q))
-    if q.to_i == 0
+    if q.to_f == 0.0
       ""
-    elsif q.to_i > 0
+    elsif q.to_f > 0.0
       "+#{q}"
     else
       q

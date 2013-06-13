@@ -67,8 +67,6 @@ GEM
     arel (4.0.0)
     atomic (1.1.9)
     bcrypt-ruby (3.0.1)
-    best_in_place (0.2.3)
-      rails (>= 3.0.0)
     bootstrap-sass (2.3.1.3)
       sass (~> 3.2)
     bootswatch-rails (0.5.0)
@@ -150,6 +148,8 @@ GEM
     rake (10.0.4)
     rdoc (3.12.2)
       json (~> 1.4)
+    rest_in_place (2.1.1)
+      rails (>= 3.1)
     rspec-core (2.13.1)
     rspec-expectations (2.13.0)
       diff-lcs (>= 1.1.3, < 2.0)
@@ -204,7 +204,6 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
-  best_in_place
   bootstrap-sass
   bootswatch-rails
   coffee-rails (~> 4.0.0)
@@ -220,6 +219,7 @@ DEPENDENCIES
   rails-erd
   rails3_serve_static_assets!
   rails_log_stdout!
+  rest_in_place
   rspec-rails
   sass-rails!
   sdoc

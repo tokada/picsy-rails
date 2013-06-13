@@ -52,7 +52,7 @@ gem 'omniauth-twitter' # Twitter認証（Devise用）
 
 gem 'state_machine' # 状態遷移
 
-#gem 'rest_in_place' # AJAX Inplace Editor
+gem 'rest_in_place' # AJAX Inplace Editor
 
 group :development do
   gem 'rails-erd'
