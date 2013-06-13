@@ -137,6 +137,13 @@ class Market < ActiveRecord::Base
     end
   end
 
+  def matrix=(m)
+    transaction do
+      initialize_matrix!(0.0, m)
+      trades.each(&:destroy)
+    end
+  end
+
   def calculate_contributions(m=nil)
     m ||= matrix
     Picsy.calculate_contribution_by_markov(m)

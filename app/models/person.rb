@@ -89,7 +89,14 @@ class Person < ActiveRecord::Base
 
 	# PICSY効果
 	def picsy_effect_quantized(n=100000)
-		(picsy_effect.to_f * n).to_i
+		i = (picsy_effect.to_f * n).to_i
+    if i == 0
+      ""
+    elsif i > 0
+      "+#{i}"
+    else
+      i.to_s
+    end
 	end
 
 	# PICSY効果を更新する
