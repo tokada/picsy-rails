@@ -11,14 +11,14 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-#group :assets do
+group :assets do
   gem 'sass-rails', :git => 'git://github.com/rails/sass-rails.git'
   gem 'uglifier', '>= 1.3.0'
   gem 'coffee-rails', '~> 4.0.0'
-#end
-gem 'jquery-rails'
+end
 gem 'bootstrap-sass'
 gem 'bootswatch-rails'
+gem 'jquery-rails'
 gem "font-awesome-rails"
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
@@ -49,6 +49,8 @@ gem 'protected_attributes'
 gem 'omniauth-twitter' # Twitter認証（Devise用）
 
 gem 'state_machine' # 状態遷移
+
+gem 'rest_in_place' # AJAX Inplace Editor
 
 group :development do
   gem 'rails-erd'

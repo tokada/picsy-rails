@@ -2,6 +2,7 @@
 //= require jquery_ujs
 //= require jquery.cookie
 //= require bootstrap
+//= require rest_in_place
 
 saved = {
   cell: [null, null]

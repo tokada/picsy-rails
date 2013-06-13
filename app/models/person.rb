@@ -31,6 +31,8 @@ class Person < ActiveRecord::Base
   # 個人は貢献度の値をもつ
   attr_accessible :contribution
 
+  validates :name, :presence => true
+
   # 状態遷移
   state_machine :state, :initial => :alive do
     state :alive

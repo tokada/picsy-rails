@@ -14,7 +14,10 @@
   <% @matrix.each.with_index do |row, i| %>
   <tr>
     <!-- アクター -->
-    <th id="from-p<%= @people[i].id %>"><%= @people[i].name %></th>
+    <th id="from-p<%= @people[i].id %>">
+      <%= content_tag :span, @people[i].name, :class => "rest-in-place", :data => {
+        :url => person_path(@people[i]), :object => "person", :attribute => "name" } %>
+    </th>
     <!-- 貢献度 -->
     <td>
       <%= @contributions[i] %>
