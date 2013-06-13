@@ -55,16 +55,17 @@ $("td.ev").each (d) ->
 get_person = (person_id, timeout) ->
   element1 = $("#from-p"+person_id+" .rest-in-place")
   element2 = $("#to-p"+person_id+" .rest-in-place")
-  setTimeout ->
-    $.ajax(
-      url: element1.data("url-partial"),
-      type: "GET",
-      dataType: "html",
-      success: (data) ->
-        element1.html("").html(data)
-        element2.html("").html(data)
-    )
-  , timeout
+  if element1.data("url-partial") != undefined
+    setTimeout ->
+      $.ajax(
+        url: element1.data("url-partial"),
+        type: "GET",
+        dataType: "html",
+        success: (data) ->
+          element1.html(data)
+          element2.html(data)
+      )
+    , timeout
 
 # rest-in-placeの編集開始時に名前だけの文字列に書き換える
 $('.rest-in-place').bind 'activate.rest-in-place', (event) ->
@@ -76,8 +77,11 @@ $('.rest-in-place').bind 'abort.rest-in-place', (event) ->
     get_person($(this).data("id"), 1)
 
 # rest-in-placeの更新後にHTMLを再取得する
-$('.rest-in-place').bind 'success.rest-in-place', (event) ->
-  get_person($(this).data("id"), 2000)
+$('.rest-in-place').bind 'success.rest-in-place', (event, data) ->
+  person_id = $(this).data("id")
+  get_person(person_id, 1)
+  $("option#person-from-p"+person_id).html(data.name)
+  $("option#person-to-p"+person_id).html(data.name)
 
 $ ->
   # CSS切り替えとCookie保存

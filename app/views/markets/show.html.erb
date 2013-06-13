@@ -71,7 +71,7 @@
 			<select name="person-from" id="person-from" class="input-medium" required>
 				<option></option>
 				<% @people.each.with_index do |person, i| %>
-				<option value="<%= person.id %>"><%= person.name %></option>
+        <option value="<%= person.id %>" id="person-from-p<%= person.id %>"><%= person.name %></option>
 				<% end %>
 			</select>
 			<span class="help-inline" style="margin-right:5px">から</span>
@@ -81,7 +81,7 @@
 			<select name="person-to" id="person-to" class="input-medium" required>
 				<option></option>
 				<% @people.each.with_index do |person, i| %>
-				<option value="<%= person.id %>"><%= person.name %></option>
+        <option value="<%= person.id %>" id="person-to-p<%= person.id %>"><%= person.name %></option>
 				<% end %>
 			</select>
 			<span class="help-inline" style="margin-right:5px">へ</span>

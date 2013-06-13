@@ -45,6 +45,7 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1.json
   def update
     # Twitter名の取得（@ではじまる場合）
+    @person.name = person_params[:name]
     @person.update_twitter_name(current_user)
 
     respond_to do |format|
