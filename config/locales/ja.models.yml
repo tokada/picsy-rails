@@ -9,7 +9,7 @@ ja:
       market:
         user: オーナー
         name: 市場の名前
-        name: 説明
+        description: 説明
         people_count: 参加人数
         trades_count: 取引回数
         evaluation_parameter: 評価値の母数
