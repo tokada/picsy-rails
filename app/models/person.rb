@@ -119,6 +119,8 @@ class Person < ActiveRecord::Base
       tw_name = $1
       self.user = User.find_for_twitter_user(tw_name, current_user)
       save
+    else
+      self.user = nil
     end
   end
 
