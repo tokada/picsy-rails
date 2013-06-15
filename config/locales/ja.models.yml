@@ -18,3 +18,4 @@ ja:
         natural_recovery_ratio_percent: 自然回収率
         created_at: 作成日
         last_trade_at: 直近の取引日
+        system: 貨幣システム

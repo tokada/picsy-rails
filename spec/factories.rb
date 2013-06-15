@@ -23,12 +23,25 @@ FactoryGirl.define do
 		natural_recovery_ratio 0.01
 	end
 
+  factory :secsy_market, class: Market do
+		user
+		name "SECSY market"
+		people_count 3
+		evaluation_parameter 100000
+		initial_self_evaluation 20000
+		natural_recovery_ratio 0.01
+    system "SECSY"
+	end
+
   factory :person do
     market
+    name "person"
   end
 
   factory :person5, class: Person do
     market5
+    name "person"
   end
+
 end
 

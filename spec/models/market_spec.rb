@@ -63,6 +63,8 @@ describe Market do
       @n44expected  = Vector[1.0697, 0.7756, 0.9910, 1.2677, 0.8961]
       @n44expected_2 = Vector[1.1737, 0.7711, 0.9773, 1.1622, 0.9157]
       @n44expected_diff = [0.1040, -0.0045, -0.0136, -0.1055, 0.0196]
+      @n44expected_secsy = Vector[0.95, 1.15, 0.95, 0.75, 1.2]
+      @n44expected_secsy_diff = [-0.1, 0.1]
     end
 
     before(:each) do
@@ -192,6 +194,44 @@ describe Market do
           expect(@trade1.propagations.count).to eq(5)
           @trade1.propagations.pluck(:amount).reverse.each.with_index do |actual, i|
             expect(actual).to be_within(@delta).of(@n44expected_diff[i])
+          end
+        end
+      end
+    end
+
+    describe "SECSYな通貨の場合" do
+      before do
+        @secsy_market = FactoryGirl.create(:secsy_market)
+        @secsy_market.people = FactoryGirl.create_list(:person, 5)
+      end
+
+      describe "\#trade(buyer, seller, amount)" do
+        context "「なめ敵」図4.4のシナリオの場合" do
+          before do
+            @secsy_market.initialize_matrix!(0.0, @n44matrix)
+            @secsy_market.trade(@secsy_market.people[3], @secsy_market.people[0], 0.1)
+            @contributions = @secsy_market.contributions
+            @trade1 = @secsy_market.people[3].given_trades.first
+          end
+
+          it "全員の貢献度が変化すること" do
+            @n44expected_secsy.each.with_index do |expected, i|
+              expect(@contributions[i]).to be_within(@delta).of(expected)
+            end
+          end
+
+          it "購入者=4、販売者=1、取引額0.1の取引履歴が記録されること" do
+            expect(@secsy_market.people[3].given_trades.count).to eq(1)
+            expect(@trade1.buyable).to eq(@secsy_market.people[3])
+            expect(@trade1.sellable).to eq(@secsy_market.people[0])
+            expect(@trade1.amount).to eq(0.1)
+          end
+
+          it "貢献度の伝播履歴が記録されること" do
+            expect(@trade1.propagations.count).to eq(2)
+            @trade1.propagations.pluck(:amount).reverse.each.with_index do |actual, i|
+              expect(actual).to be_within(@delta).of(@n44expected_secsy_diff[i])
+            end
           end
         end
       end

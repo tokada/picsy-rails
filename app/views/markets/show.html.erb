@@ -10,7 +10,7 @@
     <th>アクター</th>
     <th>貢献度</th>
     <th>予算制約</th>
-    <th>PICSY効果</th>
+    <th><%= @market.system %>効果</th>
     <% @people.each.with_index do |person, i| %>
       <th id="to-p<%= person.id %>">
         <%= render :partial => "people/partial", :locals => { :person => person } %>
@@ -105,7 +105,7 @@
   <div style="float:right">
 	<%= form_for :market, :url => { :action => :natural_recovery },
 		:html => { :class => "input-append", :style => "margin:0;padding:0" } do %>
-    <%= text_field_tag :natural_recovery_ratio_percent, "1",
+    <%= text_field_tag :natural_recovery_ratio_percent, @market.natural_recovery_ratio_percent,
       :class => "input-xlarge", :style => "width:100px",
 			:type => "number", :min => "1", :max => "99", :required => "required" %>
 		<span class="add-on">%</span>
@@ -149,7 +149,7 @@
         <% if value.nil? %>
           <td>&nbsp;</td>
         <% else %>
-          <td class="text-success"><%= value %></td>
+          <td><%= value %></td>
         <% end %>
       <% end %>
     </tr>

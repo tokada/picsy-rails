@@ -40,7 +40,7 @@ class Market < ActiveRecord::Base
   has_many :propagations, :dependent => :destroy
   has_many :natural_recoveries, :dependent => :destroy
 
-  attr_accessible :name, :description, :people_count,
+  attr_accessible :name, :description, :people_count, :system,
     :evaluation_parameter, :initial_self_evaluation, :natural_recovery_ratio
 
   validates :name, :people_count, :evaluation_parameter, :initial_self_evaluation,
@@ -160,7 +160,15 @@ class Market < ActiveRecord::Base
 
   def calculate_contributions(m=nil)
     m ||= matrix
-    Picsy.calculate_contribution_by_markov(m)
+    if secsy?
+      evaluations.pluck(:sellable_id, :amount).inject({}) do |h, (person_id, amount)|
+        h[person_id] ||= 0
+        h[person_id] += amount 
+        h
+      end.to_a.sort{|a,b| b[0] <=> a[0] }.map{|v| v[1] }
+    else
+      Picsy.calculate_contribution_by_markov(m)
+    end
   end
 
   # 貢献度をマルコフ過程によって更新する
@@ -230,7 +238,7 @@ class Market < ActiveRecord::Base
 
 			# 全員の貢献度を更新する
 			old_contributions = Vector.elements(contributions)
-			update_contributions!
+			update_contributions!(nil)
 			new_contributions = Vector.elements(contributions)
 			diff = new_contributions - old_contributions
 
@@ -276,5 +284,13 @@ class Market < ActiveRecord::Base
   # 履歴情報（自然回収歴、取引履歴）を並べたリスト
   def nr_or_trades
     (trades + natural_recoveries).sort{|a,b| b.created_at <=> a.created_at }
+  end
+
+  def picsy?
+    system == "PICSY"
+  end
+
+  def secsy?
+    system == "SECSY"
   end
 end

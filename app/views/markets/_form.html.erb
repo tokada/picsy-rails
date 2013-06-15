@@ -52,6 +52,15 @@
       <span class="add-on">%</span>
     </div>
   </div>
+  <div class="control-group">
+    <%= f.label :system, :class => 'control-label' %>
+    <div class="controls" style="overflow:hidden">
+      <%= f.radio_button :system, "PICSY", :id => "market_system_PICSY", :style => "float:left" %>
+      <%= f.label "system_PICSY", "PICSY" %>
+      <%= f.radio_button :system, "SECSY", :id => "market_system_SECSY", :style => "float:left" %>
+      <%= f.label "system_SECSY", "SECSY" %>
+    </div>
+  </div>
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
