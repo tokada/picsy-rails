@@ -1,0 +1,46 @@
+- model_class = Propagation
+.page-header
+  %h1= t '.title', :default => model_class.model_name.human.titleize
+%dl.dl-horizontal
+  %dt
+    %strong
+      = model_class.human_attribute_name(:market_id)
+      \:
+  %dd= @propagation.market_id
+  %dt
+    %strong
+      = model_class.human_attribute_name(:trade_id)
+      \:
+  %dd= @propagation.trade_id
+  %dt
+    %strong
+      = model_class.human_attribute_name(:evaluatable_id)
+      \:
+  %dd= @propagation.evaluatable_id
+  %dt
+    %strong
+      = model_class.human_attribute_name(:evaluatable_type)
+      \:
+  %dd= @propagation.evaluatable_type
+  %dt
+    %strong
+      = model_class.human_attribute_name(:amount)
+      \:
+  %dd= @propagation.amount
+  %dt
+    %strong
+      = model_class.human_attribute_name(:category)
+      \:
+  %dd= @propagation.category
+.form-actions
+  = link_to t('.back', :default => t("helpers.links.back")), |
+    propagations_path, :class => 'btn'                       |
+  -#
+  = link_to t('.edit', :default => t("helpers.links.edit")), |
+    edit_propagation_path(@propagation), :class => 'btn'     |
+  -#
+  = link_to t('.destroy', :default => t("helpers.links.destroy")),                                               |
+    propagation_path(@propagation),                                                                              |
+    :method => 'delete',                                                                                         |
+    :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, |
+    :class => 'btn btn-danger'                                                                                   |

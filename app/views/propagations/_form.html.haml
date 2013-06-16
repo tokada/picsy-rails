@@ -1,0 +1,29 @@
+= form_for @propagation, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :market_id, :class => 'control-label'
+    .controls
+      = f.text_field :market_id, :class => 'text_field'
+  .control-group
+    = f.label :trade_id, :class => 'control-label'
+    .controls
+      = f.text_field :trade_id, :class => 'text_field'
+  .control-group
+    = f.label :evaluatable_id, :class => 'control-label'
+    .controls
+      = f.text_field :evaluatable_id, :class => 'text_field'
+  .control-group
+    = f.label :evaluatable_type, :class => 'control-label'
+    .controls
+      = f.text_field :evaluatable_type, :class => 'text_field'
+  .control-group
+    = f.label :amount, :class => 'control-label'
+    .controls
+      = f.text_field :amount, :class => 'text_field'
+  .control-group
+    = f.label :category, :class => 'control-label'
+    .controls
+      = f.text_field :category, :class => 'text_field'
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), |
+      propagations_path, :class => 'btn'                           |

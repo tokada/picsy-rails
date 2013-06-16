@@ -1,0 +1,51 @@
+= form_for @market, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label 'オーナー', :class => 'control-label'
+    .controls
+      = image_tag @market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0"
+      = @market.user.name
+  .control-group
+    = f.label :name, :class => 'control-label'
+    .controls
+      = f.text_field :name, :class => 'text_field'
+  .control-group
+    = f.label :description, :class => 'control-label'
+    .controls
+      = f.text_field :description, :class => 'text_field'
+  .control-group
+    = f.label :people_count, :class => 'control-label'
+    .controls
+      = f.text_field :people_count, :class => 'text_field input-small',       |
+        :style => "text-align:right",                                         |
+        :type => "number", :min => "2", :max => "99", :required => "required" |
+  .control-group
+    = f.label :evaluation_parameter, :class => 'control-label'
+    .controls
+      = f.text_field :evaluation_parameter, :class => 'text_field input-small',     |
+        :style => "text-align:right",                                               |
+        :type => "number", :min => "1", :max => "10000000", :required => "required" |
+      %span.help-inline 各参加者がもつ評価値の合計数を設定します。
+  .control-group
+    = f.label :initial_self_evaluation, :class => 'control-label'
+    .controls
+      = f.text_field :initial_self_evaluation, :class => 'text_field input-small', |
+        :style => "text-align:right", :required => "required"                      |
+      %span.help-inline 「あげられるお金」の初期値を設定します。
+  .control-group.input-append
+    = f.label :natural_recovery_ratio_percent, :class => 'control-label'
+    .controls
+      = f.text_field :natural_recovery_ratio_percent, :class => 'text_field input-small', |
+        :style => "text-align:right",                                                     |
+        :type => "number", :min => "1", :max => "99", :required => "required"             |
+      %span.add-on %
+  .control-group
+    = f.label :system, :class => 'control-label'
+    .controls{:style => "overflow:hidden"}
+      = f.radio_button :system, "PICSY", :id => "market_system_PICSY", :style => "float:left"
+      = f.label "system_PICSY", "PICSY"
+      = f.radio_button :system, "SECSY", :id => "market_system_SECSY", :style => "float:left"
+      = f.label "system_SECSY", "SECSY"
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), |
+      markets_path, :class => 'btn'                                |

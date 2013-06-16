@@ -1,0 +1,29 @@
+= form_for @evaluation, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :market_id, :class => 'control-label'
+    .controls
+      = f.text_field :market_id, :class => 'text_field'
+  .control-group
+    = f.label :buyable_id, :class => 'control-label'
+    .controls
+      = f.text_field :buyable_id, :class => 'text_field'
+  .control-group
+    = f.label :buyable_type, :class => 'control-label'
+    .controls
+      = f.text_field :buyable_type, :class => 'text_field'
+  .control-group
+    = f.label :sellable_id, :class => 'control-label'
+    .controls
+      = f.text_field :sellable_id, :class => 'text_field'
+  .control-group
+    = f.label :sellable_type, :class => 'control-label'
+    .controls
+      = f.text_field :sellable_type, :class => 'text_field'
+  .control-group
+    = f.label :amount, :class => 'control-label'
+    .controls
+      = f.text_field :amount, :class => 'text_field'
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), |
+      evaluations_path, :class => 'btn'                            |

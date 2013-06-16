@@ -1,0 +1,40 @@
+- model_class = Trade
+.page-header
+  %h1= t '.title', :default => model_class.model_name.human.pluralize.titleize
+%table.table.table-striped
+  %thead
+    %tr
+      %th= model_class.human_attribute_name(:id)
+      %th= model_class.human_attribute_name(:market_id)
+      %th= model_class.human_attribute_name(:buyable_id)
+      %th= model_class.human_attribute_name(:buyable_type)
+      %th= model_class.human_attribute_name(:sellable_id)
+      %th= model_class.human_attribute_name(:sellable_type)
+      %th= model_class.human_attribute_name(:item_id)
+      %th= model_class.human_attribute_name(:amount)
+      %th= model_class.human_attribute_name(:created_at)
+      %th= t '.actions', :default => t("helpers.actions")
+  %tbody
+    - @trades.each do |trade|
+      %tr
+        %td= link_to trade.id, trade_path(trade)
+        %td= trade.market_id
+        %td= trade.buyable_id
+        %td= trade.buyable_type
+        %td= trade.sellable_id
+        %td= trade.sellable_type
+        %td= trade.item_id
+        %td= trade.amount
+        %td= l trade.created_at
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), |
+            edit_trade_path(trade), :class => 'btn btn-mini'         |
+          -#
+          = link_to t('.destroy', :default => t("helpers.links.destroy")),                                               |
+            trade_path(trade),                                                                                           |
+            :method => :delete,                                                                                          |
+            :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, |
+            :class => 'btn btn-mini btn-danger'                                                                          |
+= link_to t('.new', :default => t("helpers.links.new")), |
+  new_trade_path,                                        |
+  :class => 'btn btn-primary'                            |

@@ -1,0 +1,18 @@
+- if person.user
+  %span{:class => owner? && "rest-in-place rest-in-place-person",
+        :data => { :attribute => "name",
+                   :id => person.id,
+                   :name => person.name,
+                   :object => "person",
+                   :url => person_path(person),
+                   :url-partial => partial_person_path(person) } }
+    = image_tag person.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0"
+    = person.user.name
+- else
+  = content_tag :span, person.name,
+    :class => owner? && "rest-in-place rest-in-place-person",
+    :data => { :url => person_path(person),
+               :object => "person",
+               :attribute => "name",
+               :name => person.name,
+               :id => person.id }

@@ -1,0 +1,36 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      %a.brand{:href => "/"} PICSY-Rails
+      %a.btn.btn-navbar{"data-target" => ".nav-collapse", "data-toggle" => "collapse"}
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      .nav-collapse.collapse.navbar-responsive-collapse
+        %ul.nav
+          %li= link_to "現在の市場", :markets
+        %ul.nav.pull-right
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              - if user_signed_in?
+                = image_tag current_user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0"
+                = current_user.name
+              - else
+                %i.icon-twitter.icon-large
+              %b.caret
+            %ul.dropdown-menu
+              - if user_signed_in?
+                %li= link_to 'ログアウト', sign_out_path
+              - else
+                %li= link_to "Twitter IDでログイン", user_omniauth_authorize_path(:twitter)
+          %li.dropdown
+            %a.dropdown-toggle{"data-toggle" => "dropdown", :href => "#"}
+              %i.icon-cog.icon-large
+              %b.caret
+            %ul.dropdown-menu
+              - @themes.each do |theme|
+                %li.if{:class => "select-theme<haml:silent> current_theme?(theme) </haml:silent><haml:block> disabled</haml:block>", :id => "select-theme-#{theme}"}= link_to theme, "#", "data-select-theme" => theme
+      / /.nav-collapse
+    / /.container
+  / /.navbar-inner
+/ /.navbar

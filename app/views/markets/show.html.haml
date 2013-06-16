@@ -1,0 +1,138 @@
+- model_class = Market
+
+= content_tag :h1, @market.name, :class => ("rest-in-place" if owner?),
+  :data => { :url => market_path(@market), :object => "market", :attribute => "name" }
+
+= content_tag :p, @market.description, :class => "lead"+(" rest-in-place" if owner?).to_s,
+  :data => { :url => market_path(@market), :object => "market", :attribute => "description" }
+
+%table.table.table-bordered.selectable
+  %tr
+    %th アクター
+    %th 貢献度
+    %th 予算制約
+    %th #{@market.system}効果
+    - @people.each.with_index do |person, i|
+      %th{:id => "to-p#{person.id}"}
+        = render :partial => "people/partial", :locals => { :person => person }
+  - @matrix.each.with_index do |row, i|
+    %tr
+      / アクター
+      %th{:id => "from-p#{@people[i].id}"}
+        = render :partial => "people/partial", :locals => { :person => @people[i] }
+      / 貢献度
+      %td
+        = @contributions[i]
+        - if @last_propagations.present? and @last_propagations[i].amount.present?
+          / 直近取引の差分表示（貢献度）
+          %span{:class => propagation_class(@last_propagations[i]) }
+            - if @last_propagations[i].amount_quantized.to_f != 0.0
+              (#{@last_propagations[i].amount_quantized})
+      / 予算制約
+      %td{:id => "self-p#{@people[i].id}"}
+        = @people[i].self_evaluation_quantized
+        - if @last_trade and @people[i] == @last_trade.buyable
+          / 直近取引の差分表示（購入者）
+          %span.text-error
+            (-#{@last_trade.amount_quantized})
+      / PICSY効果
+      %td{:class => @people[i].picsy_effect_quantized.to_i < 0 ? "text-error" : "text-info"}
+        = @people[i].picsy_effect_quantized
+      - row.each.with_index do |col, j|
+        - if i == j
+          %td -
+        - else
+          %td.ev{:id => "ev-p#{@people[i].id}-p#{@people[j].id}"}
+            = col
+            - if @last_trade and @people[i] == @last_trade.buyable and @people[j] == @last_trade.sellable
+              / 直近取引の差分表示（販売者）
+              %span.text-success
+                (+#{@last_trade.amount_quantized})
+- if @market.closed?
+  .well
+    %p.muted 市場は取引停止中です。取引を再開するには、オーナーに依頼してください。
+- else
+  .well{:style => "overflow:hidden"}
+    %div{:style => "float:left"}
+      = form_for :market, :url => { :action => :trade },
+                 :html => { :style => "margin:0;padding:0" } do
+        .control-group.error{:style => "display:inline"}
+          %select#person-from.input-medium{:name => "person-from", :required => ""}
+            %option
+            - @people.each.with_index do |person, i|
+              %option{:id => "person-from-p#{person.id}", :value => person.id}= person.name
+          %span.help-inline{:style => "margin-right:5px"} から
+        .control-group.success{:style => "display:inline"}
+          %select#person-to.input-medium{:name => "person-to", :required => ""}
+            %option
+            - @people.each.with_index do |person, i|
+              %option{:id => "person-to-p#{person.id}", :value => person.id}= person.name
+          %span.help-inline{:style => "margin-right:5px"} へ
+        .input-append{:style => ""}
+          = text_field_tag :amount, "", :class => "input-small", :style => "text-align:right",
+            :type => "number", :step => "any",
+            :min => "0", :max => @market.evaluation_parameter, :required => "required"
+          %button.btn.btn-primary{:type => "submit"} 取引実行
+    %div{:style => "float:right"}
+      = form_for :market, :url => { :action => :natural_recovery },
+        :html => { :class => "input-append", :style => "margin:0;padding:0" } do 
+        = text_field_tag :natural_recovery_ratio_percent, @market.natural_recovery_ratio_percent,
+          :class => "input-xlarge", :style => "width:100px",
+          :type => "number", :min => "1", :max => "99", :required => "required"
+        %span.add-on %
+        %button.btn.btn-primary{:type => "submit"} 自然回収
+- if @trades.size > 0
+  %h2 取引履歴
+  %table.table.table-striped.table-bordered.table-condensed
+    %tr
+      %th #
+      %th アクター
+      %th 取引額
+      - @people.each do |person|
+        %th= person.name
+    - @nr_or_trades.each.with_index do |trade, i|
+      - if trade.is_a?(Trade)
+        %tr
+          %th
+            \##{@nr_or_trades.size - i}
+          %td
+            = trade.buyable.name
+            \&rarr; #{trade.sellable.name}
+          %td= trade.amount_quantized
+          - trade.filled_propagations.each do |prop|
+            - if prop.amount.nil?
+              %td &nbsp;
+            - else
+              %td{:class => propagation_class(prop) }= prop.amount_quantized
+      - elsif trade.is_a?(NaturalRecovery)
+        %tr
+          %th
+            \##{@nr_or_trades.size - i}
+          %td 自然回収
+          %td= trade.ratio_percent
+          - trade.filled_quantized.each do |value|
+            - if value.nil?
+              %td &nbsp;
+            - else
+              %td= value
+.well.form-actions.text-right
+  - if @market.user.present?
+    %span
+      オーナー
+      \#{image_tag @market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0"}
+      \#{@market.user.name}
+  - if owner?
+    %span{:style => "margin-left:1em"}
+      = link_to t('.edit', :default => t("helpers.links.edit")), edit_market_path(@market), :class => 'btn'
+      = link_to t('.destroy', :default => t("helpers.links.destroy")),
+          market_path(@market),
+          :method => 'delete',
+          :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, 
+          :class => 'btn btn-danger'
+      - if @market.opened?
+        = link_to t('.close', :default => t("helpers.links.close")),
+            close_market_path(@market), :method => 'put', :class => 'btn btn-warning'
+      - elsif @market.closed?
+        = link_to t('.open', :default => t("helpers.links.open")),
+            open_market_path(@market), :method => 'put', :class => 'btn btn-primary'
+

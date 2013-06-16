@@ -1,0 +1,29 @@
+= form_for @person, :html => { :class => 'form-horizontal' } do |f|
+  .control-group
+    = f.label :market_id, :class => 'control-label'
+    .controls
+      = f.text_field :market_id, :class => 'text_field'
+  .control-group
+    = f.label :name, :class => 'control-label'
+    .controls
+      = f.text_field :name, :class => 'text_field'
+  .control-group
+    = f.label :state, :class => 'control-label'
+    .controls
+      = f.text_field :state, :class => 'text_field'
+  .control-group
+    = f.label :contribution, :class => 'control-label'
+    .controls
+      = f.text_field :contribution, :class => 'text_field'
+  .control-group
+    = f.label :purchase_power, :class => 'control-label'
+    .controls
+      = f.text_field :purchase_power, :class => 'text_field'
+  .control-group
+    = f.label :picsy_effect, :class => 'control-label'
+    .controls
+      = f.text_field :picsy_effect, :class => 'text_field'
+  .form-actions
+    = f.submit nil, :class => 'btn btn-primary'
+    = link_to t('.cancel', :default => t("helpers.links.cancel")), |
+      people_path, :class => 'btn'                                 |

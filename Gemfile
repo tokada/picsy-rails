@@ -19,7 +19,9 @@ end
 gem 'bootstrap-sass'
 gem 'bootswatch-rails'
 gem 'jquery-rails'
-gem "font-awesome-rails"
+gem 'font-awesome-rails'
+
+gem 'haml-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
@@ -56,6 +58,7 @@ gem 'rest_in_place' # AJAX Inplace Editor
 
 group :development do
   gem 'rails-erd'
+  gem 'erb2haml'
 end
 
 group :test do
@@ -64,8 +67,8 @@ group :test do
   gem 'factory_girl_rails'
 end
 
-#group :production do
+group :production do
   gem 'rails_log_stdout',           github: 'heroku/rails_log_stdout'
   gem 'rails3_serve_static_assets', github: 'heroku/rails3_serve_static_assets'
-#end
+end
 
