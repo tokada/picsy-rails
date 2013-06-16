@@ -4,31 +4,31 @@ class ApplicationController < ActionController::Base
   before_filter do |controller|
     session[:last_url] = request.url unless request.url =~ %r!/users/!
 
-		@themes = %w[
-			amelia
-			cerulean
-			cosmo
-			default
-			flatly
-			slate
-		]
+    @themes = %w[
+      amelia
+      cerulean
+      cosmo
+      default
+      flatly
+      slate
+    ]
 
-		@themes_all = %w[
-			amelia
-			cerulean
-			cosmo
-			cyborg
-			default
-			flatly
-			journal
-			readable
-			simplex
-			slate
-			spacelab
-			spruce
-			superhero
-			united
-		]
+    @themes_all = %w[
+      amelia
+      cerulean
+      cosmo
+      cyborg
+      default
+      flatly
+      journal
+      readable
+      simplex
+      slate
+      spacelab
+      spruce
+      superhero
+      united
+    ]
   end
 
   def after_sign_in_path_for(resource)

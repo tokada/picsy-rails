@@ -1,8 +1,8 @@
 class CreatePeople < ActiveRecord::Migration
   def change
     create_table :people do |t|
-			t.references :user, index: true
-			t.belongs_to :market, index: true
+      t.references :user, index: true
+      t.belongs_to :market, index: true
 
       t.string :name
       t.float :contribution, :default => 0.0

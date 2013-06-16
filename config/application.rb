@@ -20,8 +20,8 @@ module PicsyRails
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :ja
 
-		config.assets.initialize_on_precompile = false
-		config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+    config.assets.initialize_on_precompile = false
+    config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
  
     Devise.setup do |config|
       config.omniauth :twitter, ENV['TWITTER_CONSUMER_KEY'], ENV['TWITTER_CONSUMER_SECRET'], :display => 'popup'

@@ -48,9 +48,9 @@
       <%= @people[i].picsy_effect_quantized %>
     </td>
     <% row.each.with_index do |col, j| %>
-			<% if i == j %>
-				<td>-</td>
-			<% else %>
+      <% if i == j %>
+        <td>-</td>
+      <% else %>
         <td class="ev" id="ev-p<%= @people[i].id %>-p<%= @people[j].id %>">
           <%= col %>
           <% if @last_trade and @people[i] == @last_trade.buyable and @people[j] == @last_trade.sellable %>
@@ -58,7 +58,7 @@
             <span class="text-success">(+<%= @last_trade.amount_quantized %>)</span>
           <% end %>
         </td>
-			<% end %>
+      <% end %>
     <% end %>
   </tr>
   <% end %>
@@ -71,46 +71,46 @@
 <% else %>
 <div class="well" style="overflow:hidden">
   <div style="float:left">
-	<%= form_for :market, :url => { :action => :trade },
-		:html => { :style => "margin:0;padding:0" } do %>
-		<div class="control-group error" style="display:inline">
-			<select name="person-from" id="person-from" class="input-medium" required>
-				<option></option>
-				<% @people.each.with_index do |person, i| %>
+  <%= form_for :market, :url => { :action => :trade },
+    :html => { :style => "margin:0;padding:0" } do %>
+    <div class="control-group error" style="display:inline">
+      <select name="person-from" id="person-from" class="input-medium" required>
+        <option></option>
+        <% @people.each.with_index do |person, i| %>
         <option value="<%= person.id %>" id="person-from-p<%= person.id %>"><%= person.name %></option>
-				<% end %>
-			</select>
-			<span class="help-inline" style="margin-right:5px">から</span>
-		</div>
+        <% end %>
+      </select>
+      <span class="help-inline" style="margin-right:5px">から</span>
+    </div>
 
-		<div class="control-group success" style="display:inline">
-			<select name="person-to" id="person-to" class="input-medium" required>
-				<option></option>
-				<% @people.each.with_index do |person, i| %>
+    <div class="control-group success" style="display:inline">
+      <select name="person-to" id="person-to" class="input-medium" required>
+        <option></option>
+        <% @people.each.with_index do |person, i| %>
         <option value="<%= person.id %>" id="person-to-p<%= person.id %>"><%= person.name %></option>
-				<% end %>
-			</select>
-			<span class="help-inline" style="margin-right:5px">へ</span>
-		</div>
+        <% end %>
+      </select>
+      <span class="help-inline" style="margin-right:5px">へ</span>
+    </div>
 
-		<div class="input-append" style="">
+    <div class="input-append" style="">
       <%= text_field_tag :amount, "", :class => "input-small", :style => "text-align:right",
         :type => "number", :step => "any",
         :min => "0", :max => @market.evaluation_parameter, :required => "required" %>
       <button type="submit" class="btn btn-primary">取引実行</button>
-		</div>
-	<% end %>
+    </div>
+  <% end %>
   </div>
 
   <div style="float:right">
-	<%= form_for :market, :url => { :action => :natural_recovery },
-		:html => { :class => "input-append", :style => "margin:0;padding:0" } do %>
+  <%= form_for :market, :url => { :action => :natural_recovery },
+    :html => { :class => "input-append", :style => "margin:0;padding:0" } do %>
     <%= text_field_tag :natural_recovery_ratio_percent, @market.natural_recovery_ratio_percent,
       :class => "input-xlarge", :style => "width:100px",
-			:type => "number", :min => "1", :max => "99", :required => "required" %>
-		<span class="add-on">%</span>
-		<button type="submit" class="btn btn-primary">自然回収</button>
-	<% end %>
+      :type => "number", :min => "1", :max => "99", :required => "required" %>
+    <span class="add-on">%</span>
+    <button type="submit" class="btn btn-primary">自然回収</button>
+  <% end %>
   </div>
 </div>
 <% end %>
@@ -160,15 +160,15 @@
 
 <div class="well form-actions text-right">
   <% if @market.user.present? %>
-	<span>
-		オーナー
-		<%= image_tag @market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
-		<%= @market.user.name %>
-	</span>
+  <span>
+    オーナー
+    <%= image_tag @market.user.image, :height => '24px', :width => "24px", :style => "margin:-7px 2px -2px 0" %>
+    <%= @market.user.name %>
+  </span>
   <% end %>
 
-	<% if owner? %>
-	<span style="margin-left:1em">
+  <% if owner? %>
+  <span style="margin-left:1em">
     <%= link_to t('.edit', :default => t("helpers.links.edit")),
                 edit_market_path(@market), :class => 'btn' %>
     <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
@@ -183,6 +183,6 @@
       <%= link_to t('.open', :default => t("helpers.links.open")),
         open_market_path(@market), :method => 'put', :class => 'btn btn-primary' %>
     <% end %>
-	</span>
+  </span>
 <% end %>
 </div>

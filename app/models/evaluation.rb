@@ -8,7 +8,7 @@ require 'matrix'
 # 自分自身を含めた全ての人への評価の値の合計は全ての人において一定値１である。
 #
 class Evaluation < ActiveRecord::Base
-	belongs_to :market
+  belongs_to :market
 
   # ある評価は買った人からの評価となる
   belongs_to :buyable, :polymorphic => true
@@ -25,11 +25,11 @@ class Evaluation < ActiveRecord::Base
   cattr_accessor :natural_recovery_ratio
   @@natural_recovery_ratio = 0.01
 
-	before_save :insert_foreign_ids
+  before_save :insert_foreign_ids
 
-	def insert_foreign_ids
-		self.market = buyable_type.constantize.find(buyable_id).market
-	end
+  def insert_foreign_ids
+    self.market = buyable_type.constantize.find(buyable_id).market
+  end
 
   # 評価行列を取得する
   def self.person_matrix
@@ -45,16 +45,16 @@ class Evaluation < ActiveRecord::Base
     Matrix[*a]
   end
 
-	# 評価行列をゲーム用に整数化したもの
-	def self.person_matrix_quantized(n=nil)
+  # 評価行列をゲーム用に整数化したもの
+  def self.person_matrix_quantized(n=nil)
     n ||= (market.evaluation_parameter || 100000)
     person_matrix.to_a.map do |r|
       r.map{|c|
         q = c * n
         n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q)
       }
-		end
-	end
+    end
+  end
 
   # 自然回収
   def self.natural_recovery!(nr_ratio=@@natural_recovery_ratio)

@@ -13,13 +13,13 @@
     <![endif]-->
 
     <% @themes.each do |theme| %>
-			<% if current_theme?(theme) %>
-				<%= stylesheet_link_tag "bootswatch/#{theme}", :title => theme,
-					:media => "all", :rel => "stylesheet", :id => "theme-#{theme}", :class => "theme" %>
-			<% else %>
-				<%= stylesheet_link_tag "bootswatch/#{theme}", :title => theme,
-					:media => "all", :rel => "alternate stylesheet", :id => "theme-#{theme}", :class => "theme" %>
-			<% end %>
+      <% if current_theme?(theme) %>
+        <%= stylesheet_link_tag "bootswatch/#{theme}", :title => theme,
+          :media => "all", :rel => "stylesheet", :id => "theme-#{theme}", :class => "theme" %>
+      <% else %>
+        <%= stylesheet_link_tag "bootswatch/#{theme}", :title => theme,
+          :media => "all", :rel => "alternate stylesheet", :id => "theme-#{theme}", :class => "theme" %>
+      <% end %>
     <% end %>
 
     <%= stylesheet_link_tag "font-awesome", media: "all" %>

@@ -1,7 +1,7 @@
 class MarketsController < ApplicationController
-	before_action :authenticate_user!, except: [:index, :show];
+  before_action :authenticate_user!, except: [:index, :show];
   before_action :set_market, only: [:show, :edit, :update, :destroy, :trade, :natural_recovery, :open, :close]
-	before_action :authenticate_owner, only: [:edit, :update, :destroy, :open, :close]
+  before_action :authenticate_owner, only: [:edit, :update, :destroy, :open, :close]
 
   # GET /markets
   # GET /markets.json
@@ -12,7 +12,7 @@ class MarketsController < ApplicationController
   # GET /markets/1
   # GET /markets/1.json
   def show
-		@people = @market.people
+    @people = @market.people
     @matrix = @market.matrix_quantized
     @contributions = @market.contributions_quantized
     @trades = @market.trades.order("id desc")
@@ -24,13 +24,13 @@ class MarketsController < ApplicationController
   # GET /markets/new
   def new
     @market = Market.new
-		# デフォルト名称をセットする
-		@market.set_default_name(current_user)
-		@market.user = current_user
-		@market.people_count = 3
-		@market.evaluation_parameter = 100000
-		@market.initial_self_evaluation = 10000
-		@market.natural_recovery_ratio_percent = 1
+    # デフォルト名称をセットする
+    @market.set_default_name(current_user)
+    @market.user = current_user
+    @market.people_count = 3
+    @market.evaluation_parameter = 100000
+    @market.initial_self_evaluation = 10000
+    @market.natural_recovery_ratio_percent = 1
   end
 
   # GET /markets/1/edit
@@ -41,8 +41,8 @@ class MarketsController < ApplicationController
   # POST /markets.json
   def create
     @market = Market.new(market_params)
-		@market.user = current_user
-		
+    @market.user = current_user
+    
     respond_to do |format|
       if @market.save
         format.html { redirect_to @market, notice: '市場を作成しました。' }
@@ -78,9 +78,9 @@ class MarketsController < ApplicationController
     end
   end
 
-	# 取引
-	# POST /markets/1/trade
-	def trade
+  # 取引
+  # POST /markets/1/trade
+  def trade
     if @market.closed?
       redirect_to @market, :error => "#{@market.name}は取引停止中です。"
     else
@@ -95,17 +95,17 @@ class MarketsController < ApplicationController
         redirect_to @market, :error => "パラメータが正常でないため、取引を実施しませんでした。"
       end
     end
-	end
+  end
 
-	# 自然回収
-	# POST /markets/1/natural_recovery
-	def natural_recovery
+  # 自然回収
+  # POST /markets/1/natural_recovery
+  def natural_recovery
     @market.natural_recovery_ratio_percent = params[:natural_recovery_ratio_percent]
     if @market.valid?
-			@market.natural_recovery!
-		end
-		redirect_to @market
-	end
+      @market.natural_recovery!
+    end
+    redirect_to @market
+  end
 
   # 市場をオープンする
   def open
@@ -142,6 +142,6 @@ class MarketsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def market_params
       params.require(:market).permit(:name, :description, :people_count, :system,
-				:evaluation_parameter, :initial_self_evaluation, :natural_recovery_ratio_percent)
+        :evaluation_parameter, :initial_self_evaluation, :natural_recovery_ratio_percent)
     end
 end

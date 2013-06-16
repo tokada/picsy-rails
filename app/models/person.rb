@@ -5,9 +5,9 @@
 class Person < ActiveRecord::Base
   default_scope { order :id }
 
-	belongs_to :market
+  belongs_to :market
 
-	belongs_to :user
+  belongs_to :user
 
   # 個人は他の経済主体に評価を与える
   has_many :given_evaluations, :as => :buyable, :class_name => 'Evaluation', :dependent => :destroy
@@ -89,14 +89,14 @@ class Person < ActiveRecord::Base
   # ゲーム用に自己評価値を整数化したもの
   def self_evaluation_quantized(n=nil)
     n ||= (market.evaluation_parameter || 100000)
-		q = self_evaluation * n
+    q = self_evaluation * n
     n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q)
   end
 
-	# PICSY効果
-	def picsy_effect_quantized(n=nil)
+  # PICSY効果
+  def picsy_effect_quantized(n=nil)
     n ||= (market.evaluation_parameter || 100000)
-		q = picsy_effect.to_f * n
+    q = picsy_effect.to_f * n
     q = (n <= 1 ? sprintf("%0.04f", q) : sprintf("%d", q))
     if q.to_f == 0.0
       ""
@@ -105,13 +105,13 @@ class Person < ActiveRecord::Base
     else
       q
     end
-	end
+  end
 
-	# PICSY効果を更新する
-	def update_picsy_effect!
-		effect = propagations.effect.pluck(:amount).sum
-		update_attribute(:picsy_effect, effect)
-	end
+  # PICSY効果を更新する
+  def update_picsy_effect!
+    effect = propagations.effect.pluck(:amount).sum
+    update_attribute(:picsy_effect, effect)
+  end
 
   # @ではじまる場合にTwitter IDを取得する
   def update_twitter_name(current_user)
